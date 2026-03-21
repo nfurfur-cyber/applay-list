@@ -382,7 +382,8 @@ function addByUrl(){
 function checkLimit(){if(songLimit===0)return true;var cnt=0;for(var i=0;i<queue.length;i++){if(queue[i].nick===myNick)cnt++;}if(cnt>=songLimit){showToast('⚠️ 1인당 최대 '+songLimit+'곡까지 신청 가능');return false;}return true;}
 function setLimit(n){songLimit=n;var btns=document.querySelectorAll('#limitSel .limit-btn');var vals=[1,2,3,0];btns.forEach(function(b,i){b.classList.toggle('on',vals[i]===n);});showToast(n===0?'곡 제한 해제':'1인당 '+n+'곡 제한');updateGuestInfo();}
 
-/* ✅ 검색 — 아티스트-곡명 분리, 중복 방지 */
+/* ✅ YouTube Data API v3 검색 + 데모 fallback */
+var YT_API_KEY='AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I';
 var DEMO=[
   {v:'4fndeDfaWCg',t:'좋은 날',a:'아이유 (IU)'},
   {v:'AJTsXYREMgw',t:'ETA',a:'NewJeans'},
@@ -403,17 +404,47 @@ var DEMO=[
   {v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},
   {v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'},
 ];
+var searchTimer=null;
 function doSearch(){
-  var q=document.getElementById('sin').value.trim().toLowerCase(),c=document.getElementById('rlist');
+  var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');
   if(!q){c.innerHTML='';return;}
-  var f=DEMO.filter(function(s){return s.t.toLowerCase().includes(q)||s.a.toLowerCase().includes(q);}).slice(0,6);
-  if(!f.length){c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx3);font-size:11px;">검색 결과 없음 — 유튜브 링크를 직접 붙여넣으세요 ⬆️</div>';return;}
-  c.innerHTML=f.map(function(s){
+  if(searchTimer)clearTimeout(searchTimer);
+  searchTimer=setTimeout(function(){doSearchNow(q);},350);
+}
+function doSearchNow(q){
+  var c=document.getElementById('rlist');
+  if(YT_API_KEY){
+    c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx2);font-size:11px;">🔍 검색 중...</div>';
+    fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=8&q='+encodeURIComponent(q)+'&key='+YT_API_KEY)
+      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+      .then(function(data){
+        if(!data.items||!data.items.length){renderResults([],q);return;}
+        var results=data.items.map(function(item){
+          return {v:item.id.videoId,t:item.snippet.title,a:item.snippet.channelTitle};
+        });
+        renderResults(results,q);
+      })
+      .catch(function(){demoFallback(q);});
+  }else{
+    demoFallback(q);
+  }
+}
+function demoFallback(q){
+  var ql=q.toLowerCase();
+  var f=DEMO.filter(function(s){return s.t.toLowerCase().includes(ql)||s.a.toLowerCase().includes(ql);}).slice(0,6);
+  renderResults(f,q);
+}
+function renderResults(results,q){
+  var c=document.getElementById('rlist');
+  if(!results.length){c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx3);font-size:11px;">검색 결과 없음 — 유튜브 링크를 직접 붙여넣으세요 ⬆️</div>';return;}
+  c.innerHTML=results.map(function(s){
     var already=queue.some(function(q){return q.v===s.v;});
+    var safeT=s.t.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
+    var safeA=s.a.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
     return '<div class="ri"><img class="rith" src="https://img.youtube.com/vi/'+s.v+'/mqdefault.jpg" alt="">'
-      +'<div class="riinfo"><div class="rittl">'+s.a+' - '+s.t+'</div></div>'
+      +'<div class="riinfo"><div class="rittl">'+safeA+' - '+safeT+'</div></div>'
       +(already?'<span style="font-size:10px;color:var(--ac3);flex-shrink:0;">추가됨 ✓</span>'
-      :'<button class="riadd" onclick="event.stopPropagation();pickResult(\''+s.v+'\',\''+esc(s.t)+'\',\''+esc(s.a)+'\')">+ 신청</button>')
+      :'<button class="riadd" onclick="event.stopPropagation();pickResult(\''+s.v+'\',\''+esc(safeT)+'\',\''+esc(safeA)+'\')">+ 신청</button>')
       +'</div>';
   }).join('');
 }
