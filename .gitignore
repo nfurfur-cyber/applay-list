@@ -1,0 +1,13 @@
+# 설치 파일
+*.exe
+*.msi
+
+# 작업 임시 파일
+index (1).html
+index (2).html
+index (3).html
+applay-list.html
+
+# OS
+.DS_Store
+Thumbs.db
