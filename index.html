@@ -404,19 +404,25 @@ var DEMO=[
   {v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},
   {v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'},
 ];
-var searchTimer=null;
+var searchTimer=null,apiDisabled=false;
 function doSearch(){
   var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');
   if(!q){c.innerHTML='';return;}
   if(searchTimer)clearTimeout(searchTimer);
-  searchTimer=setTimeout(function(){doSearchNow(q);},350);
+  searchTimer=setTimeout(function(){doSearchNow(q);},400);
 }
 function doSearchNow(q){
   var c=document.getElementById('rlist');
-  if(YT_API_KEY){
+  if(YT_API_KEY&&!apiDisabled){
     c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx2);font-size:11px;">🔍 검색 중...</div>';
-    fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=8&q='+encodeURIComponent(q)+'&key='+YT_API_KEY)
-      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+    fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q='+encodeURIComponent(q+' MV')+'&key='+YT_API_KEY)
+      .then(function(r){
+        if(!r.ok){
+          if(r.status===403||r.status===400||r.status===401){apiDisabled=true;console.warn('YouTube API 비활성화 → 데모 모드 전환 ('+r.status+')');}
+          throw new Error(r.status);
+        }
+        return r.json();
+      })
       .then(function(data){
         if(!data.items||!data.items.length){renderResults([],q);return;}
         var results=data.items.map(function(item){
