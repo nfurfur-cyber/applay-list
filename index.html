@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Applay list 🎵 - 무료 신청곡 플랫폼</title>
 <meta name="description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 무료 신청곡 플랫폼.">
@@ -279,23 +279,21 @@ footer a{color:var(--ac);text-decoration:none;}
     </div>
     <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="sbox"><div class="blbl">🔍 유튜브 검색으로 신청하기</div><div class="srow"><input class="sinput" id="sin" placeholder="노래 제목·아티스트 검색..." onkeydown="if(event.key==='Enter')doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
-    <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button>
-    <div class="ad-top" style="border:1px dashed rgba(245,158,11,.12);border-radius:9px;background:var(--sf);"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:100%;padding:10px 0;">Google AdSense 728×90 — 방 내 광고</div></div>
-  </div>
-  <div class="sidebar">
-    <div class="qrcard" id="qrcard">
-      <div class="qr-content"><div class="qrtit">📱 QR 스캔으로 바로 참여</div><div class="qrsub">스캔하면 이 방에 즉시 입장!</div><div class="qrwrap"><div id="qrcv"></div></div><div class="code-chip"><div class="code-val" id="codeBig">——</div><span class="code-copy-icon" onclick="copyCode()" title="코드 복사">📋</span></div><div class="code-hint">↑ 코드 6자리를 직접 입력해도 입장 가능</div><div class="qrlink" id="qrlinktxt">링크 로딩 중...</div><button class="qrcopy" onclick="copyLink()">🔗 링크 복사하기</button></div>
-      <div class="qr-off-msg">🔒 호스트가 QR/링크 공유를 비활성화했습니다</div>
-    </div>
-    <div class="pcard">
-      <div class="pcard-hdr"><div class="pcard-tit">참여자</div><div class="pcard-cnt" id="memCnt2">1명</div></div>
-      <div class="pcard-list" id="memList"></div>
-    </div>
     <div class="qcard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
       <div class="qhdr"><div class="qtit" style="color:var(--ac);">⏳ 승인 대기</div><div class="qcnt" id="pendCnt" style="background:rgba(239,68,68,.1);color:var(--ac2);">0곡</div></div>
       <div class="qlist" id="pendList"><div style="text-align:center;padding:12px 0;color:var(--tx3);font-size:12px;">대기 중인 곡 없음</div></div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="qrcard" id="qrcard">
+      <div class="qr-content"><div class="qrtit">📱 QR 스캔으로 바로 참여</div><div class="qrsub">스캔하면 이 방에 즉시 입장!</div><div class="qrwrap"><div id="qrcv"></div></div><div class="code-chip"><div class="code-val" id="codeBig">——</div><span class="code-copy-icon" onclick="copyCode()" title="코드 복사">📋</span></div><div class="code-hint">↑ 코드 6자리를 직접 입력해도 입장 가능</div><div class="qrlink" id="qrlinktxt">링크 로딩 중...</div><button class="qrcopy" onclick="shareLink()">📤 링크 공유하기</button></div>
+      <div class="qr-off-msg">🔒 호스트가 QR/링크 공유를 비활성화했습니다</div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-hdr"><div class="pcard-tit">참여자</div><div class="pcard-cnt" id="memCnt2">1명</div></div>
+      <div class="pcard-list" id="memList"></div>
     </div>
     <!-- 호스트 전용 -->
     <div class="hcard hidden" id="hcard">
@@ -308,13 +306,18 @@ footer a{color:var(--ac);text-decoration:none;}
       <div class="trow"><span>신청곡 승인 필요</span><button class="tog" id="togapproval" onclick="toggleApproval()"></button></div>
       <div class="trow"><span>QR/링크 공유</span><button class="tog on" id="togqr" onclick="toggleQR()"></button></div>
     </div>
-    <!-- 게스트용 읽기 전용 -->
-    <div class="gcard hidden" id="gcard">
-      <div class="gtit">방 설정 <span>INFO</span></div>
-      <div class="grow"><span>게스트 신청</span><span class="gval" id="gi1">허용</span></div>
-      <div class="grow"><span>자동 다음 곡</span><span class="gval" id="gi2">ON</span></div>
-      <div class="grow"><span>곡 제한</span><span class="gval" id="gi3">무제한</span></div>
+    <!-- 방 설정 정보 (접기/펼치기) -->
+    <div class="gcard" id="gcard">
+      <div class="gtit" style="cursor:pointer" onclick="toggleInfoCard()">방 설정 <span>INFO</span> <span id="infoArrow" style="font-size:10px;margin-left:auto;color:var(--tx3);">▶</span></div>
+      <div id="infoBody" style="display:none;">
+        <div class="grow"><span>게스트 신청</span><span class="gval" id="gi1">허용</span></div>
+        <div class="grow"><span>자동 다음 곡</span><span class="gval" id="gi2">ON</span></div>
+        <div class="grow"><span>곡 제한</span><span class="gval" id="gi3">무제한</span></div>
+        <div class="grow"><span>신청곡 최대</span><span class="gval" id="gi4">무제한</span></div>
+        <div class="grow"><span>승인 필요</span><span class="gval" id="gi5">OFF</span></div>
+      </div>
     </div>
+    <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기</button>
     <div class="adside"><span class="ad-lbl">AD</span><span>Google AdSense 300×250</span></div>
   </div>
 </div>
@@ -356,7 +359,7 @@ var allowGuests=true,autoNextOn=true,qrEnabled=true;
 var roomPw='',members={};
 var roomListener=null,liveListener=null;
 var apiDisabled=false,searchTimer=null,dragSrcIdx=null;
-var requireApproval=false,pending=[];
+var requireApproval=false,pending=[],_prevPending=[];
 var currentPlayingVid=null;
 
 /* ═══ ID 생성 ═══ */
@@ -401,10 +404,21 @@ function attachListener(){
     if(isHost){syncHostPanel();renderPending();}
     // 승인 대기 카드 표시
     document.getElementById('pendingCard').classList.toggle('hidden',!isHost||!requireApproval);
-    renderQ();renderMembers();updateGuestInfo();
-    // cur 변경 시 재생 — 같은 곡이면 재시작 안 함
+    // 게스트 승인 알림: 내 곡이 pending에서 사라지고 queue에 나타났으면 알림
+    if(!isHost&&myNickId){
+      var oldPendingMine=(_prevPending||[]).filter(function(s){return s.nickId===myNickId;});
+      var newPendingMine=pending.filter(function(s){return s.nickId===myNickId;});
+      if(oldPendingMine.length>newPendingMine.length){
+        var approvedCount=oldPendingMine.length-newPendingMine.length;
+        showToast('✅ 호스트가 신청곡 '+approvedCount+'곡을 승인했습니다!');
+      }
+    }
+    _prevPending=pending.slice();
+    // cur 먼저 설정 후 렌더링 (하이라이트 정확히 현재 재생 곡에만)
     var newVid=(newCur>=0&&newCur<queue.length)?queue[newCur].v:null;
     cur=newCur;
+    renderQ();renderMembers();updateGuestInfo();
+    // 재생 — 같은 곡이면 재시작 안 함
     if(newVid!==prevVid){
       currentPlayingVid=newVid;
       if(cur>=0&&cur<queue.length){
@@ -452,7 +466,7 @@ window.addEventListener('message',function(e){
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
 function applyMode(){document.getElementById('pvideo').classList.toggle('audio-mode',pmode==='audio');}
 function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
-function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;if(isHost&&rid)db.ref('rooms/'+rid+'/playStartedAt').set(Date.now());document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
+function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
 function stopPlayer(){document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}
 function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 
@@ -478,7 +492,9 @@ function fbAddQ(v,t,a,th,nick){
   }
   var newQueue=queue.concat([song]);
   var newCur=cur===-1?0:cur;
-  fbUpdateQueue(newQueue,newCur);
+  var upd={queue:newQueue,cur:newCur};
+  if(cur===-1)upd.playStartedAt=Date.now();
+  db.ref('rooms/'+rid).update(upd);
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
 }
 function fbRemoveQ(i){
@@ -490,14 +506,14 @@ function fbRemoveQ(i){
   if(newQueue.length===0)newCur=-1;
   fbUpdateQueue(newQueue,newCur);showToast('삭제했습니다');
 }
-function fbPlayAt(i){if(rid)db.ref('rooms/'+rid+'/cur').set(i);}
+function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:Date.now()});}
 function fbNextSong(){
   if(cur+1<queue.length){
     if(autoRemovePlayed){
       var newQueue=queue.slice();newQueue.splice(cur,1);
       var newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
       fbUpdateQueue(newQueue,newCur);
-    }else{db.ref('rooms/'+rid+'/cur').set(cur+1);}
+    }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:Date.now()});}
   }else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}
 }
 
@@ -551,10 +567,18 @@ function renderMembers(){
 
 /* ═══ 게스트 정보 ═══ */
 function updateGuestInfo(){
-  var e1=document.getElementById('gi1'),e2=document.getElementById('gi2'),e3=document.getElementById('gi3');
+  var e1=document.getElementById('gi1'),e2=document.getElementById('gi2'),e3=document.getElementById('gi3'),e4=document.getElementById('gi4'),e5=document.getElementById('gi5');
   if(e1)e1.textContent=allowGuests?'허용':'비허용';
   if(e2)e2.textContent=autoNextOn?'ON':'OFF';
   if(e3)e3.textContent=songLimit===0?'무제한':songLimit+'곡';
+  if(e4)e4.textContent=maxQueueSize===0?'무제한':maxQueueSize+'곡';
+  if(e5)e5.textContent=requireApproval?'ON':'OFF';
+}
+function toggleInfoCard(){
+  var body=document.getElementById('infoBody'),arrow=document.getElementById('infoArrow');
+  var hidden=body.style.display==='none';
+  body.style.display=hidden?'block':'none';
+  arrow.textContent=hidden?'▼':'▶';
 }
 
 /* ═══ 호스트 설정 ═══ */
@@ -775,7 +799,6 @@ function enterRoom(name){
   document.getElementById('room').classList.add('on');
   document.getElementById('rtitle').textContent=name;
   document.getElementById('hcard').classList.toggle('hidden',!isHost);
-  document.getElementById('gcard').classList.toggle('hidden',isHost);
   document.getElementById('edit-title-btn').classList.toggle('hidden',!isHost);
   document.getElementById('leave-btn').classList.toggle('hidden',isHost);
   document.getElementById('delete-btn').classList.toggle('hidden',!isHost);
@@ -819,7 +842,15 @@ function confirmDeleteRoom(){
 
 /* ═══ QR / 링크 ═══ */
 function getRoomUrl(){return location.href.split('?')[0]+'?r='+rid;}
-function copyLink(){var url=getRoomUrl();navigator.clipboard.writeText(url).then(function(){showToast('🔗 링크 복사 완료!');}).catch(function(){var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('🔗 링크 복사 완료!');});}
+function shareLink(){
+  var url=getRoomUrl();
+  var title=document.getElementById('rtitle').textContent||'Applay list';
+  if(navigator.share){
+    navigator.share({title:title+' - Applay list',text:'신청곡 방에 참여하세요!',url:url}).catch(function(){});
+  }else{
+    navigator.clipboard.writeText(url).then(function(){showToast('🔗 링크 복사 완료!');}).catch(function(){var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('🔗 링크 복사 완료!');});
+  }
+}
 function copyCode(){navigator.clipboard.writeText(rid).then(function(){showToast('📋 방 코드 '+rid+' 복사 완료!');}).catch(function(){showToast('방 코드: '+rid);});}
 function drawQR(url){var el=document.getElementById('qrcv');el.innerHTML='';try{new QRCode(el,{text:url,width:150,height:150,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){el.innerHTML='<div style="width:150px;height:150px;display:flex;align-items:center;justify-content:center;background:#fff;color:#999;font-size:11px;">QR 생성 실패</div>';}}
 
