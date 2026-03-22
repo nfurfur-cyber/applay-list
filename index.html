@@ -5,46 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Applay list 🎵 - 무료 신청곡 플랫폼</title>
-
-<!-- 기본 SEO -->
 <meta name="description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 무료 신청곡 플랫폼.">
 <meta name="keywords" content="신청곡, 플레이리스트, 유튜브, 파티, 가게음악, QR신청, applay list">
 <meta name="author" content="Applay list">
-
-<!-- Open Graph (SNS 공유) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://applaylist.com/">
 <meta property="og:title" content="Applay list 🎵 - 무료 신청곡 플랫폼">
-<meta property="og:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 무료 신청곡 플랫폼.">
+<meta property="og:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
 <meta property="og:image" content="https://applaylist.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Applay list">
 <meta property="og:locale" content="ko_KR">
-
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Applay list 🎵 - 무료 신청곡 플랫폼">
 <meta name="twitter:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
 <meta name="twitter:image" content="https://applaylist.com/og-image.png">
-
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
-
-<!-- Google Analytics GA4 -->
-<!-- TODO: G-MCTVK42K72 를 실제 측정 ID로 교체하세요 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCTVK42K72"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MCTVK42K72');
-</script>
-
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MCTVK42K72');</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<!-- ✅ 진짜 QR 코드 생성 라이브러리 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{--bg:#0B0F15;--sf:#151A24;--sf2:#1C2230;--bd:#283040;--ac:#F59E0B;--ac2:#EF4444;--ac3:#10B981;--tx:#F1F5F9;--tx2:#94A3B8;--tx3:#4B5C72;--glow:rgba(245,158,11,.18);}
@@ -81,6 +66,20 @@ h1 em{font-style:normal;color:var(--ac);}
 .jinput:focus{border-color:var(--ac);}.jinput::placeholder{color:var(--tx3);}
 .btn-j{padding:9px 15px;background:transparent;border:1px solid var(--ac);border-radius:8px;color:var(--ac);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
 .btn-j:hover{background:var(--ac);color:var(--bg);}
+/* 호스트 배너 */
+.host-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:13px 18px;margin:18px auto 0;max-width:660px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.host-banner-txt{font-size:13px;color:var(--tx2);}
+.host-banner-txt b{color:var(--ac);}
+/* 라이브 방 목록 */
+.live-section{max-width:900px;margin:36px auto 0;padding:0 20px;}
+.live-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tx2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.live-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.room-card{background:var(--sf);border:1px solid var(--bd);border-radius:11px;padding:14px;cursor:pointer;transition:all .2s;}
+.room-card:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3);}
+.room-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.room-card-meta{font-size:11px;color:var(--tx3);margin-bottom:6px;}
+.room-card-song{font-size:11px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.room-card-code{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);margin-top:6px;}
 .ftrs{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:44px;padding:0 20px;}
 .fi{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;max-width:110px;}
 .fiico{width:42px;height:42px;background:var(--sf);border:1px solid var(--bd);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s;}
@@ -94,10 +93,13 @@ h1 em{font-style:normal;color:var(--ac);}
 .rtw{display:flex;align-items:center;gap:8px;}
 .ldot{width:7px;height:7px;border-radius:50%;background:var(--ac3);animation:pulse 1.8s infinite;}
 .rtxt{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;}
+.edit-title-btn{background:none;border:none;color:var(--tx3);font-size:14px;cursor:pointer;padding:2px 5px;border-radius:4px;transition:color .15s;}
+.edit-title-btn:hover{color:var(--ac);}
 .rbtns{display:flex;gap:6px;align-items:center;}
 .rmembers{font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:4px;}
 .rmembers b{color:var(--ac);}
 .bsm{padding:5px 11px;border-radius:6px;background:var(--sf);border:1px solid var(--bd);color:var(--tx2);font-size:11px;cursor:pointer;transition:all .2s;}
+.bsm:hover{border-color:var(--tx2);}
 .bsm.d:hover{border-color:var(--ac2);color:var(--ac2);}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
@@ -138,13 +140,11 @@ h1 em{font-style:normal;color:var(--ac);}
 .ri{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:all .15s;}
 .ri:hover{border-color:var(--ac);background:rgba(245,158,11,.04);}
 .rith{width:56px;height:40px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--bd);}
-.riinfo{flex:1;overflow:hidden;}.rittl{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx);}.rich{font-size:11px;color:var(--tx3);margin-top:2px;}
+.riinfo{flex:1;overflow:hidden;}.rittl{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx);}
 .riadd{padding:5px 12px;border-radius:5px;background:transparent;border:1px solid var(--ac);color:var(--ac);font-size:11px;cursor:pointer;flex-shrink:0;transition:all .15s;font-weight:600;}
 .riadd:hover{background:var(--ac);color:var(--bg);}
 .supbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:8px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--ac);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;width:100%;}
 .supbtn:hover{background:rgba(245,158,11,.12);}
-
-/* QR 카드 */
 .qrcard{background:var(--sf);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:18px;text-align:center;}
 .qrcard.qr-hidden .qr-content{display:none;}.qrcard.qr-hidden .qr-off-msg{display:block;}
 .qr-off-msg{display:none;padding:20px 0;color:var(--tx3);font-size:12px;}
@@ -159,8 +159,6 @@ h1 em{font-style:normal;color:var(--ac);}
 .qrlink{background:var(--sf2);border:1px solid var(--bd);border-radius:7px;padding:7px 10px;font-size:10px;color:var(--tx3);word-break:break-all;text-align:left;margin-bottom:10px;font-family:monospace;}
 .qrcopy{width:100%;padding:10px;border-radius:8px;background:var(--ac);border:none;color:var(--bg);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;}
 .qrcopy:hover{opacity:.88;transform:translateY(-1px);}
-
-/* 참여자 카드 */
 .pcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .pcard-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .pcard-tit{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
@@ -168,29 +166,29 @@ h1 em{font-style:normal;color:var(--ac);}
 .pcard-list{display:flex;flex-wrap:wrap;gap:5px;}
 .pcard-nick{padding:4px 10px;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;font-size:11px;color:var(--tx2);}
 .pcard-nick.host{border-color:var(--ac);color:var(--ac);}
-
-/* 신청곡 목록 */
 .qcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
 .qtit{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
 .qcnt{background:rgba(245,158,11,.1);color:var(--ac);padding:2px 9px;border-radius:7px;font-size:11px;font-weight:600;}
-.qlist{display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;}
+.qlist{display:flex;flex-direction:column;gap:6px;max-height:380px;overflow-y:auto;}
 .qlist::-webkit-scrollbar{width:3px;}.qlist::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px;}
-.qi{display:flex;align-items:center;gap:10px;padding:10px 11px;background:var(--sf2);border:1px solid transparent;border-radius:9px;transition:all .15s;cursor:pointer;}
+.qi{display:flex;align-items:center;gap:8px;padding:10px 11px;background:var(--sf2);border:1px solid transparent;border-radius:9px;transition:all .15s;cursor:pointer;}
 .qi:hover{background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.15);}
 .qi.cur{border-color:var(--ac);background:rgba(245,158,11,.06);}
+.qi.dragging{opacity:.4;}
+.drag-handle{color:var(--tx3);font-size:14px;cursor:grab;flex-shrink:0;line-height:1;padding:0 2px;}
+.drag-handle:active{cursor:grabbing;}
 .qinum{font-size:11px;color:var(--tx3);width:18px;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;}
 .qi.cur .qinum{color:var(--ac);}
-.qith{width:56px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--bd);}
+.qith{width:52px;height:38px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--bd);}
 .qiinfo{flex:1;overflow:hidden;}
 .qisong{font-size:13px;font-weight:700;color:var(--tx);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .qiartist{font-size:11px;color:var(--tx2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.qi.cur .qisong{color:var(--ac);}
 .qireq{font-size:10px;color:var(--tx3);margin-top:2px;}
+.qi.cur .qisong{color:var(--ac);}
 .qidel{opacity:0;padding:3px 8px;border-radius:4px;background:transparent;border:1px solid rgba(239,68,68,.35);color:var(--ac2);font-size:10px;cursor:pointer;transition:all .15s;flex-shrink:0;}
 .qi:hover .qidel{opacity:1;}.qidel:hover{background:var(--ac2);color:#fff;}
-
-/* 방장 패널 */
+/* 호스트 패널 */
 .hcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .htit{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;align-items:center;gap:5px;}
 .htit span{font-size:9px;background:var(--ac);color:var(--bg);padding:1px 7px;border-radius:3px;font-weight:700;}
@@ -198,18 +196,15 @@ h1 em{font-style:normal;color:var(--ac);}
 .tog{width:33px;height:18px;background:var(--bd);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;border:none;}
 .tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;}
 .tog.on{background:var(--ac3);}.tog.on::after{transform:translateX(15px);}
-.limit-sel{display:flex;gap:4px;}
-.limit-btn{padding:3px 10px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;}
+.limit-sel{display:flex;gap:4px;flex-wrap:wrap;}
+.limit-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;}
 .limit-btn.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:700;}
-
-/* 게스트용 설정 보기 (읽기 전용) */
 .gcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .gtit{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;align-items:center;gap:5px;}
 .gtit span{font-size:9px;background:var(--tx3);color:var(--tx);padding:1px 7px;border-radius:3px;font-weight:700;}
 .grow{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx3);margin-bottom:6px;}
 .gval{color:var(--tx2);font-weight:500;}
-
-.adside{background:var(--sf);border:1px dashed rgba(245,158,11,.12);border-radius:9px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:200px;font-size:11px;color:var(--tx3);}
+.adside{background:var(--sf);border:1px dashed rgba(245,158,11,.12);border-radius:9px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:150px;font-size:11px;color:var(--tx3);}
 .mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;}
 .mbg.open{display:flex;}
 .modal{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:26px;max-width:320px;width:90%;text-align:center;}
@@ -240,59 +235,76 @@ footer a{color:var(--ac);text-decoration:none;}
     <div class="badge"><span></span> 무료 신청곡 플랫폼</div>
     <h1>모두의 플레이리스트<br><em>Applay list</em></h1>
     <p class="sub">링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.</p>
-    <div class="cards">
-      <div class="card pri"><div class="ci">🎉</div><div class="ct">새 방 만들기</div><div class="cd">방을 만들고 링크·QR로 초대하세요.</div><button class="btn-p" onclick="openModal('cr-modal')">새 신청곡 방 만들기</button></div>
+    <!-- 호스트 재입장 배너 -->
+    <div class="host-banner hidden" id="host-banner">
+      <div class="host-banner-txt">👑 <b id="host-banner-name"></b> 방이 열려 있습니다</div>
+      <button class="btn-j" onclick="rejoinExistingRoom()">다시 입장 →</button>
+    </div>
+    <div class="cards" style="margin-top:18px;">
+      <div class="card pri"><div class="ci">🎉</div><div class="ct">새 방 만들기</div><div class="cd">방을 만들고 링크·QR로 초대하세요.</div><button class="btn-p" onclick="openCreateRoom()">새 신청곡 방 만들기</button></div>
       <div class="card"><div class="ci">🔗</div><div class="ct">방 입장하기</div><div class="cd">방 코드 6자리를 입력하면 바로 참여!</div><div class="jr"><input class="jinput" id="jcode" placeholder="예: AB12CD" maxlength="6" onkeydown="if(event.key==='Enter')promptJoinNick()"><button class="btn-j" onclick="promptJoinNick()">입장</button></div></div>
     </div>
   </section>
+  <!-- 실시간 방 목록 -->
+  <div class="live-section" id="live-rooms-wrap">
+    <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 지금 열린 방</div>
+    <div class="live-grid" id="live-rooms-list"><div style="color:var(--tx3);font-size:12px;padding:12px 0;">로딩 중...</div></div>
+  </div>
   <div class="ftrs">
     <div class="fi"><div class="fiico">🎵</div><div class="finm">유튜브 연동</div><div class="fidsc">검색 또는 링크 추가</div></div>
+    <div class="fi"><div class="fiico">📡</div><div class="finm">실시간 동기화</div><div class="fidsc">모든 기기에서 동시 참여</div></div>
     <div class="fi"><div class="fiico">📺</div><div class="finm">영상/음악 선택</div><div class="fidsc">보기 모드 자유선택</div></div>
     <div class="fi"><div class="fiico">📱</div><div class="finm">QR 상시 노출</div><div class="fidsc">가게·파티에서 즉시</div></div>
-    <div class="fi"><div class="fiico">👑</div><div class="finm">방장 권한</div><div class="fidsc">곡 삭제·순서 변경</div></div>
+    <div class="fi"><div class="fiico">👑</div><div class="finm">호스트 권한</div><div class="fidsc">곡 삭제·순서 변경</div></div>
   </div>
 </div>
 <div id="room">
   <div class="pcol">
     <div class="rhdr">
-      <div class="rtw"><div class="ldot"></div><div class="rtxt" id="rtitle">신청곡 방</div></div>
+      <div class="rtw">
+        <div class="ldot"></div>
+        <div class="rtxt" id="rtitle">신청곡 방</div>
+        <button class="edit-title-btn hidden" id="edit-title-btn" onclick="editTitle()" title="방 제목 수정">✏️</button>
+      </div>
       <div class="rbtns">
         <div class="rmembers">👥 <b id="memCnt">1</b>명</div>
-        <button class="bsm d" onclick="goHome()">✕ 나가기</button>
+        <button class="bsm" id="leave-btn" onclick="goHome()">← 나가기</button>
+        <button class="bsm d hidden" id="delete-btn" onclick="deleteRoom()">🗑 방 삭제</button>
       </div>
     </div>
     <div class="pwrap">
       <div class="pvideo" id="pvideo"><div class="phold" id="phold"><div class="pi">🎵</div><div>신청곡을 추가하면 자동 재생됩니다</div><div style="font-size:11px;opacity:.5;">검색 또는 유튜브 링크 직접 입력</div></div><div id="yt-frame-slot"></div></div>
       <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('audio')">🎵 음악만</button></div></div>
-      <div class="ctrl-bar"><button class="ctrl-btn next" onclick="nextSong()">⏭ 다음 곡</button><button class="ctrl-btn" onclick="replayCur()">🔄 다시 재생</button></div>
+      <div class="ctrl-bar"><button class="ctrl-btn next" onclick="fbNextSong()">⏭ 다음 곡</button><button class="ctrl-btn" onclick="replayCur()">🔄 다시 재생</button></div>
       <div class="urlrow"><input class="urlinput" id="urlin" placeholder="유튜브 링크 붙여넣기  https://youtu.be/..." onkeydown="if(event.key==='Enter')addByUrl()"><button class="btn-url" onclick="addByUrl()">+ 추가</button></div>
     </div>
     <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="sbox"><div class="blbl">🔍 유튜브 검색으로 신청하기</div><div class="srow"><input class="sinput" id="sin" placeholder="노래 제목·아티스트 검색..." onkeydown="if(event.key==='Enter')doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
     <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button>
-    <div class="ad-top" style="border:1px dashed rgba(245,158,11,.12);border-radius:9px;background:var(--sf);"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:100%;padding:10px 0;">Google AdSense 728×90 — 최하단 광고</div></div>
+    <div class="ad-top" style="border:1px dashed rgba(245,158,11,.12);border-radius:9px;background:var(--sf);"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:100%;padding:10px 0;">Google AdSense 728×90 — 방 내 광고</div></div>
   </div>
   <div class="sidebar">
     <div class="qrcard" id="qrcard">
       <div class="qr-content"><div class="qrtit">📱 QR 스캔으로 바로 참여</div><div class="qrsub">스캔하면 이 방에 즉시 입장!</div><div class="qrwrap"><div id="qrcv"></div></div><div class="code-chip"><div class="code-val" id="codeBig">——</div><span class="code-copy-icon" onclick="copyCode()" title="코드 복사">📋</span></div><div class="code-hint">↑ 코드 6자리를 직접 입력해도 입장 가능</div><div class="qrlink" id="qrlinktxt">링크 로딩 중...</div><button class="qrcopy" onclick="copyLink()">🔗 링크 복사하기</button></div>
-      <div class="qr-off-msg">🔒 방장이 QR/링크 공유를 비활성화했습니다</div>
+      <div class="qr-off-msg">🔒 호스트가 QR/링크 공유를 비활성화했습니다</div>
     </div>
-    <!-- ✅ 참여자 목록 -->
     <div class="pcard">
       <div class="pcard-hdr"><div class="pcard-tit">참여자</div><div class="pcard-cnt" id="memCnt2">1명</div></div>
       <div class="pcard-list" id="memList"></div>
     </div>
     <div class="qcard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
-    <!-- 방장 전용 -->
-    <div class="hcard" id="hcard" style="display:none">
-      <div class="htit">방장 설정 <span>HOST</span></div>
-      <div class="trow"><span>게스트 신청 허용</span><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
-      <div class="trow"><span>자동 다음 곡 재생</span><button class="tog on" id="togauto" onclick="this.classList.toggle('on')"></button></div>
+    <!-- 호스트 전용 -->
+    <div class="hcard hidden" id="hcard">
+      <div class="htit">호스트 설정 <span>HOST</span></div>
+      <div class="trow"><span>게스트 신청 허용</span><button class="tog on" id="togguest" onclick="toggleGuests()"></button></div>
+      <div class="trow"><span>자동 다음 곡 재생</span><button class="tog on" id="togauto" onclick="toggleAutoNext()"></button></div>
+      <div class="trow"><span>재생 완료 곡 자동 삭제</span><button class="tog" id="togremove" onclick="toggleAutoRemove()"></button></div>
       <div class="trow"><span>인원당 곡 제한</span><div class="limit-sel" id="limitSel"><button class="limit-btn" onclick="setLimit(1)">1곡</button><button class="limit-btn" onclick="setLimit(2)">2곡</button><button class="limit-btn" onclick="setLimit(3)">3곡</button><button class="limit-btn on" onclick="setLimit(0)">무제한</button></div></div>
+      <div class="trow"><span>신청곡 최대 수</span><div class="limit-sel" id="maxQSel"><button class="limit-btn" onclick="setMaxQueue(10)">10곡</button><button class="limit-btn" onclick="setMaxQueue(20)">20곡</button><button class="limit-btn" onclick="setMaxQueue(50)">50곡</button><button class="limit-btn on" onclick="setMaxQueue(0)">무제한</button></div></div>
       <div class="trow"><span>QR/링크 공유</span><button class="tog on" id="togqr" onclick="toggleQR()"></button></div>
     </div>
-    <!-- ✅ 게스트용 설정 보기 (읽기 전용) -->
-    <div class="gcard" id="gcard" style="display:none">
+    <!-- 게스트용 읽기 전용 -->
+    <div class="gcard hidden" id="gcard">
       <div class="gtit">방 설정 <span>INFO</span></div>
       <div class="grow"><span>게스트 신청</span><span class="gval" id="gi1">허용</span></div>
       <div class="grow"><span>자동 다음 곡</span><span class="gval" id="gi2">ON</span></div>
@@ -302,28 +314,98 @@ footer a{color:var(--ac);text-decoration:none;}
   </div>
 </div>
 </main>
-<div class="bottom-zone" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
+<div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
 <footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p></footer>
 
-<!-- ✅ 방 만들기 모달 (비밀번호 추가) -->
+<!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 방 만들기</h3><p>방 이름을 입력해주세요</p><input id="rnin" placeholder="예: 🎶 우리 파티방" maxlength="30"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">방 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
+
+<!-- 기존 방 있음 모달 -->
+<div class="mbg" id="exist-modal"><div class="modal"><h3>👑 기존 방이 있습니다</h3><p><b id="exist-room-name"></b><br><span style="font-family:monospace;color:var(--ac)" id="exist-room-code"></span></p><button class="btn-p" style="margin-bottom:8px" onclick="rejoinExistingRoom()">기존 방으로 돌아가기</button><button class="btn-p" style="background:var(--sf2);color:var(--tx2);border:1px solid var(--bd);margin-bottom:8px" onclick="deleteExistingAndCreate()">삭제하고 새로 만들기</button><button class="mclose" onclick="closeModal('exist-modal')">취소</button></div></div>
 
 <!-- 닉네임 입력 -->
 <div class="mbg" id="nick-modal"><div class="modal"><h3>🎵 방에 입장하기</h3><p>다른 사람에게 보여질 닉네임을 입력해주세요</p><input id="nick-join" placeholder="닉네임 입력" maxlength="20" onkeydown="if(event.key==='Enter')confirmJoin()"><button class="btn-p" onclick="confirmJoin()">입장하기</button><br><button class="mclose" onclick="closeModal('nick-modal')">취소</button></div></div>
 
-<!-- ✅ 비밀번호 입력 모달 -->
-<div class="mbg" id="pw-modal"><div class="modal"><h3>🔒 비밀번호 입력</h3><p>이 방은 비밀번호가 설정되어 있습니다</p><input id="pwin" placeholder="4자리 비밀번호" maxlength="4" inputmode="numeric" pattern="[0-9]*" onkeydown="if(event.key==='Enter')checkPw()"><button class="btn-p" onclick="checkPw()">확인</button><br><button class="mclose" onclick="closeModal('pw-modal');goHome()">취소</button></div></div>
+<!-- 비밀번호 입력 -->
+<div class="mbg" id="pw-modal"><div class="modal"><h3>🔒 비밀번호 입력</h3><p>이 방은 비밀번호가 설정되어 있습니다</p><input id="pwin" placeholder="4자리 비밀번호" maxlength="4" inputmode="numeric" pattern="[0-9]*" onkeydown="if(event.key==='Enter')checkPw()"><button class="btn-p" onclick="checkPw()">확인</button><br><button class="mclose" onclick="closeModal('pw-modal')">취소</button></div></div>
 
 <!-- 후원 -->
-<div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>Applay list를 응원해주세요!</p><button class="btn-p" style="margin-bottom:10px">💛 카카오페이로 후원</button><button class="btn-p" style="background:var(--ac2);margin-bottom:10px">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
+<div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>Applay list를 응원해주세요!<br>소중한 후원이 서비스 운영에 큰 힘이 됩니다.</p><button class="btn-p" style="margin-bottom:10px" onclick="window.open('https://qr.kakaopay.com/FWMiGEELB','_blank')">💛 카카오페이로 후원</button><button class="btn-p" style="background:#0064FF;margin-bottom:10px" onclick="window.open('https://toss.me/applaylist','_blank')">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-var rid=null,isHost=false,queue=[],cur=-1,pmode='video',myNick='익명',songLimit=0;
-var roomPw=''; // 방 비밀번호 (빈 문자열=없음)
-var members=[]; // 참여자 목록
+/* ═══ Firebase 초기화 ═══ */
+const firebaseConfig={apiKey:'AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I',authDomain:'appplay-list.firebaseapp.com',databaseURL:'https://appplay-list-default-rtdb.firebaseio.com',projectId:'appplay-list',storageBucket:'appplay-list.firebasestorage.app',messagingSenderId:'7281735403',appId:'1:7281735403:web:fe34ff66786678d75930ae'};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
 
-/* ════ iframe ════ */
+/* ═══ 상태 변수 ═══ */
+var rid=null,isHost=false,queue=[],cur=-1,pmode='video';
+var myNick='익명',myNickId=null,myHostId=null;
+var songLimit=0,maxQueueSize=0,autoRemovePlayed=false;
+var allowGuests=true,autoNextOn=true,qrEnabled=true;
+var roomPw='',members={};
+var roomListener=null,liveListener=null;
+var apiDisabled=false,searchTimer=null,dragSrcIdx=null;
+
+/* ═══ ID 생성 ═══ */
+function initIds(){
+  myHostId=localStorage.getItem('apl_hostId');
+  if(!myHostId){myHostId='h'+Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem('apl_hostId',myHostId);}
+  myNickId='n'+Math.random().toString(36).slice(2)+Date.now().toString(36);
+}
+
+/* ═══ Firebase 헬퍼 ═══ */
+function fbSave(data){if(rid)db.ref('rooms/'+rid).update(data);}
+function fbUpdateQueue(q,c){if(rid)db.ref('rooms/'+rid).update({queue:q||[],cur:c!=null?c:cur});}
+
+/* ═══ 실시간 리스너 ═══ */
+function attachListener(){
+  if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
+  roomListener=db.ref('rooms/'+rid).on('value',function(snap){
+    if(!snap.exists()){
+      if(!isHost){showToast('🚫 방이 삭제되었습니다');goHome();}
+      return;
+    }
+    var d=snap.val();
+    var prevCur=cur;
+    queue=d.queue||[];
+    var newCur=d.cur!=null?d.cur:-1;
+    songLimit=d.limit||0;
+    maxQueueSize=d.maxQueue||0;
+    autoRemovePlayed=!!d.autoRemovePlayed;
+    allowGuests=d.allowGuests!==false;
+    autoNextOn=d.autoNext!==false;
+    qrEnabled=d.qrEnabled!==false;
+    members=d.members||{};
+    // 방 제목
+    var titleEl=document.getElementById('rtitle');
+    if(titleEl&&titleEl.tagName==='DIV')titleEl.textContent=d.name||'신청곡 방';
+    // QR 표시
+    document.getElementById('qrcard').classList.toggle('qr-hidden',!qrEnabled);
+    // 호스트 패널 동기화
+    if(isHost)syncHostPanel();
+    renderQ();renderMembers();updateGuestInfo();
+    // cur 변경 시 재생
+    if(newCur!==prevCur){
+      cur=newCur;
+      if(cur>=0&&cur<queue.length)playCur();
+      else if(cur===-1)stopPlayer();
+    }else{cur=newCur;}
+  });
+}
+
+function syncHostPanel(){
+  var tog=function(id,on){var el=document.getElementById(id);if(el)el.classList.toggle('on',on);};
+  tog('togguest',allowGuests);tog('togauto',autoNextOn);tog('togremove',autoRemovePlayed);tog('togqr',qrEnabled);
+  var vals=[1,2,3,0];
+  document.querySelectorAll('#limitSel .limit-btn').forEach(function(b,i){b.classList.toggle('on',vals[i]===songLimit);});
+  var mqVals=[10,20,50,0];
+  document.querySelectorAll('#maxQSel .limit-btn').forEach(function(b,i){b.classList.toggle('on',mqVals[i]===maxQueueSize);});
+}
+
+/* ═══ YouTube 플레이어 ═══ */
 function buildIframe(vid){
   var slot=document.getElementById('yt-frame-slot');slot.innerHTML='';
   var params=new URLSearchParams({autoplay:'1',rel:'0',modestbranding:'1',playsinline:'1',enablejsapi:'1',origin:location.origin||'https://applaylist.com',widget_referrer:location.href});
@@ -334,112 +416,152 @@ function buildIframe(vid){
   iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
   iframe.setAttribute('allowfullscreen','');iframe.id='yt-iframe';
   slot.appendChild(iframe);applyMode();
-  iframe.addEventListener('load',function(){try{iframe.contentWindow.postMessage(JSON.stringify({event:'listening',id:1}),'*');}catch(e){}});
 }
 window.addEventListener('message',function(e){
   if(!e.origin||!e.origin.includes('youtube'))return;
   var data;try{data=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(err){return;}
   if(!data)return;
-  if(data.event==='onStateChange'){
-    if(data.info===0&&document.getElementById('togauto')&&document.getElementById('togauto').classList.contains('on'))setTimeout(nextSong,800);
-    if(data.info===1)document.getElementById('eq').classList.remove('p');
-    if(data.info===2)document.getElementById('eq').classList.add('p');
-  }
-  if(data.event==='infoDelivery'&&data.info){
-    if(data.info.playerState===0&&document.getElementById('togauto')&&document.getElementById('togauto').classList.contains('on'))setTimeout(nextSong,800);
-    if(data.info.playerState===1)document.getElementById('eq').classList.remove('p');
-    if(data.info.playerState===2)document.getElementById('eq').classList.add('p');
-  }
+  var state=null;
+  if(data.event==='onStateChange')state=data.info;
+  else if(data.event==='infoDelivery'&&data.info)state=data.info.playerState;
+  if(state===null)return;
+  if(state===0&&autoNextOn&&isHost)setTimeout(fbNextSong,800);
+  if(state===1)document.getElementById('eq').classList.remove('p');
+  if(state===2)document.getElementById('eq').classList.add('p');
 });
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
-function applyMode(){var pv=document.getElementById('pvideo');if(pmode==='audio')pv.classList.add('audio-mode');else pv.classList.remove('audio-mode');}
-function extractVid(url){url=url.trim();var m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
+function applyMode(){document.getElementById('pvideo').classList.toggle('audio-mode',pmode==='audio');}
+function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
+function playCur(){if(cur<0||cur>=queue.length)return;var s=queue[cur];document.getElementById('phold').classList.add('gone');buildIframe(s.v);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
+function stopPlayer(){document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}
+function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 
-/* ✅ URL로 추가 시 YouTube에서 제목 자동 가져오기 */
-function addByUrl(){
-  var raw=document.getElementById('urlin').value.trim();
-  if(!raw){showToast('유튜브 링크를 입력해주세요');return;}
-  var vid=extractVid(raw);
-  if(!vid){showToast('❌ 유효한 유튜브 링크가 아닙니다');return;}
+/* ═══ 신청곡 큐 ═══ */
+function checkLimit(){
+  if(maxQueueSize>0&&queue.length>=maxQueueSize){showToast('⚠️ 신청곡 목록이 가득 찼습니다 (최대 '+maxQueueSize+'곡)');return false;}
+  if(songLimit===0)return true;
+  var cnt=queue.filter(function(s){return s.nick===myNick;}).length;
+  if(cnt>=songLimit){showToast('⚠️ 1인당 최대 '+songLimit+'곡까지 신청 가능');return false;}
+  return true;
+}
+function fbAddQ(v,t,a,th,nick){
+  if(!allowGuests&&!isHost){showToast('⚠️ 게스트 신청이 비활성화되어 있습니다');return;}
   if(!checkLimit())return;
-  // 중복 체크
-  if(queue.some(function(s){return s.v===vid;})){showToast('⚠️ 이미 추가된 곡입니다');return;}
-  document.getElementById('urlin').value='';
-  showToast('🔍 영상 정보 가져오는 중...');
-  // oEmbed로 제목 가져오기
-  fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+vid)
-    .then(function(r){return r.json();})
-    .then(function(d){
-      var title=d.title||vid;
-      var author=d.author_name||'YouTube';
-      addQ(vid,title,author,'https://img.youtube.com/vi/'+vid+'/mqdefault.jpg',myNick);
-    })
-    .catch(function(){
-      addQ(vid,vid,'YouTube','https://img.youtube.com/vi/'+vid+'/mqdefault.jpg',myNick);
-    });
+  if(queue.some(function(s){return s.v===v;})){showToast('⚠️ 이미 추가된 곡입니다');return;}
+  var newQueue=queue.concat([{v:v,t:t,a:a,th:th,nick:nick,nickId:myNickId}]);
+  var newCur=cur===-1?0:cur;
+  fbUpdateQueue(newQueue,newCur);
+  showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
+}
+function fbRemoveQ(i){
+  if(!isHost&&queue[i]&&queue[i].nickId!==myNickId){showToast('⚠️ 본인이 신청한 곡만 삭제할 수 있습니다');return;}
+  var newQueue=queue.slice();newQueue.splice(i,1);
+  var newCur=cur;
+  if(i<cur)newCur--;
+  else if(i===cur)newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
+  if(newQueue.length===0)newCur=-1;
+  fbUpdateQueue(newQueue,newCur);showToast('삭제했습니다');
+}
+function fbPlayAt(i){if(rid)db.ref('rooms/'+rid+'/cur').set(i);}
+function fbNextSong(){
+  if(cur+1<queue.length){
+    if(autoRemovePlayed){
+      var newQueue=queue.slice();newQueue.splice(cur,1);
+      var newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
+      fbUpdateQueue(newQueue,newCur);
+    }else{db.ref('rooms/'+rid+'/cur').set(cur+1);}
+  }else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}
 }
 
-function checkLimit(){if(songLimit===0)return true;var cnt=0;for(var i=0;i<queue.length;i++){if(queue[i].nick===myNick)cnt++;}if(cnt>=songLimit){showToast('⚠️ 1인당 최대 '+songLimit+'곡까지 신청 가능');return false;}return true;}
-function setLimit(n){songLimit=n;var btns=document.querySelectorAll('#limitSel .limit-btn');var vals=[1,2,3,0];btns.forEach(function(b,i){b.classList.toggle('on',vals[i]===n);});showToast(n===0?'곡 제한 해제':'1인당 '+n+'곡 제한');updateGuestInfo();}
+/* ═══ 큐 렌더링 (드래그 정렬 포함) ═══ */
+function renderQ(){
+  var l=document.getElementById('qlist');
+  document.getElementById('qcnt').textContent=queue.length+'곡';
+  if(!queue.length){l.innerHTML='<div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div>';return;}
+  l.innerHTML=queue.map(function(s,i){
+    var isPlaying=i===cur;
+    var canDel=isHost||(s.nickId&&s.nickId===myNickId);
+    var drag=isHost?'draggable="true" ondragstart="onDragStart(event,'+i+')" ondragover="onDragOver(event,'+i+')" ondrop="onDrop(event,'+i+')" ondragleave="this.style.background=\'\'"':'';
+    return '<div class="qi'+(isPlaying?' cur':'')+'" onclick="fbPlayAt('+i+')" '+drag+'>'
+      +(isHost?'<div class="drag-handle" onclick="event.stopPropagation()">⠿</div>':'')
+      +'<div class="qinum">'+(isPlaying?'▶':i+1)+'</div>'
+      +'<img class="qith" src="'+s.th+'" alt="" onerror="this.style.opacity=\'.3\'">'
+      +'<div class="qiinfo"><div class="qisong">'+s.t+'</div><div class="qiartist">'+s.a+'</div><div class="qireq">@'+s.nick+'</div></div>'
+      +(canDel?'<button class="qidel" onclick="event.stopPropagation();fbRemoveQ('+i+')">✕</button>':'')
+      +'</div>';
+  }).join('');
+}
 
-/* ✅ YouTube Data API v3 검색 + 데모 fallback */
+/* ═══ 드래그 앤 드롭 (호스트 전용) ═══ */
+function onDragStart(e,idx){dragSrcIdx=idx;e.dataTransfer.effectAllowed='move';}
+function onDragOver(e,idx){e.preventDefault();e.dataTransfer.dropEffect='move';e.currentTarget.style.background='rgba(245,158,11,.1)';}
+function onDrop(e,idx){
+  e.preventDefault();e.currentTarget.style.background='';
+  if(dragSrcIdx===null||dragSrcIdx===idx){dragSrcIdx=null;return;}
+  var newQueue=queue.slice();
+  var moved=newQueue.splice(dragSrcIdx,1)[0];
+  newQueue.splice(idx,0,moved);
+  var newCur=cur;
+  if(cur===dragSrcIdx)newCur=idx;
+  else if(cur>dragSrcIdx&&cur<=idx)newCur--;
+  else if(cur<dragSrcIdx&&cur>=idx)newCur++;
+  dragSrcIdx=null;
+  fbUpdateQueue(newQueue,newCur);
+}
+
+/* ═══ 참여자 ═══ */
+function renderMembers(){
+  var list=Object.values(members);
+  document.getElementById('memCnt').textContent=list.length;
+  document.getElementById('memCnt2').textContent=list.length+'명';
+  document.getElementById('memList').innerHTML=list.map(function(m){
+    return '<div class="pcard-nick'+(m.host?' host':'')+'">'+m.nick+(m.host?' 👑':'')+'</div>';
+  }).join('');
+}
+
+/* ═══ 게스트 정보 ═══ */
+function updateGuestInfo(){
+  var e1=document.getElementById('gi1'),e2=document.getElementById('gi2'),e3=document.getElementById('gi3');
+  if(e1)e1.textContent=allowGuests?'허용':'비허용';
+  if(e2)e2.textContent=autoNextOn?'ON':'OFF';
+  if(e3)e3.textContent=songLimit===0?'무제한':songLimit+'곡';
+}
+
+/* ═══ 호스트 설정 ═══ */
+function setLimit(n){songLimit=n;fbSave({limit:n});showToast(n===0?'곡 제한 해제':'1인당 '+n+'곡 제한');}
+function setMaxQueue(n){maxQueueSize=n;fbSave({maxQueue:n});showToast(n===0?'신청곡 수 제한 없음':'신청곡 최대 '+n+'곡');}
+function toggleGuests(){allowGuests=!allowGuests;fbSave({allowGuests:allowGuests});showToast(allowGuests?'게스트 신청 허용':'게스트 신청 차단');}
+function toggleAutoNext(){autoNextOn=!autoNextOn;fbSave({autoNext:autoNextOn});}
+function toggleAutoRemove(){autoRemovePlayed=!autoRemovePlayed;fbSave({autoRemovePlayed:autoRemovePlayed});showToast(autoRemovePlayed?'재생 완료 곡 자동 삭제 ON':'자동 삭제 OFF');}
+function toggleQR(){qrEnabled=!qrEnabled;fbSave({qrEnabled:qrEnabled});}
+
+/* ═══ 방 제목 수정 ═══ */
+function editTitle(){
+  var titleEl=document.getElementById('rtitle');
+  var old=titleEl.textContent;
+  var inp=document.createElement('input');
+  inp.value=old;inp.style.cssText='background:var(--sf2);border:1px solid var(--ac);border-radius:5px;color:var(--tx);padding:3px 8px;font-size:15px;font-family:inherit;font-weight:700;width:180px;outline:none;';
+  titleEl.replaceWith(inp);inp.focus();inp.select();
+  function save(){var v=inp.value.trim()||old;var n=document.createElement('div');n.className='rtxt';n.id='rtitle';n.textContent=v;inp.replaceWith(n);fbSave({name:v});}
+  inp.onblur=save;
+  inp.onkeydown=function(e){if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=old;inp.blur();}};
+}
+
+/* ═══ 검색 ═══ */
 var YT_API_KEY='AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I';
-var DEMO=[
-  {v:'4fndeDfaWCg',t:'좋은 날',a:'아이유 (IU)'},
-  {v:'AJTsXYREMgw',t:'ETA',a:'NewJeans'},
-  {v:'Km71Rr9K-Bw',t:'Fantastic Baby',a:'BIGBANG'},
-  {v:'nZqzELysFaU',t:'Dynamite',a:'BTS'},
-  {v:'gdZLi9oWNZg',t:'Next Level',a:'aespa'},
-  {v:'CK026xBpTuU',t:'RINGA LINGA',a:'태양'},
-  {v:'GkZJ7oi_B5E',t:'ELEVEN',a:'IVE'},
-  {v:'uCOIGDtBgCM',t:'DDU-DU DDU-DU',a:'BLACKPINK'},
-  {v:'9bZkp7q19f0',t:'강남스타일',a:'PSY'},
-  {v:'2ips2mM7Zqw',t:'ANTIFRAGILE',a:'LE SSERAFIM'},
-  {v:'R3PqVMFEMpE',t:'박수 (CLAP)',a:'SEVENTEEN'},
-  {v:'pSudEWBAYRE',t:'Cherry Bomb',a:'NCT 127'},
-  {v:'7C2z4GqqS5E',t:'Supernova',a:'aespa'},
-  {v:'ArmDp-zijuc',t:'APT.',a:'ROSÉ, Bruno Mars'},
-  {v:'pBuZEGYXA6E',t:'Love Lee',a:'AKMU'},
-  {v:'iFUwwIgblqk',t:'SPOT!',a:'ZICO, JENNIE'},
-  {v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},
-  {v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'},
-];
-var searchTimer=null,apiDisabled=false;
-function doSearch(){
-  var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');
-  if(!q){c.innerHTML='';return;}
-  if(searchTimer)clearTimeout(searchTimer);
-  searchTimer=setTimeout(function(){doSearchNow(q);},400);
-}
+var DEMO=[{v:'4fndeDfaWCg',t:'좋은 날',a:'아이유 (IU)'},{v:'AJTsXYREMgw',t:'ETA',a:'NewJeans'},{v:'Km71Rr9K-Bw',t:'Fantastic Baby',a:'BIGBANG'},{v:'nZqzELysFaU',t:'Dynamite',a:'BTS'},{v:'gdZLi9oWNZg',t:'Next Level',a:'aespa'},{v:'CK026xBpTuU',t:'RINGA LINGA',a:'태양'},{v:'GkZJ7oi_B5E',t:'ELEVEN',a:'IVE'},{v:'uCOIGDtBgCM',t:'DDU-DU DDU-DU',a:'BLACKPINK'},{v:'9bZkp7q19f0',t:'강남스타일',a:'PSY'},{v:'2ips2mM7Zqw',t:'ANTIFRAGILE',a:'LE SSERAFIM'},{v:'R3PqVMFEMpE',t:'박수 (CLAP)',a:'SEVENTEEN'},{v:'pSudEWBAYRE',t:'Cherry Bomb',a:'NCT 127'},{v:'7C2z4GqqS5E',t:'Supernova',a:'aespa'},{v:'ArmDp-zijuc',t:'APT.',a:'ROSÉ, Bruno Mars'},{v:'pBuZEGYXA6E',t:'Love Lee',a:'AKMU'},{v:'iFUwwIgblqk',t:'SPOT!',a:'ZICO, JENNIE'},{v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},{v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'}];
+function doSearch(){var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');if(!q){c.innerHTML='';return;}if(searchTimer)clearTimeout(searchTimer);searchTimer=setTimeout(function(){doSearchNow(q);},400);}
 function doSearchNow(q){
   var c=document.getElementById('rlist');
   if(YT_API_KEY&&!apiDisabled){
     c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx2);font-size:11px;">🔍 검색 중...</div>';
     fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q='+encodeURIComponent(q+' MV')+'&key='+YT_API_KEY)
-      .then(function(r){
-        if(!r.ok){
-          if(r.status===403||r.status===400||r.status===401){apiDisabled=true;console.warn('YouTube API 비활성화 → 데모 모드 전환 ('+r.status+')');}
-          throw new Error(r.status);
-        }
-        return r.json();
-      })
-      .then(function(data){
-        if(!data.items||!data.items.length){renderResults([],q);return;}
-        var results=data.items.map(function(item){
-          return {v:item.id.videoId,t:item.snippet.title,a:item.snippet.channelTitle};
-        });
-        renderResults(results,q);
-      })
+      .then(function(r){if(!r.ok){if(r.status===403||r.status===400||r.status===401)apiDisabled=true;throw new Error(r.status);}return r.json();})
+      .then(function(data){if(!data.items||!data.items.length){renderResults([],q);return;}renderResults(data.items.map(function(item){return{v:item.id.videoId,t:item.snippet.title,a:item.snippet.channelTitle};}),q);})
       .catch(function(){demoFallback(q);});
-  }else{
-    demoFallback(q);
-  }
+  }else{demoFallback(q);}
 }
-function demoFallback(q){
-  var ql=q.toLowerCase();
-  var f=DEMO.filter(function(s){return s.t.toLowerCase().includes(ql)||s.a.toLowerCase().includes(ql);}).slice(0,6);
-  renderResults(f,q);
-}
+function demoFallback(q){var ql=q.toLowerCase();renderResults(DEMO.filter(function(s){return s.t.toLowerCase().includes(ql)||s.a.toLowerCase().includes(ql);}).slice(0,6),q);}
 function renderResults(results,q){
   var c=document.getElementById('rlist');
   if(!results.length){c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx3);font-size:11px;">검색 결과 없음 — 유튜브 링크를 직접 붙여넣으세요 ⬆️</div>';return;}
@@ -447,197 +569,216 @@ function renderResults(results,q){
     var already=queue.some(function(q){return q.v===s.v;});
     var safeT=s.t.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
     var safeA=s.a.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
-    return '<div class="ri"><img class="rith" src="https://img.youtube.com/vi/'+s.v+'/mqdefault.jpg" alt="">'
-      +'<div class="riinfo"><div class="rittl">'+safeA+' - '+safeT+'</div></div>'
-      +(already?'<span style="font-size:10px;color:var(--ac3);flex-shrink:0;">추가됨 ✓</span>'
-      :'<button class="riadd" onclick="event.stopPropagation();pickResult(\''+s.v+'\',\''+esc(safeT)+'\',\''+esc(safeA)+'\')">+ 신청</button>')
-      +'</div>';
+    return '<div class="ri"><img class="rith" src="https://img.youtube.com/vi/'+s.v+'/mqdefault.jpg" alt=""><div class="riinfo"><div class="rittl">'+safeA+' - '+safeT+'</div></div>'+(already?'<span style="font-size:10px;color:var(--ac3);flex-shrink:0;">추가됨 ✓</span>':'<button class="riadd" onclick="event.stopPropagation();pickResult(\''+s.v+'\',\''+esc(safeT)+'\',\''+esc(safeA)+'\')">+ 신청</button>')+'</div>';
   }).join('');
 }
 function esc(s){return s.replace(/'/g,"\\'");}
-function pickResult(v,t,a){
-  if(queue.some(function(q){return q.v===v;})){showToast('⚠️ 이미 추가된 곡입니다');return;}
-  if(!checkLimit())return;
-  addQ(v,t,a,'https://img.youtube.com/vi/'+v+'/mqdefault.jpg',myNick);
-  document.getElementById('sin').value='';
-  document.getElementById('rlist').innerHTML='';
+function pickResult(v,t,a){fbAddQ(v,t,a,'https://img.youtube.com/vi/'+v+'/mqdefault.jpg',myNick);document.getElementById('sin').value='';document.getElementById('rlist').innerHTML='';}
+function addByUrl(){
+  var raw=document.getElementById('urlin').value.trim();
+  if(!raw){showToast('유튜브 링크를 입력해주세요');return;}
+  var vid=extractVid(raw);if(!vid){showToast('❌ 유효한 유튜브 링크가 아닙니다');return;}
+  document.getElementById('urlin').value='';showToast('🔍 영상 정보 가져오는 중...');
+  fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+vid)
+    .then(function(r){return r.json();})
+    .then(function(d){fbAddQ(vid,d.title||vid,d.author_name||'YouTube','https://img.youtube.com/vi/'+vid+'/mqdefault.jpg',myNick);})
+    .catch(function(){fbAddQ(vid,vid,'YouTube','https://img.youtube.com/vi/'+vid+'/mqdefault.jpg',myNick);});
 }
 
-/* ════ 큐 ════ */
-function addQ(v,t,a,th,nick){queue.push({v:v,t:t,a:a,th:th,nick:nick});showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');if(cur===-1){cur=0;playCur();}renderQ();}
-function removeQ(i){queue.splice(i,1);if(cur>=queue.length)cur=queue.length-1;if(!queue.length){cur=-1;document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}renderQ();showToast('삭제했습니다');}
-function playAt(i){cur=i;playCur();}
-function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
-function playCur(){if(cur<0||cur>=queue.length)return;var s=queue[cur];document.getElementById('phold').classList.add('gone');buildIframe(s.v);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');renderQ();}
-function nextSong(){if(cur+1<queue.length){cur++;playCur();}else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}}
-function renderQ(){
-  var l=document.getElementById('qlist');document.getElementById('qcnt').textContent=queue.length+'곡';
-  if(!queue.length){l.innerHTML='<div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div>';return;}
-  l.innerHTML=queue.map(function(s,i){return '<div class="qi'+(i===cur?' cur':'')+'" onclick="playAt('+i+')"><div class="qinum">'+(i===cur?'▶':i+1)+'</div><img class="qith" src="'+s.th+'" alt="" onerror="this.style.opacity=\'.3\'"><div class="qiinfo"><div class="qisong">'+s.t+'</div><div class="qiartist">'+s.a+'</div><div class="qireq">@'+s.nick+'</div></div><button class="qidel" onclick="event.stopPropagation();removeQ('+i+')">✕</button></div>';}).join('');
+/* ═══ 방 생성 (호스트 1방 제한) ═══ */
+function checkExistingRoom(cb){
+  db.ref('hosts/'+myHostId).once('value').then(function(snap){
+    var code=snap.val();
+    if(code){
+      db.ref('rooms/'+code).once('value').then(function(rsnap){
+        if(rsnap.exists())cb(code,rsnap.val().name);
+        else{db.ref('hosts/'+myHostId).remove();cb(null,null);}
+      });
+    }else cb(null,null);
+  });
 }
-
-/* ════ QR on/off ════ */
-function toggleQR(){var tog=document.getElementById('togqr');tog.classList.toggle('on');document.getElementById('qrcard').classList.toggle('qr-hidden',!tog.classList.contains('on'));}
-
-/* ════ 참여자 관리 ════ */
-function addMember(nick,host){
-  if(!members.some(function(m){return m.nick===nick;})){
-    members.push({nick:nick,host:!!host});
-  }
-  renderMembers();
+function openCreateRoom(){
+  checkExistingRoom(function(code,name){
+    if(code){
+      document.getElementById('exist-room-name').textContent=name||code;
+      document.getElementById('exist-room-code').textContent=code;
+      openModal('exist-modal');
+    }else{
+      document.getElementById('rnin').value='';
+      document.getElementById('rpwin').value='';
+      openModal('cr-modal');
+    }
+  });
 }
-function renderMembers(){
-  document.getElementById('memCnt').textContent=members.length;
-  document.getElementById('memCnt2').textContent=members.length+'명';
-  var list=document.getElementById('memList');
-  list.innerHTML=members.map(function(m){
-    return '<div class="pcard-nick'+(m.host?' host':'')+'">'+m.nick+(m.host?' 👑':'')+'</div>';
-  }).join('');
+var existingRoomCode='';
+function rejoinExistingRoom(){
+  closeModal('exist-modal');closeModal('cr-modal');
+  var code=document.getElementById('exist-room-code').textContent||existingRoomCode;
+  if(!code)return;
+  db.ref('rooms/'+code).once('value').then(function(snap){
+    if(!snap.exists()){showToast('방을 찾을 수 없습니다');db.ref('hosts/'+myHostId).remove();return;}
+    rid=code;isHost=true;myNick='호스트';myNickId=myHostId;
+    db.ref('rooms/'+rid+'/members/'+myHostId).set({nick:'호스트',host:true,joinedAt:Date.now()});
+    enterRoom(snap.val().name||'🎉 신청곡 방');
+    attachListener();
+  });
 }
-
-/* ✅ 게스트용 설정 정보 업데이트 */
-function updateGuestInfo(){
-  var e1=document.getElementById('gi1');
-  var e2=document.getElementById('gi2');
-  var e3=document.getElementById('gi3');
-  if(e1) e1.textContent='허용';
-  if(e2) e2.textContent='ON';
-  if(e3) e3.textContent=songLimit===0?'무제한':songLimit+'곡';
+function deleteExistingAndCreate(){
+  closeModal('exist-modal');
+  var code=document.getElementById('exist-room-code').textContent;
+  db.ref('rooms/'+code).remove();
+  db.ref('hosts/'+myHostId).remove();
+  setTimeout(function(){openModal('cr-modal');},150);
 }
-
-/* ════ 닉네임 + 비밀번호 입장 ════ */
-var pendingCode='';
-function promptJoinNick(){
-  var c=document.getElementById('jcode').value.trim().toUpperCase();
-  if(!c){showToast('방 코드를 입력해주세요!');return;}
-  pendingCode=c;
-  document.getElementById('nick-join').value='';
-  openModal('nick-modal');
-}
-function confirmJoin(){
-  var nv=document.getElementById('nick-join').value.trim();
-  if(!nv){showToast('닉네임을 입력해주세요!');return;}
-  myNick=nv;
-  closeModal('nick-modal');
-  // 비밀번호 체크 (같은 브라우저 내에서만 작동)
-  var stored=getRoomData(pendingCode);
-  if(stored&&stored.pw){
-    openModal('pw-modal');
-    document.getElementById('pwin').value='';
-    return;
-  }
-  doJoin();
-}
-function checkPw(){
-  var pw=document.getElementById('pwin').value.trim();
-  var stored=getRoomData(pendingCode);
-  if(stored&&stored.pw&&stored.pw!==pw){
-    showToast('❌ 비밀번호가 틀렸습니다');
-    return;
-  }
-  closeModal('pw-modal');
-  doJoin();
-}
-function doJoin(){
-  rid=pendingCode;isHost=false;queue=[];cur=-1;
-  // 저장된 방 데이터 로드
-  var stored=getRoomData(rid);
-  if(stored){
-    queue=stored.queue||[];
-    cur=stored.cur||-1;
-    songLimit=stored.limit||0;
-    members=stored.members||[];
-  }
-  addMember(myNick,false);
-  enterRoom(stored?stored.name:'🔗 '+rid+' 방');
-  if(cur>=0)playCur();
-}
-
-/* ════ localStorage 방 데이터 (같은 브라우저 탭간 동기화) ════ */
-function saveRoomData(){
-  if(!rid)return;
-  var data={name:document.getElementById('rtitle').textContent,queue:queue,cur:cur,pw:roomPw,limit:songLimit,members:members};
-  try{localStorage.setItem('apl_'+rid,JSON.stringify(data));}catch(e){}
-}
-function getRoomData(code){
-  try{var d=localStorage.getItem('apl_'+code);return d?JSON.parse(d):null;}catch(e){return null;}
-}
-// 큐 변경시 자동 저장
-var origAddQ=addQ;
-addQ=function(v,t,a,th,nick){origAddQ(v,t,a,th,nick);saveRoomData();};
-var origRemoveQ=removeQ;
-removeQ=function(i){origRemoveQ(i);saveRoomData();};
-var origPlayAt=playAt;
-playAt=function(i){origPlayAt(i);saveRoomData();};
-var origNextSong=nextSong;
-nextSong=function(){origNextSong();saveRoomData();};
-
-/* ════ 방 관리 ════ */
 function confirmCreate(){
   var n=document.getElementById('rnin').value.trim()||'🎉 신청곡 방';
   var pw=document.getElementById('rpwin').value.trim();
   if(pw&&(pw.length!==4||!/^\d+$/.test(pw))){showToast('비밀번호는 숫자 4자리여야 합니다');return;}
   closeModal('cr-modal');
   rid=Math.random().toString(36).slice(2,8).toUpperCase();
-  isHost=true;myNick='방장';roomPw=pw;queue=[];cur=-1;members=[];
-  addMember('방장',true);
-  enterRoom(n);
-  saveRoomData();
+  isHost=true;myNick='호스트';myNickId=myHostId;roomPw=pw;
+  var data={name:n,hostId:myHostId,pw:pw,cur:-1,limit:0,maxQueue:0,autoRemovePlayed:false,allowGuests:true,autoNext:true,qrEnabled:true,createdAt:Date.now(),queue:[],members:{}};
+  data.members[myHostId]={nick:'호스트',host:true,joinedAt:Date.now()};
+  db.ref('rooms/'+rid).set(data);
+  db.ref('hosts/'+myHostId).set(rid);
+  enterRoom(n);attachListener();
 }
+
+/* ═══ 방 참여 ═══ */
+var pendingCode='';
+function promptJoinNick(){
+  var c=document.getElementById('jcode').value.trim().toUpperCase();
+  if(!c){showToast('방 코드를 입력해주세요!');return;}
+  pendingCode=c;
+  db.ref('rooms/'+c).once('value').then(function(snap){
+    if(!snap.exists()){showToast('❌ 방을 찾을 수 없습니다');return;}
+    var d=snap.val();
+    if(d.pw){document.getElementById('pwin').value='';openModal('pw-modal');}
+    else{document.getElementById('nick-join').value='';openModal('nick-modal');}
+  });
+}
+function checkPw(){
+  var pw=document.getElementById('pwin').value.trim();
+  db.ref('rooms/'+pendingCode+'/pw').once('value').then(function(snap){
+    if(snap.val()!==pw){showToast('❌ 비밀번호가 틀렸습니다');return;}
+    closeModal('pw-modal');document.getElementById('nick-join').value='';openModal('nick-modal');
+  });
+}
+function confirmJoin(){
+  var nv=document.getElementById('nick-join').value.trim();
+  if(!nv){showToast('닉네임을 입력해주세요!');return;}
+  myNick=nv;closeModal('nick-modal');doJoin();
+}
+function doJoin(){
+  rid=pendingCode;isHost=false;
+  db.ref('rooms/'+rid+'/members/'+myNickId).set({nick:myNick,host:false,joinedAt:Date.now()});
+  db.ref('rooms/'+rid).once('value').then(function(snap){
+    if(!snap.exists()){showToast('❌ 방을 찾을 수 없습니다');return;}
+    var d=snap.val();
+    queue=d.queue||[];cur=d.cur!=null?d.cur:-1;
+    enterRoom(d.name||'🔗 '+rid+' 방');
+    attachListener();
+    if(cur>=0&&cur<queue.length)playCur();
+  });
+}
+function joinFromList(code){document.getElementById('jcode').value=code;promptJoinNick();}
+
+/* ═══ 방 입장/나가기 ═══ */
 function enterRoom(name){
   document.getElementById('homev').classList.add('hidden');
   document.getElementById('home-bottom').classList.add('hidden');
+  document.getElementById('live-rooms-wrap').classList.add('hidden');
   document.getElementById('room').classList.add('on');
   document.getElementById('rtitle').textContent=name;
-  // 방장만 설정 패널, 게스트는 읽기 전용
-  document.getElementById('hcard').style.display=isHost?'':'none';
-  document.getElementById('gcard').style.display=isHost?'none':'';
+  document.getElementById('hcard').classList.toggle('hidden',!isHost);
+  document.getElementById('gcard').classList.toggle('hidden',isHost);
+  document.getElementById('edit-title-btn').classList.toggle('hidden',!isHost);
+  document.getElementById('leave-btn').classList.toggle('hidden',isHost);
+  document.getElementById('delete-btn').classList.toggle('hidden',!isHost);
   document.getElementById('codeBig').textContent=rid;
   var url=getRoomUrl();
   document.getElementById('qrlinktxt').textContent=url;
-  drawQR(url);
-  renderQ();
-  renderMembers();
-  updateGuestInfo();
+  drawQR(url);renderQ();renderMembers();updateGuestInfo();
+  if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
   window.scrollTo(0,0);
 }
 function goHome(){
+  if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
+  if(!isHost&&rid&&myNickId)db.ref('rooms/'+rid+'/members/'+myNickId).remove();
   document.getElementById('room').classList.remove('on');
   document.getElementById('homev').classList.remove('hidden');
   document.getElementById('home-bottom').classList.remove('hidden');
-  document.getElementById('yt-frame-slot').innerHTML='';
-  document.getElementById('pvideo').classList.remove('audio-mode');
-  document.getElementById('phold').classList.remove('gone');
-  document.getElementById('npt').textContent='재생 중인 곡 없음';
-  document.getElementById('npm').textContent='신청곡을 추가해주세요';
-  document.getElementById('eq').classList.add('p');
-  rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members=[];roomPw='';
+  document.getElementById('live-rooms-wrap').classList.remove('hidden');
+  stopPlayer();applyMode();
+  rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';
+  loadLiveRooms();
+}
+function deleteRoom(){
+  if(!confirm('방을 삭제하시겠습니까? 모든 신청곡이 사라집니다.'))return;
+  if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
+  db.ref('rooms/'+rid).remove();
+  db.ref('hosts/'+myHostId).remove();
+  document.getElementById('room').classList.remove('on');
+  document.getElementById('homev').classList.remove('hidden');
+  document.getElementById('home-bottom').classList.remove('hidden');
+  document.getElementById('live-rooms-wrap').classList.remove('hidden');
+  stopPlayer();rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};
+  loadLiveRooms();showToast('방을 삭제했습니다');
 }
 
+/* ═══ QR / 링크 ═══ */
 function getRoomUrl(){return location.href.split('?')[0]+'?r='+rid;}
 function copyLink(){var url=getRoomUrl();navigator.clipboard.writeText(url).then(function(){showToast('🔗 링크 복사 완료!');}).catch(function(){var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('🔗 링크 복사 완료!');});}
 function copyCode(){navigator.clipboard.writeText(rid).then(function(){showToast('📋 방 코드 '+rid+' 복사 완료!');}).catch(function(){showToast('방 코드: '+rid);});}
+function drawQR(url){var el=document.getElementById('qrcv');el.innerHTML='';try{new QRCode(el,{text:url,width:150,height:150,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){el.innerHTML='<div style="width:150px;height:150px;display:flex;align-items:center;justify-content:center;background:#fff;color:#999;font-size:11px;">QR 생성 실패</div>';}}
 
-/* ✅ 진짜 QR 코드 생성 (qrcodejs 라이브러리) */
-function drawQR(url){
-  var el=document.getElementById('qrcv');
-  el.innerHTML='';
-  try{
-    new QRCode(el,{text:url,width:150,height:150,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  }catch(e){
-    el.innerHTML='<div style="width:150px;height:150px;display:flex;align-items:center;justify-content:center;background:#fff;color:#999;font-size:11px;">QR 생성 실패</div>';
-  }
+/* ═══ 실시간 방 목록 ═══ */
+function loadLiveRooms(){
+  var wrap=document.getElementById('live-rooms-list');
+  if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
+  liveListener=db.ref('rooms').orderByChild('createdAt').limitToLast(30).on('value',function(snap){
+    var rooms=[];snap.forEach(function(child){var d=child.val();if(d)rooms.unshift({code:child.key,name:d.name,pw:d.pw,members:d.members,queue:d.queue,cur:d.cur});});
+    if(!rooms.length){wrap.innerHTML='<div style="color:var(--tx3);font-size:12px;padding:12px 0;">현재 열린 방이 없습니다. 첫 번째 방을 만들어보세요! 🎉</div>';return;}
+    wrap.innerHTML=rooms.map(function(r){
+      var mc=r.members?Object.keys(r.members).length:0;
+      var qc=r.queue?r.queue.length:0;
+      var song=r.cur>=0&&r.queue&&r.queue[r.cur]?r.queue[r.cur].t:'재생 중인 곡 없음';
+      return '<div class="room-card" onclick="joinFromList(\''+r.code+'\')">'
+        +'<div class="room-card-name">'+(r.pw?'🔒 ':'')+htmlEsc(r.name||r.code)+'</div>'
+        +'<div class="room-card-meta">👥 '+mc+'명 · 🎵 '+qc+'곡</div>'
+        +'<div class="room-card-song">♪ '+htmlEsc(song)+'</div>'
+        +'<div class="room-card-code">'+r.code+'</div>'
+        +'</div>';
+    }).join('');
+  });
 }
+function htmlEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+/* ═══ 모달 / 토스트 ═══ */
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mbg').forEach(function(el){el.addEventListener('click',function(e){if(e.target===el)el.classList.remove('open');});});
 var tt=null;
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');if(tt)clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2500);}
 
-/* URL 파라미터 자동 입장 */
+/* ═══ 초기화 ═══ */
+initIds();
+loadLiveRooms();
+// 호스트 기존 방 확인
+checkExistingRoom(function(code,name){
+  if(code){
+    existingRoomCode=code;
+    document.getElementById('host-banner').classList.remove('hidden');
+    document.getElementById('host-banner-name').textContent=name||code;
+    document.getElementById('exist-room-code').textContent=code;
+  }
+});
+// URL 파라미터: 코드 자동 입력 (모달 자동 열기 없음 - feature 5)
 var rp=new URLSearchParams(location.search).get('r');
-if(rp){document.getElementById('jcode').value=rp.toUpperCase();promptJoinNick();}
+if(rp){
+  document.getElementById('jcode').value=rp.toUpperCase();
+  // 배너 표시 후 자동 입장 안 함 (홈페이지 메인 표시)
+}
 </script>
 </body>
 </html>
