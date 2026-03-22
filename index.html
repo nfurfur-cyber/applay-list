@@ -54,7 +54,7 @@ main{position:relative;z-index:1;}
 h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5.5vw,52px);font-weight:800;line-height:1.12;letter-spacing:-2px;margin-bottom:13px;}
 h1 em{font-style:normal;color:var(--ac);}
 .sub{color:var(--tx2);font-size:14px;line-height:1.75;max-width:440px;margin:0 auto 34px;}
-.cards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:660px;margin:0 auto;}
+.cards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:660px;margin:0 auto;padding:0 16px;}
 .card{flex:1;min-width:260px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:22px;transition:all .25s;}
 .card:hover{border-color:rgba(245,158,11,.35);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3);}
 .card.pri{background:linear-gradient(145deg,rgba(245,158,11,.07),rgba(239,68,68,.03));border-color:rgba(245,158,11,.25);}
@@ -104,6 +104,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
 .pvideo.audio-mode{aspect-ratio:unset!important;height:0!important;overflow:hidden!important;}
+.pvideo.guest-lock::after{content:'';position:absolute;inset:0;z-index:5;cursor:default;}
 .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
 .phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:2;background:var(--bg);transition:opacity .3s;}
 .phold.gone{opacity:0;pointer-events:none;}
@@ -247,7 +248,7 @@ footer a{color:var(--ac);text-decoration:none;}
   </section>
   <!-- 실시간 방 목록 -->
   <div class="live-section" id="live-rooms-wrap">
-    <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 지금 열린 방</div>
+    <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 내가 만든 방</div>
     <div class="live-grid" id="live-rooms-list"><div style="color:var(--tx3);font-size:12px;padding:12px 0;">로딩 중...</div></div>
   </div>
   <div class="ftrs">
@@ -268,17 +269,17 @@ footer a{color:var(--ac);text-decoration:none;}
       </div>
       <div class="rbtns">
         <div class="rmembers">👥 <b id="memCnt">1</b>명</div>
-        <button class="bsm" id="leave-btn" onclick="goHome()">← 나가기</button>
+        <button class="bsm" id="leave-btn" onclick="confirmLeave()">← 나가기</button>
         <button class="bsm d hidden" id="delete-btn" onclick="deleteRoom()">🗑 방 삭제</button>
       </div>
     </div>
+    <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="pwrap">
       <div class="pvideo" id="pvideo"><div class="phold" id="phold"><div class="pi">🎵</div><div>신청곡을 추가하면 자동 재생됩니다</div><div style="font-size:11px;opacity:.5;">검색 또는 유튜브 링크 직접 입력</div></div><div id="yt-frame-slot"></div></div>
       <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('audio')">🎵 음악만</button></div></div>
-      <div class="urlrow"><input class="urlinput" id="urlin" placeholder="유튜브 링크 붙여넣기  https://youtu.be/..." onkeydown="if(event.key==='Enter')addByUrl()"><button class="btn-url" onclick="addByUrl()">+ 추가</button></div>
     </div>
-    <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="sbox"><div class="blbl">🔍 유튜브 검색으로 신청하기</div><div class="srow"><input class="sinput" id="sin" placeholder="노래 제목·아티스트 검색..." onkeydown="if(event.key==='Enter')doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
+    <div class="urlrow" style="background:var(--sf);border:1px solid var(--bd);border-radius:9px;"><input class="urlinput" id="urlin" placeholder="유튜브 링크 붙여넣기  https://youtu.be/..." onkeydown="if(event.key==='Enter')addByUrl()"><button class="btn-url" onclick="addByUrl()">+ 추가</button></div>
     <div class="qcard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
@@ -323,7 +324,7 @@ footer a{color:var(--ac);text-decoration:none;}
 </div>
 </main>
 <div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
-<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p></footer>
+<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.4.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 방 만들기</h3><p>방 이름을 입력해주세요</p><input id="rnin" placeholder="예: 🎶 우리 파티방" maxlength="30"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">방 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
@@ -339,6 +340,9 @@ footer a{color:var(--ac);text-decoration:none;}
 
 <!-- 방 삭제 확인 -->
 <div class="mbg" id="del-modal"><div class="modal"><h3>🗑 방을 삭제하시겠습니까?</h3><p>모든 신청곡과 참여자 정보가 사라집니다.<br>이 작업은 되돌릴 수 없습니다.</p><button class="btn-p" style="background:var(--ac2);margin-bottom:10px" onclick="confirmDeleteRoom()">삭제하기</button><button class="mclose" onclick="closeModal('del-modal')">취소</button></div></div>
+
+<!-- 나가기 확인 -->
+<div class="mbg" id="leave-modal"><div class="modal"><h3>👋 방을 나가시겠습니까?</h3><p>나가면 신청곡 목록에서 빠집니다.</p><button class="btn-p" style="background:var(--ac2);margin-bottom:10px" onclick="closeModal('leave-modal');goHome()">나가기</button><button class="mclose" onclick="closeModal('leave-modal')">취소</button></div></div>
 
 <!-- 후원 -->
 <div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>Applay list를 응원해주세요!<br>소중한 후원이 서비스 운영에 큰 힘이 됩니다.</p><button class="btn-p" style="margin-bottom:10px" onclick="window.open('https://qr.kakaopay.com/FWMiGEELB','_blank')">💛 카카오페이로 후원</button><button class="btn-p" style="background:#0064FF;margin-bottom:10px" onclick="window.open('https://toss.me/applaylist','_blank')">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
@@ -464,7 +468,7 @@ window.addEventListener('message',function(e){
   if(state===2)document.getElementById('eq').classList.add('p');
 });
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
-function applyMode(){document.getElementById('pvideo').classList.toggle('audio-mode',pmode==='audio');}
+function applyMode(){var pv=document.getElementById('pvideo');pv.classList.toggle('audio-mode',pmode==='audio');pv.classList.toggle('guest-lock',!isHost);}
 function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
 function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
 function stopPlayer(){document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}
@@ -512,7 +516,7 @@ function fbNextSong(){
     if(autoRemovePlayed){
       var newQueue=queue.slice();newQueue.splice(cur,1);
       var newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
-      fbUpdateQueue(newQueue,newCur);
+      db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,playStartedAt:Date.now()});
     }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:Date.now()});}
   }else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}
 }
@@ -803,6 +807,7 @@ function enterRoom(name){
   document.getElementById('leave-btn').classList.toggle('hidden',isHost);
   document.getElementById('delete-btn').classList.toggle('hidden',!isHost);
   document.getElementById('codeBig').textContent=rid;
+  document.getElementById('pvideo').classList.toggle('guest-lock',!isHost);
   var url=getRoomUrl();
   document.getElementById('qrlinktxt').textContent=url;
   drawQR(url);renderQ();renderMembers();updateGuestInfo();
@@ -810,6 +815,7 @@ function enterRoom(name){
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
   window.scrollTo(0,0);
 }
+function confirmLeave(){if(!isHost){openModal('leave-modal');return;}goHome();}
 function goHome(){
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
   if(!isHost&&rid&&myNickId)db.ref('rooms/'+rid+'/members/'+myNickId).remove();
@@ -820,6 +826,7 @@ function goHome(){
   stopPlayer();applyMode();
   localStorage.removeItem('apl_activeRoom');
   rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';pending=[];currentPlayingVid=null;
+  document.getElementById('jcode').value='';
   loadLiveRooms();
 }
 function deleteRoom(){openModal('del-modal');}
@@ -859,8 +866,8 @@ function loadLiveRooms(){
   var wrap=document.getElementById('live-rooms-list');
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
   liveListener=db.ref('rooms').orderByChild('createdAt').limitToLast(30).on('value',function(snap){
-    var rooms=[];snap.forEach(function(child){var d=child.val();if(d)rooms.unshift({code:child.key,name:d.name,pw:d.pw,members:d.members,queue:d.queue,cur:d.cur});});
-    if(!rooms.length){wrap.innerHTML='<div style="color:var(--tx3);font-size:12px;padding:12px 0;">현재 열린 방이 없습니다. 첫 번째 방을 만들어보세요! 🎉</div>';return;}
+    var rooms=[];snap.forEach(function(child){var d=child.val();if(d&&d.hostId===myHostId)rooms.unshift({code:child.key,name:d.name,pw:d.pw,members:d.members,queue:d.queue,cur:d.cur});});
+    if(!rooms.length){wrap.innerHTML='<div style="color:var(--tx3);font-size:12px;padding:12px 0;">만든 방이 없습니다. 새 방을 만들어보세요! 🎉</div>';return;}
     wrap.innerHTML=rooms.map(function(r){
       var mc=r.members?Object.keys(r.members).length:0;
       var qc=r.queue?r.queue.length:0;
