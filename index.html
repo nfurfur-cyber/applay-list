@@ -407,8 +407,10 @@ function attachListener(){
     cur=newCur;
     if(newVid!==prevVid){
       currentPlayingVid=newVid;
-      if(cur>=0&&cur<queue.length)playCur();
-      else if(cur===-1)stopPlayer();
+      if(cur>=0&&cur<queue.length){
+        var startSec=(!isHost&&d.playStartedAt)?Math.floor((Date.now()-d.playStartedAt)/1000):0;
+        playCur(startSec);
+      }else if(cur===-1)stopPlayer();
     }
   });
 }
@@ -423,9 +425,10 @@ function syncHostPanel(){
 }
 
 /* ═══ YouTube 플레이어 ═══ */
-function buildIframe(vid){
+function buildIframe(vid,startSec){
   var slot=document.getElementById('yt-frame-slot');slot.innerHTML='';
   var params=new URLSearchParams({autoplay:'1',rel:'0',modestbranding:'1',playsinline:'1',enablejsapi:'1',origin:location.origin||'https://applaylist.com',widget_referrer:location.href});
+  if(startSec&&startSec>2)params.set('start',String(Math.floor(startSec)));
   var iframe=document.createElement('iframe');
   iframe.src='https://www.youtube-nocookie.com/embed/'+vid+'?'+params.toString();
   iframe.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;display:block;';
@@ -449,7 +452,7 @@ window.addEventListener('message',function(e){
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
 function applyMode(){document.getElementById('pvideo').classList.toggle('audio-mode',pmode==='audio');}
 function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
-function playCur(){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;document.getElementById('phold').classList.add('gone');buildIframe(s.v);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
+function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;if(isHost&&rid)db.ref('rooms/'+rid+'/playStartedAt').set(Date.now());document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
 function stopPlayer(){document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}
 function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 
@@ -507,11 +510,13 @@ function renderQ(){
     var isPlaying=i===cur;
     var canDel=isHost||(s.nickId&&s.nickId===myNickId);
     var drag=isHost?'draggable="true" ondragstart="onDragStart(event,'+i+')" ondragover="onDragOver(event,'+i+')" ondrop="onDrop(event,'+i+')" ondragleave="this.style.background=\'\'"':'';
-    return '<div class="qi'+(isPlaying?' cur':'')+'" onclick="fbPlayAt('+i+')" '+drag+'>'
-      +(isHost?'<div class="drag-handle" onclick="event.stopPropagation()">⠿</div>':'')
+    return '<div class="qi'+(isPlaying?' cur':'')+'" '+drag+'>'
+      +(isHost?'<div class="drag-handle">⠿</div>':'')
+      +'<div style="display:flex;align-items:center;gap:8px;flex:1;overflow:hidden;cursor:pointer" onclick="fbPlayAt('+i+')">'
       +'<div class="qinum">'+(isPlaying?'▶':i+1)+'</div>'
       +'<img class="qith" src="'+s.th+'" alt="" onerror="this.style.opacity=\'.3\'">'
       +'<div class="qiinfo"><div class="qisong">'+s.t+'</div><div class="qiartist">'+s.a+'</div><div class="qireq">@'+s.nick+'</div></div>'
+      +'</div>'
       +(canDel?'<button class="qidel" onclick="event.stopPropagation();fbRemoveQ('+i+')">✕</button>':'')
       +'</div>';
   }).join('');
@@ -754,7 +759,10 @@ function doJoin(){
     queue=d.queue||[];cur=d.cur!=null?d.cur:-1;
     enterRoom(d.name||'🔗 '+rid+' 방');
     attachListener();
-    if(cur>=0&&cur<queue.length)playCur();
+    if(cur>=0&&cur<queue.length){
+      var elapsed=d.playStartedAt?Math.floor((Date.now()-d.playStartedAt)/1000):0;
+      playCur(elapsed);
+    }
   });
 }
 function joinFromList(code){document.getElementById('jcode').value=code;promptJoinNick();}
@@ -802,7 +810,10 @@ function confirmDeleteRoom(){
   document.getElementById('homev').classList.remove('hidden');
   document.getElementById('home-bottom').classList.remove('hidden');
   document.getElementById('live-rooms-wrap').classList.remove('hidden');
-  stopPlayer();rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};pending=[];
+  stopPlayer();rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};pending=[];currentPlayingVid=null;
+  // 배너 숨김 + 상태 초기화
+  document.getElementById('host-banner').classList.add('hidden');
+  existingRoomCode='';
   loadLiveRooms();showToast('방을 삭제했습니다');
 }
 
