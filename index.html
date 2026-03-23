@@ -227,11 +227,15 @@ h1 em{font-style:normal;color:var(--ac);}
 .bottom-ad{background:var(--sf);padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:10px;}
 footer{border-top:1px solid var(--bd);padding:18px 20px;text-align:center;color:var(--tx3);font-size:11px;}
 footer a{color:var(--ac);text-decoration:none;}
+/* 모바일 하단 고정 배너 */
+.mob-sticky-ad{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:var(--sf);border-top:1px solid var(--bd);padding:6px 0;text-align:center;}
+.mob-sticky-ad .ad-lbl{position:absolute;top:2px;left:8px;}
+@media(max-width:820px){.mob-sticky-ad.on{display:block;}body.has-sticky-ad{padding-bottom:62px;}}
 </style>
 </head>
 <body>
 <header><div class="hdr"><div class="logo" onclick="goHome()">Applay list <i>🎵</i></div><button class="btn-ghost" onclick="openModal('sup-modal')">☕ 후원</button></div></header>
-<div class="ad-top"><span class="ad-lbl">AD</span><div class="ad-slot">Google AdSense 728×90 — 최상단 광고</div></div>
+<div class="ad-top"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="728x90">Google AdSense 728×90 — 최상단 광고</div></div>
 <main>
 <div id="homev">
   <section class="hero">
@@ -318,12 +322,12 @@ footer a{color:var(--ac);text-decoration:none;}
       </div>
     </div>
     <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기</button>
-    <div class="adside"><span class="ad-lbl">AD</span><span>Google AdSense 300×250</span></div>
+    <div class="adside ad-refresh-slot" data-ad-size="300x250"><span class="ad-lbl">AD</span><span>Google AdSense 300×250</span></div>
   </div>
 </div>
 </main>
-<div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
-<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.6.0</p></footer>
+<div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="970x90" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
+<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.7.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
@@ -358,6 +362,9 @@ footer a{color:var(--ac);text-decoration:none;}
 
 <!-- 후원 -->
 <div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>Applay list를 응원해주세요!<br>소중한 후원이 서비스 운영에 큰 힘이 됩니다.</p><button class="btn-p" style="margin-bottom:10px" onclick="window.open('https://qr.kakaopay.com/FWMiGEELB','_blank')">💛 카카오페이로 후원</button><button class="btn-p" style="background:#0064FF;margin-bottom:10px" onclick="window.open('https://toss.me/applaylist','_blank')">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
+
+<!-- 모바일 하단 고정 배너 (방 화면 전용) -->
+<div class="mob-sticky-ad ad-refresh-slot" data-ad-size="320x50" id="mob-sticky-ad"><span class="ad-lbl">AD</span><span style="font-size:11px;color:var(--tx3);">Google AdSense 320×50 — 모바일 하단</span></div>
 
 <div class="toast" id="toast"></div>
 
@@ -482,7 +489,31 @@ window.addEventListener('message',function(e){
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
 function applyMode(){var pv=document.getElementById('pvideo');pv.classList.toggle('audio-mode',pmode==='audio');pv.classList.toggle('guest-lock',!isHost);}
 function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
-function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');}
+function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');refreshAds();}
+
+/* ═══ AdSense 광고 갱신 ═══ */
+var _lastAdRefresh=0;
+function refreshAds(){
+  var now=Date.now();
+  if(now-_lastAdRefresh<30000)return; // 최소 30초 간격
+  _lastAdRefresh=now;
+  var slots=document.querySelectorAll('.ad-refresh-slot');
+  slots.forEach(function(slot){
+    var size=slot.getAttribute('data-ad-size');
+    slot.innerHTML='';
+    var ins=document.createElement('ins');
+    ins.className='adsbygoogle';
+    ins.style.display='block';
+    if(size==='728x90'){ins.setAttribute('data-ad-format','horizontal');ins.style.width='728px';ins.style.height='90px';}
+    else if(size==='300x250'){ins.setAttribute('data-ad-format','rectangle');ins.style.width='300px';ins.style.height='250px';}
+    else if(size==='970x90'){ins.setAttribute('data-ad-format','horizontal');ins.style.width='970px';ins.style.height='90px';}
+    else if(size==='320x50'){ins.setAttribute('data-ad-format','horizontal');ins.style.width='320px';ins.style.height='50px';}
+    ins.setAttribute('data-ad-client','ca-pub-2061027569183097');
+    ins.setAttribute('data-ad-slot','');  // 심사 통과 후 슬롯 ID 입력
+    slot.appendChild(ins);
+    try{(adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+  });
+}
 function stopPlayer(){document.getElementById('yt-frame-slot').innerHTML='';document.getElementById('phold').classList.remove('gone');document.getElementById('npt').textContent='재생 중인 곡 없음';document.getElementById('npm').textContent='신청곡을 추가해주세요';document.getElementById('eq').classList.add('p');}
 function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 
@@ -828,6 +859,8 @@ function enterRoom(name){
   document.getElementById('home-bottom').classList.add('hidden');
   document.getElementById('live-rooms-wrap').classList.add('hidden');
   document.getElementById('room').classList.add('on');
+  document.getElementById('mob-sticky-ad').classList.add('on');
+  document.body.classList.add('has-sticky-ad');
   document.getElementById('rtitle').textContent=name;
   document.getElementById('settings-btn').classList.toggle('hidden',!isHost);
   document.getElementById('host-badge').classList.toggle('hidden',!isHost);
@@ -872,6 +905,8 @@ window.addEventListener('resize',function(){
 });
 function confirmLeave(){if(!isHost){openModal('leave-modal');return;}goHome();}
 function goHome(){
+  document.getElementById('mob-sticky-ad').classList.remove('on');
+  document.body.classList.remove('has-sticky-ad');
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
   if(!isHost&&rid&&myNickId)db.ref('rooms/'+rid+'/members/'+myNickId).remove();
   document.getElementById('room').classList.remove('on');
