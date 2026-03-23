@@ -11,3 +11,4 @@ applay-list.html
 # OS
 .DS_Store
 Thumbs.db
+.vercel

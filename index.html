@@ -25,6 +25,8 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCTVK42K72"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MCTVK42K72');</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2061027569183097" crossorigin="anonymous"></script>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -282,7 +284,7 @@ footer a{color:var(--ac);text-decoration:none;}
     </div>
     <div class="sbox"><div class="blbl">🔍 유튜브 검색으로 신청하기</div><div class="srow"><input class="sinput" id="sin" placeholder="노래 제목·아티스트 검색..." onkeydown="if(event.key==='Enter')doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
     <div class="urlrow" style="background:var(--sf);border:1px solid var(--bd);border-radius:9px;"><input class="urlinput" id="urlin" placeholder="유튜브 링크 붙여넣기  https://youtu.be/..." onkeydown="if(event.key==='Enter')addByUrl()"><button class="btn-url" onclick="addByUrl()">+ 추가</button></div>
-    <div class="qcard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
+    <div class="qcard" id="queueCard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
       <div class="qhdr"><div class="qtit" style="color:var(--ac);">⏳ 승인 대기</div><div class="qcnt" id="pendCnt" style="background:rgba(239,68,68,.1);color:var(--ac2);">0곡</div></div>
@@ -321,7 +323,7 @@ footer a{color:var(--ac);text-decoration:none;}
 </div>
 </main>
 <div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
-<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.5.0</p></footer>
+<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="#">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.6.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
@@ -840,8 +842,34 @@ function enterRoom(name){
   drawQR(url);renderQ();renderMembers();updateGuestInfo();
   localStorage.setItem('apl_activeRoom',rid);
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
+  placeQueueCard();
   window.scrollTo(0,0);
 }
+function placeQueueCard(){
+  var qc=document.getElementById('queueCard');
+  var pc=document.getElementById('pendingCard');
+  var pcard=document.querySelector('#room .sidebar .pcard');
+  var urlrow=document.querySelector('#room .pcol .urlrow');
+  if(!qc||!pc)return;
+  if(window.innerWidth>820 && pcard){
+    /* PC: 참여자 카드 바로 아래에 삽입 */
+    var ref=pcard.nextElementSibling;
+    var sb=pcard.parentNode;
+    if(ref){sb.insertBefore(qc,ref);sb.insertBefore(pc,ref);}
+    else{sb.appendChild(qc);sb.appendChild(pc);}
+  }else if(urlrow){
+    /* 모바일: 원래 위치(urlrow 다음) 복원 */
+    var pcol=urlrow.parentNode;
+    var ref2=urlrow.nextElementSibling;
+    if(ref2&&ref2!==qc&&ref2!==pc){pcol.insertBefore(pc,ref2);pcol.insertBefore(qc,ref2);}
+    else{urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
+  }
+}
+var _qcResizeTimer=null;
+window.addEventListener('resize',function(){
+  clearTimeout(_qcResizeTimer);
+  _qcResizeTimer=setTimeout(function(){if(document.getElementById('room').classList.contains('on'))placeQueueCard();},150);
+});
 function confirmLeave(){if(!isHost){openModal('leave-modal');return;}goHome();}
 function goHome(){
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
@@ -851,6 +879,9 @@ function goHome(){
   document.getElementById('home-bottom').classList.remove('hidden');
   document.getElementById('live-rooms-wrap').classList.remove('hidden');
   stopPlayer();applyMode();
+  /* queueCard/pendingCard를 원래 pcol 위치(urlrow 다음)로 복원 */
+  var qc=document.getElementById('queueCard');var pc=document.getElementById('pendingCard');var urlrow=document.querySelector('.urlrow');
+  if(qc&&pc&&urlrow){urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
   localStorage.removeItem('apl_activeRoom');
   rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';pending=[];currentPlayingVid=null;
   document.getElementById('jcode').value='';
