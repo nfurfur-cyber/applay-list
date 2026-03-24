@@ -71,7 +71,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .btn-j{padding:9px 15px;background:transparent;border:1px solid var(--ac);border-radius:8px;color:var(--ac);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
 .btn-j:hover{background:var(--ac);color:var(--bg);}
 /* 호스트 배너 */
-.host-banner{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.38);border-radius:12px;padding:14px 20px;margin:18px auto 0;max-width:580px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.host-banner{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.38);border-radius:12px;padding:14px 20px;margin:18px auto 0;max-width:420px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .host-banner-txt{font-size:14px;color:var(--tx);font-weight:500;}
 .host-banner-txt b{color:var(--ac);}
 /* 설정 버튼 색상 */
@@ -265,11 +265,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 <div id="homev">
   <section class="hero">
     <div class="badge"><span></span> 무료 신청곡 플랫폼</div>
-    <h1>모두의 플레이리스트<br><em>QueueTune</em></h1>
+    <h1>모두의 플레이리스트<br><em>QueueTune 🎵</em></h1>
     <p class="sub">링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.</p>
     <!-- 호스트 재입장 배너 -->
     <div class="host-banner hidden" id="host-banner">
-      <div class="host-banner-txt">👑 <b id="host-banner-name"></b> 플레이룸이 열려 있습니다</div>
+      <div class="host-banner-txt">👑 <b id="host-banner-name" style="color:var(--ac);">플레이룸</b> 이 열려 있습니다</div>
       <button class="btn-j" onclick="rejoinExistingRoom()">다시 입장 →</button>
     </div>
     <div class="cards" style="margin-top:18px;">
