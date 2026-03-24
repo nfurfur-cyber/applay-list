@@ -107,10 +107,9 @@ h1 em{font-style:normal;color:var(--ac);}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
 .pvideo.audio-mode{aspect-ratio:unset!important;height:0!important;overflow:hidden!important;}
-.pvideo.guest-lock::after{content:'';position:absolute;inset:0;z-index:5;cursor:default;pointer-events:none;}
-.phold{z-index:6;}
+.pvideo.guest-lock::after{content:'';position:absolute;inset:0;z-index:5;cursor:default;}
 .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
-.phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:2;background:var(--bg);transition:opacity .3s;}
+.phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:7;background:var(--bg);transition:opacity .3s;}
 .phold.gone{opacity:0;pointer-events:none;}
 .phold .pi{font-size:44px;opacity:.25;}
 .modebar{display:flex;align-items:center;gap:8px;padding:9px 13px;background:var(--sf2);border-top:1px solid var(--bd);}
@@ -405,6 +404,7 @@ db.ref('.info/serverTimeOffset').on('value',function(snap){_fbTimeOffset=snap.va
 function fbNow(){return Date.now()+_fbTimeOffset;}
 var requireApproval=false,pending=[],_prevPending=[];
 var currentPlayingVid=null;
+var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0;
 
 /* ═══ ID 생성 ═══ */
 function initIds(){
@@ -461,6 +461,8 @@ function attachListener(){
     // cur 먼저 설정 후 렌더링 (하이라이트 정확히 현재 재생 곡에만)
     var newVid=(newCur>=0&&newCur<queue.length)?queue[newCur].v:null;
     cur=newCur;
+    if(d.playStartedAt)_roomPlayStartedAt=d.playStartedAt;
+    var newPaused=!!d.paused;
     renderQ();renderMembers();updateGuestInfo();
     // 재생 — 같은 곡이면 재시작 안 함
     if(newVid!==prevVid){
@@ -471,7 +473,18 @@ function attachListener(){
           showIosTapPrompt(d.playStartedAt);
         }else{playCur(startSec);}
       }else if(cur===-1)stopPlayer();
+    }else if(!isHost&&newPaused!==_prevRoomPaused){
+      // 같은 곡에서 일시정지/재개 변화
+      if(newPaused){
+        ytCmd('pauseVideo');
+        document.getElementById('eq').classList.add('p');
+      }else{
+        var el=d.playStartedAt?Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000)):0;
+        if(/iPad|iPhone|iPod/.test(navigator.userAgent)){showIosTapPrompt(d.playStartedAt);}
+        else{ytCmd('seekTo',el);ytCmd('playVideo');document.getElementById('eq').classList.remove('p');}
+      }
     }
+    _prevRoomPaused=newPaused;
   });
 }
 
@@ -497,6 +510,11 @@ function buildIframe(vid,startSec){
   iframe.setAttribute('allowfullscreen','');iframe.id='yt-iframe';
   slot.appendChild(iframe);applyMode();
 }
+function ytCmd(func,arg){
+  var f=document.getElementById('yt-iframe');if(!f)return;
+  var msg={event:'command',func:func,args:arg!==undefined?[arg,true]:''};
+  f.contentWindow.postMessage(JSON.stringify(msg),'*');
+}
 window.addEventListener('message',function(e){
   if(!e.origin||!e.origin.includes('youtube'))return;
   var data;try{data=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(err){return;}
@@ -506,8 +524,24 @@ window.addEventListener('message',function(e){
   else if(data.event==='infoDelivery'&&data.info)state=data.info.playerState;
   if(state===null)return;
   if(state===0&&autoNextOn&&isHost)setTimeout(fbNextSong,800);
-  if(state===1)document.getElementById('eq').classList.remove('p');
-  if(state===2)document.getElementById('eq').classList.add('p');
+  if(state===1){
+    document.getElementById('eq').classList.remove('p');
+    // 호스트 재개 → Firebase 업데이트 (playStartedAt 역산)
+    if(isHost&&rid&&cur>=0&&_prevRoomPaused){
+      var newStart=fbNow()-(_lastPausedAt*1000);
+      db.ref('rooms/'+rid).update({paused:false,pausedAt:0,playStartedAt:newStart});
+      _lastPausedAt=0;_prevRoomPaused=false;
+    }
+  }
+  if(state===2){
+    document.getElementById('eq').classList.add('p');
+    // 호스트 일시정지 → Firebase 업데이트
+    if(isHost&&rid&&cur>=0&&!_prevRoomPaused){
+      var pa=_roomPlayStartedAt?Math.max(0,Math.floor((fbNow()-_roomPlayStartedAt)/1000)):0;
+      _lastPausedAt=pa;_prevRoomPaused=true;
+      db.ref('rooms/'+rid).update({paused:true,pausedAt:pa});
+    }
+  }
 });
 function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
 function applyMode(){var pv=document.getElementById('pvideo');pv.classList.toggle('audio-mode',pmode==='audio');pv.classList.toggle('guest-lock',!isHost);}
@@ -576,7 +610,7 @@ function fbAddQ(v,t,a,th,nick){
   var newQueue=queue.concat([song]);
   var newCur=cur===-1?0:cur;
   var upd={queue:newQueue,cur:newCur};
-  if(cur===-1)upd.playStartedAt=fbNow();
+  if(cur===-1){upd.playStartedAt=fbNow();upd.paused=false;upd.pausedAt=0;}
   db.ref('rooms/'+rid).update(upd);
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
 }
@@ -589,14 +623,14 @@ function fbRemoveQ(i){
   if(newQueue.length===0)newCur=-1;
   fbUpdateQueue(newQueue,newCur);showToast('삭제했습니다');
 }
-function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:fbNow()});}
+function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:fbNow(),paused:false,pausedAt:0});}
 function fbNextSong(){
   if(cur+1<queue.length){
     if(autoRemovePlayed){
       var newQueue=queue.slice();newQueue.splice(cur,1);
       var newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
-      db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,playStartedAt:fbNow()});
-    }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:fbNow()});}
+      db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,playStartedAt:fbNow(),paused:false,pausedAt:0});
+    }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:fbNow(),paused:false,pausedAt:0});}
   }else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}
 }
 
