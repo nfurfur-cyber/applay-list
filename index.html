@@ -237,7 +237,10 @@ footer a{color:var(--ac);text-decoration:none;}
 /* 모바일 하단 고정 배너 */
 .mob-sticky-ad{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:var(--sf);border-top:1px solid var(--bd);padding:6px 0;text-align:center;}
 .mob-sticky-ad .ad-lbl{position:absolute;top:2px;left:8px;}
-@media(max-width:820px){.mob-sticky-ad.on{display:block;}body.has-sticky-ad{padding-bottom:62px;}
+@media(max-width:820px){body{display:flex;flex-direction:column;min-height:100vh;}
+header{order:1;}.ad-top{order:2;}main{order:3;}
+#room.on header{order:4;}#room.on .ad-top{order:5;}
+.mob-sticky-ad.on{display:block;}body.has-sticky-ad{padding-bottom:62px;}
 .hero::before{width:100%!important;}
 .ad-slot{padding:10px 12px!important;max-width:100%!important;}
 .code-val{font-size:22px;letter-spacing:4px;}
