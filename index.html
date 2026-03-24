@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Applay list 🎵 - 무료 신청곡 플랫폼</title>
-<meta name="description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 무료 신청곡 플랫폼.">
-<meta name="keywords" content="신청곡, 플레이리스트, 유튜브, 파티, 가게음악, QR신청, applay list">
-<meta name="author" content="Applay list">
+<title>QueueTune 🎵 - 무료 신청곡 플랫폼</title>
+<meta name="description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 QueueTune 무료 신청곡 플랫폼.">
+<meta name="keywords" content="신청곡, 플레이리스트, 유튜브, 파티, 가게음악, QR신청, QueueTune">
+<meta name="author" content="QueueTune">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://applaylist.com/">
-<meta property="og:title" content="Applay list 🎵 - 무료 신청곡 플랫폼">
+<meta property="og:title" content="QueueTune 🎵 - 무료 신청곡 플랫폼">
 <meta property="og:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
 <meta property="og:image" content="https://applaylist.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:site_name" content="Applay list">
+<meta property="og:site_name" content="QueueTune">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Applay list 🎵 - 무료 신청곡 플랫폼">
+<meta name="twitter:title" content="QueueTune 🎵 - 무료 신청곡 플랫폼">
 <meta name="twitter:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
 <meta name="twitter:image" content="https://applaylist.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
@@ -36,6 +36,7 @@
 <style>
 :root{--bg:#0B0F15;--sf:#151A24;--sf2:#1C2230;--bd:#283040;--ac:#F59E0B;--ac2:#EF4444;--ac3:#10B981;--tx:#F1F5F9;--tx2:#94A3B8;--tx3:#4B5C72;--glow:rgba(245,158,11,.18);}
 *{margin:0;padding:0;box-sizing:border-box;}
+html{overflow-x:hidden;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(245,158,11,.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
 header{position:sticky;top:0;z-index:100;background:rgba(11,15,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);}
@@ -140,10 +141,10 @@ h1 em{font-style:normal;color:var(--ac);}
 .sinput:focus{border-color:var(--ac);}.sinput::placeholder{color:var(--tx3);}
 .bsch{padding:9px 15px;background:var(--ac);border:none;border-radius:7px;color:var(--bg);font-size:12px;font-weight:600;cursor:pointer;}.bsch:hover{opacity:.85;}
 .rlist{display:flex;flex-direction:column;gap:5px;margin-top:9px;}
-.ri{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:all .15s;}
+.ri{display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:all .15s;}
 .ri:hover{border-color:var(--ac);background:rgba(245,158,11,.04);}
 .rith{width:56px;height:40px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--bd);}
-.riinfo{flex:1;overflow:hidden;}.rittl{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx);}
+.riinfo{flex:1 1 0;min-width:0;overflow:hidden;}.rittl{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx);}
 .riadd{padding:5px 12px;border-radius:5px;background:transparent;border:1px solid var(--ac);color:var(--ac);font-size:11px;cursor:pointer;flex-shrink:0;transition:all .15s;font-weight:600;}
 .riadd:hover{background:var(--ac);color:var(--bg);}
 .supbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:8px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--ac);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;width:100%;}
@@ -230,17 +231,27 @@ footer a{color:var(--ac);text-decoration:none;}
 /* 모바일 하단 고정 배너 */
 .mob-sticky-ad{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:var(--sf);border-top:1px solid var(--bd);padding:6px 0;text-align:center;}
 .mob-sticky-ad .ad-lbl{position:absolute;top:2px;left:8px;}
-@media(max-width:820px){.mob-sticky-ad.on{display:block;}body.has-sticky-ad{padding-bottom:62px;}}
+@media(max-width:820px){.mob-sticky-ad.on{display:block;}body.has-sticky-ad{padding-bottom:62px;}
+.hero::before{width:100%!important;}
+.ad-slot{padding:10px 12px!important;max-width:100%!important;}
+.code-val{font-size:22px;letter-spacing:4px;}
+.npbar{flex-wrap:wrap;}
+main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
+.ri{gap:6px;padding:8px 10px;}
+.rith{width:42px;height:30px;}
+.riinfo{flex:0 1 auto;max-width:calc(100% - 120px);}
+.riadd{padding:5px 10px;font-size:10px;}
+}
 </style>
 </head>
 <body>
-<header><div class="hdr"><div class="logo" onclick="goHome()">Applay list <i>🎵</i></div><button class="btn-ghost" onclick="openModal('sup-modal')">☕ 후원</button></div></header>
+<header><div class="hdr"><div class="logo" onclick="goHome()">QueueTune <i>🎵</i></div><button class="btn-ghost" onclick="openModal('sup-modal')">☕ 후원</button></div></header>
 <div class="ad-top"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="728x90">Google AdSense 728×90 — 최상단 광고</div></div>
 <main>
 <div id="homev">
   <section class="hero">
     <div class="badge"><span></span> 무료 신청곡 플랫폼</div>
-    <h1>모두의 플레이리스트<br><em>Applay list</em></h1>
+    <h1>모두의 플레이리스트<br><em>QueueTune</em></h1>
     <p class="sub">링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.</p>
     <!-- 호스트 재입장 배너 -->
     <div class="host-banner hidden" id="host-banner">
@@ -327,7 +338,7 @@ footer a{color:var(--ac);text-decoration:none;}
 </div>
 </main>
 <div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="970x90" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
-<footer><p>© 2025 <strong>Applay list</strong> · apply + playlist · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.7.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · Queue + Tune · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.8.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
@@ -361,7 +372,7 @@ footer a{color:var(--ac);text-decoration:none;}
 <div class="mbg" id="leave-modal"><div class="modal"><h3>👋 플레이룸을 나가시겠습니까?</h3><p>나가면 신청곡 목록에서 빠집니다.</p><button class="btn-p" style="background:var(--ac2);margin-bottom:10px" onclick="closeModal('leave-modal');goHome()">나가기</button><button class="mclose" onclick="closeModal('leave-modal')">취소</button></div></div>
 
 <!-- 후원 -->
-<div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>Applay list를 응원해주세요!<br>소중한 후원이 서비스 운영에 큰 힘이 됩니다.</p><button class="btn-p" style="margin-bottom:10px" onclick="window.open('https://qr.kakaopay.com/FWMiGEELB','_blank')">💛 카카오페이로 후원</button><button class="btn-p" style="background:#0064FF;margin-bottom:10px" onclick="window.open('https://toss.me/applaylist','_blank')">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
+<div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>QueueTune을 응원해주세요!<br>소중한 후원이 서비스 운영에 큰 힘이 됩니다.</p><button class="btn-p" style="margin-bottom:10px" onclick="window.open('https://qr.kakaopay.com/FWMiGEELB','_blank')">💛 카카오페이로 후원</button><button class="btn-p" style="background:#0064FF;margin-bottom:10px" onclick="window.open('https://toss.me/applaylist','_blank')">💙 토스로 후원</button><button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
 
 <!-- 모바일 하단 고정 배너 (방 화면 전용) -->
 <div class="mob-sticky-ad ad-refresh-slot" data-ad-size="320x50" id="mob-sticky-ad"><span class="ad-lbl">AD</span><span style="font-size:11px;color:var(--tx3);">Google AdSense 320×50 — 모바일 하단</span></div>
@@ -382,6 +393,9 @@ var allowGuests=true,autoNextOn=true,qrEnabled=true;
 var roomPw='',members={};
 var roomListener=null,liveListener=null;
 var apiDisabled=false,searchTimer=null,dragSrcIdx=null;
+var _fbTimeOffset=0;
+db.ref('.info/serverTimeOffset').on('value',function(snap){_fbTimeOffset=snap.val()||0;});
+function fbNow(){return Date.now()+_fbTimeOffset;}
 var requireApproval=false,pending=[],_prevPending=[];
 var currentPlayingVid=null;
 
@@ -445,7 +459,7 @@ function attachListener(){
     if(newVid!==prevVid){
       currentPlayingVid=newVid;
       if(cur>=0&&cur<queue.length){
-        var startSec=(!isHost&&d.playStartedAt)?Math.floor((Date.now()-d.playStartedAt)/1000):0;
+        var startSec=(!isHost&&d.playStartedAt)?Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000)):0;
         playCur(startSec);
       }else if(cur===-1)stopPlayer();
     }
@@ -540,7 +554,7 @@ function fbAddQ(v,t,a,th,nick){
   var newQueue=queue.concat([song]);
   var newCur=cur===-1?0:cur;
   var upd={queue:newQueue,cur:newCur};
-  if(cur===-1)upd.playStartedAt=Date.now();
+  if(cur===-1)upd.playStartedAt=fbNow();
   db.ref('rooms/'+rid).update(upd);
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
 }
@@ -553,14 +567,14 @@ function fbRemoveQ(i){
   if(newQueue.length===0)newCur=-1;
   fbUpdateQueue(newQueue,newCur);showToast('삭제했습니다');
 }
-function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:Date.now()});}
+function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:fbNow()});}
 function fbNextSong(){
   if(cur+1<queue.length){
     if(autoRemovePlayed){
       var newQueue=queue.slice();newQueue.splice(cur,1);
       var newCur=newQueue.length>0?Math.min(cur,newQueue.length-1):-1;
-      db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,playStartedAt:Date.now()});
-    }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:Date.now()});}
+      db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,playStartedAt:fbNow()});
+    }else{db.ref('rooms/'+rid).update({cur:cur+1,playStartedAt:fbNow()});}
   }else{showToast('마지막 곡입니다 🎵');document.getElementById('eq').classList.add('p');}
 }
 
@@ -846,7 +860,7 @@ function doJoin(){
     enterRoom(d.name||'🔗 '+rid+' 방');
     attachListener();
     if(cur>=0&&cur<queue.length){
-      var elapsed=d.playStartedAt?Math.floor((Date.now()-d.playStartedAt)/1000):0;
+      var elapsed=d.playStartedAt?Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000)):0;
       playCur(elapsed);
     }
   });
@@ -944,9 +958,9 @@ function confirmDeleteRoom(){
 function getRoomUrl(){return location.href.split('?')[0]+'?r='+rid;}
 function shareLink(){
   var url=getRoomUrl();
-  var title=document.getElementById('rtitle').textContent||'Applay list';
+  var title=document.getElementById('rtitle').textContent||'QueueTune';
   if(navigator.share){
-    navigator.share({title:title+' - Applay list',text:'신청곡 플레이룸에 참여하세요!',url:url}).catch(function(){});
+    navigator.share({title:title+' - QueueTune',text:'신청곡 플레이룸에 참여하세요!',url:url}).catch(function(){});
   }else{
     navigator.clipboard.writeText(url).then(function(){showToast('🔗 링크 복사 완료!');}).catch(function(){var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('🔗 링크 복사 완료!');});
   }
