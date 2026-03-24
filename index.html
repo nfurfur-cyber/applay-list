@@ -41,7 +41,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);
 body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(245,158,11,.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
 header{position:sticky;top:0;z-index:100;background:rgba(11,15,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);}
 .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 20px;}
-.logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--ac);cursor:pointer;user-select:none;letter-spacing:-.5px;}
+.logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--ac);cursor:pointer;user-select:none;letter-spacing:-.5px;display:flex;align-items:center;gap:5px;}
+.logo .beta-tag{font-family:'Noto Sans KR',sans-serif;font-size:9px;font-weight:600;color:var(--ac);background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);padding:3px 6px;border-radius:4px;letter-spacing:.5px;}
 .logo i{font-style:normal;opacity:.5;}
 .btn-ghost{padding:5px 13px;border-radius:18px;border:1px solid var(--bd);background:transparent;color:var(--tx2);font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;}
 .btn-ghost:hover{border-color:var(--ac);color:var(--ac);}
@@ -255,7 +256,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 </style>
 </head>
 <body>
-<header><div class="hdr"><div class="logo" onclick="goHome()">QueueTune <i>🎵</i></div><button class="btn-ghost" onclick="openModal('sup-modal')">☕ 후원</button></div></header>
+<header><div class="hdr"><div class="logo" onclick="goHome()">QueueTune <i>🎵</i><span class="beta-tag">BETA</span></div><button class="btn-ghost" onclick="openModal('sup-modal')">☕ 후원</button></div></header>
 <div class="ad-top"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="728x90">Google AdSense 728×90 — 최상단 광고</div></div>
 <main>
 <div id="homev">
