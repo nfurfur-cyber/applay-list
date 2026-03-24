@@ -245,6 +245,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 .riadd{padding:5px 10px;font-size:10px;}
 .ad-top{padding:8px!important;max-width:100%!important;}
 .bottom-ad{padding:8px!important;max-width:100%!important;}
+.sinput{font-size:10px;}
 }
 @media(max-width:480px){
 .host-banner{padding:8px 12px;gap:8px;flex-direction:column;align-items:stretch;}
@@ -305,7 +306,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div class="pvideo" id="pvideo"><div class="phold" id="phold" onclick="focusSearch()" style="cursor:pointer;"><div class="pi">🎵</div><div>신청곡을 추가하면 자동 재생됩니다</div><div style="font-size:11px;opacity:.5;">여기를 눌러 검색하기</div></div><div id="yt-frame-slot"></div></div>
       <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('audio')">🎵 음악만</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span style="font-size:11px;color:var(--tx3);">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
     </div>
-    <div class="sbox"><div class="blbl">🔍 유튜브 노래 검색 OR 링크 삽입</div><div class="srow"><input class="sinput" id="sin" placeholder="노래 제목·아티스트 검색 또는 유튜브 링크..." onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
+    <div class="sbox"><div class="srow"><input class="sinput" id="sin" placeholder="🔍 노래 제목·아티스트 검색 또는 유튜브 URL 삽입" onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
     <div class="qcard" id="queueCard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
@@ -316,20 +317,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <div class="sidebar">
     <div class="qrcard" id="qrcard">
       <div class="qr-content">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;">
-          <div style="text-align:center;">
-            <div class="qrtit" style="margin-bottom:8px;">📱 QR코드</div>
-            <div class="qrwrap" style="padding:8px;"><div id="qrcv"></div></div>
-            <div class="code-chip" style="margin-top:6px;padding:7px 8px;"><div class="code-val" id="codeBig" style="font-size:18px;letter-spacing:4px;">——</div><span class="code-copy-icon" onclick="copyCode()" title="코드 복사">📋</span></div>
-            <div class="code-hint" style="font-size:9px;">6자리 코드로 입장 가능</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;">
-            <div class="qrtit">📤 플레이룸 공유</div>
-            <button class="qrcopy" onclick="shareLink()" style="font-size:12px;padding:10px;">📤 공유하기</button>
-            <button class="btn-j" style="width:100%;padding:9px;font-size:11px;" onclick="copyCode()">📋 코드 복사</button>
-          </div>
+        <div class="qrtit" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleQRBody()">📱 QR / 공유 <span id="qrArrow" style="font-size:10px;color:var(--ac);">QR ▶</span></div>
+        <div id="qrBody" style="display:none;">
+          <div class="qrsub">스캔하면 이 플레이룸에 즉시 입장!</div><div class="qrwrap"><div id="qrcv"></div></div><div class="code-chip"><div class="code-val" id="codeBig">——</div><span class="code-copy-icon" onclick="copyCode()" title="코드 복사">📋</span></div><div class="code-hint">↑ 코드 6자리를 직접 입력해도 입장 가능</div><div class="qrlink" id="qrlinktxt">링크 로딩 중...</div>
         </div>
-        <div id="qrlinktxt" style="display:none;"></div>
+        <button class="qrcopy" onclick="shareLink()" style="margin-top:8px;">📤 플레이룸 공유하기</button>
       </div>
       <div class="qr-off-msg">🔒 호스트가 QR/링크 공유를 비활성화했습니다</div>
     </div>
@@ -355,7 +347,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 </div>
 </main>
 <div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><div class="bottom-ad"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="970x90" style="max-width:970px;padding:12px 0;">Google AdSense 970×90 — 최하단 광고</div></div></div>
-<footer><p>© 2025 <strong>QueueTune</strong> · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.11.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.12.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
@@ -583,9 +575,8 @@ window.addEventListener('message',function(e){
       _lastPausedAt=pa;_prevRoomPaused=true;
       db.ref('rooms/'+rid).update({paused:true,pausedAt:pa});
     }else if(!isHost){
-      // 게스트 자발적 일시정지 → 호스트 명령이 아니면 즉시 재개
-      if(!_pausedByHost){setTimeout(function(){ytCmd('playVideo');},100);}
-      else{_pausedByHost=false;}
+      // 게스트 일시정지 허용 — resume 시 state=1에서 호스트 위치로 snap됨
+      if(_pausedByHost)_pausedByHost=false;
     }
   }
 });
@@ -742,7 +733,7 @@ function toggleQRBody(){
   var body=document.getElementById('qrBody'),arrow=document.getElementById('qrArrow');
   var hidden=body.style.display==='none';
   body.style.display=hidden?'block':'none';
-  arrow.textContent=hidden?'▼':'▶';
+  arrow.textContent=hidden?'QR ▼':'QR ▶';
 }
 function toggleInfoCard(){
   var body=document.getElementById('infoBody'),arrow=document.getElementById('infoArrow');
@@ -806,7 +797,16 @@ function editTitle(){
 var YT_API_KEY='AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I';
 var DEMO=[{v:'4fndeDfaWCg',t:'좋은 날',a:'아이유 (IU)'},{v:'AJTsXYREMgw',t:'ETA',a:'NewJeans'},{v:'Km71Rr9K-Bw',t:'Fantastic Baby',a:'BIGBANG'},{v:'nZqzELysFaU',t:'Dynamite',a:'BTS'},{v:'gdZLi9oWNZg',t:'Next Level',a:'aespa'},{v:'CK026xBpTuU',t:'RINGA LINGA',a:'태양'},{v:'GkZJ7oi_B5E',t:'ELEVEN',a:'IVE'},{v:'uCOIGDtBgCM',t:'DDU-DU DDU-DU',a:'BLACKPINK'},{v:'9bZkp7q19f0',t:'강남스타일',a:'PSY'},{v:'2ips2mM7Zqw',t:'ANTIFRAGILE',a:'LE SSERAFIM'},{v:'R3PqVMFEMpE',t:'박수 (CLAP)',a:'SEVENTEEN'},{v:'pSudEWBAYRE',t:'Cherry Bomb',a:'NCT 127'},{v:'7C2z4GqqS5E',t:'Supernova',a:'aespa'},{v:'ArmDp-zijuc',t:'APT.',a:'ROSÉ, Bruno Mars'},{v:'pBuZEGYXA6E',t:'Love Lee',a:'AKMU'},{v:'iFUwwIgblqk',t:'SPOT!',a:'ZICO, JENNIE'},{v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},{v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'}];
 function focusSearch(){var el=document.getElementById('sin');if(!el)return;el.focus();el.scrollIntoView({behavior:'smooth',block:'center'});}
-function doSearch(){var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');if(!q){c.innerHTML='';return;}if(extractVid(q)){addByUrlFromSin();return;}if(searchTimer)clearTimeout(searchTimer);searchTimer=setTimeout(function(){doSearchNow(q);},400);}
+function doSearch(){var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');if(!q){c.innerHTML='';return;}if(extractVid(q)){previewUrl(q);return;}if(searchTimer)clearTimeout(searchTimer);searchTimer=setTimeout(function(){doSearchNow(q);},400);}
+function previewUrl(raw){
+  var vid=extractVid(raw);if(!vid)return;
+  var c=document.getElementById('rlist');
+  c.innerHTML='<div style="text-align:center;padding:8px;color:var(--tx2);font-size:11px;">🔍 링크 정보 가져오는 중...</div>';
+  fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+vid)
+    .then(function(r){return r.json();})
+    .then(function(d){renderResults([{v:vid,t:d.title||vid,a:d.author_name||'YouTube'}],'');})
+    .catch(function(){renderResults([{v:vid,t:vid,a:'YouTube'}],'');});
+}
 function addByUrlFromSin(){
   var raw=document.getElementById('sin').value.trim();
   var vid=extractVid(raw);if(!vid)return;
