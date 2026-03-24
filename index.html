@@ -81,12 +81,14 @@ h1 em{font-style:normal;color:var(--ac);}
 .live-section{max-width:660px;margin:36px auto 0;padding:0 20px;}
 .live-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tx2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .live-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
-.room-card{background:var(--sf);border:1px solid var(--bd);border-radius:11px;padding:14px;cursor:pointer;transition:all .2s;}
+.room-card{background:var(--sf);border:1px solid var(--bd);border-radius:11px;padding:14px;display:flex;align-items:flex-start;gap:10px;transition:all .2s;}
 .room-card:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3);}
 .room-card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .room-card-meta{font-size:11px;color:var(--tx3);margin-bottom:6px;}
 .room-card-song{font-size:11px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .room-card-code{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);margin-top:6px;}
+.room-card-del{background:transparent;border:none;color:var(--tx3);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:5px;transition:all .15s;flex-shrink:0;}
+.room-card-del:hover{color:var(--ac);background:rgba(245,158,11,.1);}
 .ftrs{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:44px;padding:0 20px;}
 .fi{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;max-width:110px;}
 .fiico{width:42px;height:42px;background:var(--sf);border:1px solid var(--bd);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s;}
@@ -255,6 +257,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 .host-banner{padding:8px 12px;gap:8px;flex-direction:column;align-items:stretch;}
 .host-banner-txt{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .host-banner button{padding:6px 10px;font-size:10px;}
+.sidebar{display:flex;flex-direction:column;gap:13px;}.sidebar .qrcard{order:2;}.sidebar .pcard{order:1;}
 }
 </style>
 </head>
@@ -1119,16 +1122,18 @@ function loadLiveRooms(){
       var mc=r.members?Object.keys(r.members).length:0;
       var qc=r.queue?r.queue.length:0;
       var song=r.cur>=0&&r.queue&&r.queue[r.cur]?r.queue[r.cur].t:'재생 중인 곡 없음';
-      return '<div class="room-card" onclick="joinFromList(\''+r.code+'\')">'
+      return '<div class="room-card"><div onclick="joinFromList(\''+r.code+'\')" style="flex:1;cursor:pointer;">'
         +'<div class="room-card-name">'+(r.pw?'🔒 ':'')+htmlEsc(r.name||r.code)+'</div>'
         +'<div class="room-card-meta">👥 '+mc+'명 · 🎵 '+qc+'곡</div>'
         +'<div class="room-card-song">♪ '+htmlEsc(song)+'</div>'
         +'<div class="room-card-code">'+r.code+'</div>'
-        +'</div>';
+        +'</div><button class="room-card-del" onclick="event.stopPropagation();deleteRoomCard(\''+r.code+'\')">🗑</button></div>';
     }).join('');
   });
 }
 function htmlEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function deleteRoomCard(code){if(confirm('플레이룸 "'+code+'"을(를) 삭제하시겠습니까?')){db.ref('rooms/'+code).remove().then(function(){showToast('플레이룸이 삭제되었습니다');}).catch(function(){showToast('삭제 중 오류가 발생했습니다');});}}
+
 
 /* ═══ 모달 / 토스트 ═══ */
 function openModal(id){document.getElementById(id).classList.add('open');}
