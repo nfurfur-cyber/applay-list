@@ -89,7 +89,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .room-card-code{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);margin-top:6px;}
 .room-card-del{background:transparent;border:none;color:var(--tx3);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:5px;transition:all .15s;flex-shrink:0;}
 .room-card-del:hover{color:var(--ac);background:rgba(245,158,11,.1);}
-.ftrs{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:44px;padding:0 20px;}
+.ftrs{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:44px;margin-bottom:60px;padding:0 20px;}
 .fi{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;max-width:110px;}
 .fiico{width:42px;height:42px;background:var(--sf);border:1px solid var(--bd);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s;}
 .fi:hover .fiico{border-color:var(--ac);}
@@ -360,7 +360,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 <footer><p>© 2025 <strong>QueueTune</strong> · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.13.0</p></footer>
 
 <!-- 방 만들기 모달 -->
-<div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" onclick="closeModal('cr-modal')">취소</button></div></div>
+<div class="mbg" id="cr-modal"><div class="modal"><h3>🎉 새 플레이룸 만들기</h3><p>플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><button class="btn-p" onclick="confirmCreate()">플레이룸 만들기</button><br><button class="mclose" style="margin-top:16px;" onclick="closeModal('cr-modal')">취소</button></div></div>
 
 <!-- 기존 방 있음 모달 -->
 <div class="mbg" id="exist-modal"><div class="modal"><h3>👑 기존 플레이룸이 있습니다</h3><p><b id="exist-room-name"></b><br><span style="font-family:monospace;color:var(--ac)" id="exist-room-code"></span></p><button class="btn-p" style="margin-bottom:8px" onclick="rejoinExistingRoom()">기존 플레이룸으로 돌아가기</button><button class="btn-p" style="background:var(--sf2);color:var(--tx2);border:1px solid var(--bd);margin-bottom:8px" onclick="deleteExistingAndCreate()">삭제하고 새로 만들기</button><button class="mclose" onclick="closeModal('exist-modal')">취소</button></div></div>
