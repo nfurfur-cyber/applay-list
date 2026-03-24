@@ -107,7 +107,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
 .pvideo.audio-mode{aspect-ratio:unset!important;height:0!important;overflow:hidden!important;}
-.pvideo.guest-lock::after{content:'';position:absolute;inset:0;z-index:5;cursor:default;}
+/* guest-lock::after 제거 — JS로 일시정지 차단, 볼륨 조절은 허용 */
 .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
 .phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:7;background:var(--bg);transition:opacity .3s;}
 .phold.gone{opacity:0;pointer-events:none;}
@@ -404,7 +404,7 @@ db.ref('.info/serverTimeOffset').on('value',function(snap){_fbTimeOffset=snap.va
 function fbNow(){return Date.now()+_fbTimeOffset;}
 var requireApproval=false,pending=[],_prevPending=[];
 var currentPlayingVid=null;
-var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0;
+var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0,_pausedByHost=false;
 
 /* ═══ ID 생성 ═══ */
 function initIds(){
@@ -476,7 +476,7 @@ function attachListener(){
     }else if(!isHost&&newPaused!==_prevRoomPaused){
       // 같은 곡에서 일시정지/재개 변화
       if(newPaused){
-        ytCmd('pauseVideo');
+        _pausedByHost=true;ytCmd('pauseVideo');
         document.getElementById('eq').classList.add('p');
       }else{
         var el=d.playStartedAt?Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000)):0;
@@ -508,6 +508,9 @@ function buildIframe(vid,startSec){
   iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
   iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
   iframe.setAttribute('allowfullscreen','');iframe.id='yt-iframe';
+  iframe.addEventListener('load',function(){
+    try{iframe.contentWindow.postMessage(JSON.stringify({event:'listening'}),'*');}catch(e){}
+  });
   slot.appendChild(iframe);applyMode();
 }
 function ytCmd(func,arg){
@@ -535,11 +538,15 @@ window.addEventListener('message',function(e){
   }
   if(state===2){
     document.getElementById('eq').classList.add('p');
-    // 호스트 일시정지 → Firebase 업데이트
     if(isHost&&rid&&cur>=0&&!_prevRoomPaused){
+      // 호스트 일시정지 → Firebase 업데이트
       var pa=_roomPlayStartedAt?Math.max(0,Math.floor((fbNow()-_roomPlayStartedAt)/1000)):0;
       _lastPausedAt=pa;_prevRoomPaused=true;
       db.ref('rooms/'+rid).update({paused:true,pausedAt:pa});
+    }else if(!isHost){
+      // 게스트 자발적 일시정지 → 호스트 명령이 아니면 즉시 재개
+      if(!_pausedByHost){setTimeout(function(){ytCmd('playVideo');},100);}
+      else{_pausedByHost=false;}
     }
   }
 });
@@ -615,7 +622,7 @@ function fbAddQ(v,t,a,th,nick){
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
 }
 function fbRemoveQ(i){
-  if(!isHost&&queue[i]&&queue[i].nickId!==myNickId){showToast('⚠️ 본인이 신청한 곡만 삭제할 수 있습니다');return;}
+  if(!isHost){showToast('⚠️ 호스트만 신청곡을 삭제할 수 있습니다');return;}
   var newQueue=queue.slice();newQueue.splice(i,1);
   var newCur=cur;
   if(i<cur)newCur--;
@@ -623,7 +630,7 @@ function fbRemoveQ(i){
   if(newQueue.length===0)newCur=-1;
   fbUpdateQueue(newQueue,newCur);showToast('삭제했습니다');
 }
-function fbPlayAt(i){if(rid)db.ref('rooms/'+rid).update({cur:i,playStartedAt:fbNow(),paused:false,pausedAt:0});}
+function fbPlayAt(i){if(rid&&isHost)db.ref('rooms/'+rid).update({cur:i,playStartedAt:fbNow(),paused:false,pausedAt:0});}
 function fbNextSong(){
   if(cur+1<queue.length){
     if(autoRemovePlayed){
@@ -641,7 +648,7 @@ function renderQ(){
   if(!queue.length){l.innerHTML='<div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div>';return;}
   l.innerHTML=queue.map(function(s,i){
     var isPlaying=i===cur;
-    var canDel=isHost||(s.nickId&&s.nickId===myNickId);
+    var canDel=isHost;
     var drag=isHost?'draggable="true" ondragstart="onDragStart(event,'+i+')" ondragover="onDragOver(event,'+i+')" ondrop="onDrop(event,'+i+')" ondragleave="this.style.background=\'\'"':'';
     return '<div class="qi'+(isPlaying?' cur':'')+'" '+drag+'>'
       +(isHost?'<div class="drag-handle">⠿</div>':'')
