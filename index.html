@@ -1037,6 +1037,8 @@ function placeQueueCard(){
   var pc=document.getElementById('pendingCard');
   var pcard=document.querySelector('#room .sidebar .pcard');
   var urlrow=document.querySelector('#room .pcol .urlrow');
+  var qrcard=document.querySelector('#room .sidebar .qrcard');
+  var gcard=document.querySelector('#room .sidebar .gcard');
   if(!qc||!pc)return;
   if(window.innerWidth>820 && pcard){
     /* PC: 신청곡 목록을 참여자 카드 앞에 삽입 (QR → 신청곡 → 참여자) */
@@ -1044,11 +1046,17 @@ function placeQueueCard(){
     sb.insertBefore(qc,pcard);
     sb.insertBefore(pc,pcard);
   }else if(urlrow){
-    /* 모바일: 원래 위치(urlrow 다음) 복원 */
-    var pcol=urlrow.parentNode;
-    var ref2=urlrow.nextElementSibling;
-    if(ref2&&ref2!==qc&&ref2!==pc){pcol.insertBefore(pc,ref2);pcol.insertBefore(qc,ref2);}
-    else{urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
+    /* 모바일: 참여자/QR을 info(gcard) 위로 이동 */
+    var sb=pcard?pcard.parentNode:null;
+    if(sb&&gcard){
+      sb.insertBefore(qrcard,gcard);
+      sb.insertBefore(pcard,gcard);
+    }else if(urlrow){
+      var pcol=urlrow.parentNode;
+      var ref2=urlrow.nextElementSibling;
+      if(ref2&&ref2!==qc&&ref2!==pc){pcol.insertBefore(pc,ref2);pcol.insertBefore(qc,ref2);}
+      else{urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
+    }
   }
 }
 var _qcResizeTimer=null;
