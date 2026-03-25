@@ -113,7 +113,8 @@ h1 em{font-style:normal;color:var(--ac);}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
 .pvideo.audio-mode{aspect-ratio:unset!important;height:0!important;overflow:hidden!important;}
-/* 게스트: JS로 일시정지 차단 및 seek-snap 처리 */
+/* 게스트: 플레이어 조작 차단 (투명 오버레이) */
+.pvideo.guest-lock::after{content:'';position:absolute;inset:0;z-index:5;cursor:default;}
 .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
 .phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:7;background:var(--bg);transition:opacity .3s;}
 .phold.gone{opacity:0;pointer-events:none;}
@@ -140,7 +141,7 @@ h1 em{font-style:normal;color:var(--ac);}
 @keyframes eqkf{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 .eq.p s{animation-play-state:paused;}
 .npi{flex:1;overflow:hidden;}.npt{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.npm{font-size:11px;color:var(--ac);margin-top:2px;}
-.sbox{background:var(--sf);border:1px solid var(--bd);border-radius:11px;padding:15px;max-width:80%;margin:0 auto;}
+.sbox{background:var(--sf);border:1px solid var(--bd);border-radius:11px;padding:15px;max-width:90%;margin:0 auto;}
 .blbl{font-size:11px;color:var(--tx2);font-weight:500;margin-bottom:7px;}
 .srow{display:flex;gap:7px;}
 .sinput{flex:1;padding:9px 12px;background:var(--sf2);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:12px;outline:none;transition:border-color .2s;}
@@ -521,7 +522,7 @@ var requireApproval=false,pending=[],_prevPending=[];
 var currentPlayingVid=null;
 var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0,_pausedByHost=false;
 var maxMembers=0;
-var _hostCurrentTime=0,_hostSeekPending=false,_guestInitialPlay=false;
+var _hostCurrentTime=0,_hostSeekPending=false,_guestInitialPlay=false,_guestSyncTimer=null;
 
 /* ═══ ID 생성 ═══ */
 function initIds(){
@@ -689,6 +690,32 @@ window.addEventListener('message',function(e){
     }else if(!isHost){
       // 게스트 일시정지 허용 — resume 시 state=1에서 호스트 위치로 snap됨
       if(_pausedByHost)_pausedByHost=false;
+    }
+  }
+});
+/* ═══ 게스트 주기적 호스트 동기화 (5초마다) ═══ */
+function startGuestSync(){
+  stopGuestSync();
+  _guestSyncTimer=setInterval(function(){
+    if(isHost||!rid||cur<0||!_roomPlayStartedAt||_prevRoomPaused)return;
+    var f=document.getElementById('yt-iframe');if(!f)return;
+    // iframe에서 현재 재생 시간 요청 (infoDelivery로 수신)
+    try{f.contentWindow.postMessage(JSON.stringify({event:'command',func:'getCurrentTime',args:''}),'*');}catch(e){}
+  },5000);
+}
+function stopGuestSync(){if(_guestSyncTimer){clearInterval(_guestSyncTimer);_guestSyncTimer=null;}}
+var _guestCurrentTime=0;
+// infoDelivery에서 게스트 현재 시간 수집 + 드리프트 보정
+window.addEventListener('message',function(e){
+  if(!e.origin||!e.origin.includes('youtube'))return;
+  var data;try{data=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(err){return;}
+  if(!data||!data.event||data.event!=='infoDelivery'||!data.info)return;
+  if(!isHost&&data.info.currentTime!==undefined){
+    _guestCurrentTime=data.info.currentTime;
+    if(rid&&cur>=0&&_roomPlayStartedAt&&!_prevRoomPaused){
+      var hostElapsed=Math.max(0,(fbNow()-_roomPlayStartedAt)/1000);
+      var drift=Math.abs(_guestCurrentTime-hostElapsed);
+      if(drift>3){_guestInitialPlay=true;ytCmd('seekTo',Math.floor(hostElapsed));}
     }
   }
 });
@@ -1161,6 +1188,7 @@ function enterRoom(name){
   drawQR(url);renderQ();renderMembers();updateGuestInfo();
   localStorage.setItem('apl_activeRoom',rid);
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
+  if(!isHost)startGuestSync();
   placeQueueCard();
   window.scrollTo(0,0);
 }
@@ -1202,7 +1230,7 @@ function goHome(){
   document.getElementById('homev').classList.remove('hidden');
   document.getElementById('home-bottom').classList.remove('hidden');
   document.getElementById('live-rooms-wrap').classList.remove('hidden');
-  stopPlayer();applyMode();
+  stopPlayer();stopGuestSync();applyMode();
   /* queueCard/pendingCard를 원래 pcol 위치(urlrow 다음)로 복원 */
   var qc=document.getElementById('queueCard');var pc=document.getElementById('pendingCard');var urlrow=document.querySelector('.urlrow');
   if(qc&&pc&&urlrow){urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
