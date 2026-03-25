@@ -954,12 +954,11 @@ function doSearchNow(q){
 function demoFallback(q){
   var c=document.getElementById('rlist');
   c.innerHTML='<div style="text-align:center;padding:12px;color:var(--tx2);font-size:11px;">🔍 검색 중...</div>';
-  fetch('https://pipedapi.kavin.rocks/search?q='+encodeURIComponent(q)+'&filter=music_songs')
+  fetch('/api/search?q='+encodeURIComponent(q))
     .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
-    .then(function(data){
-      var items=(data.items||[]).filter(function(i){return i.url&&i.type==='stream';}).slice(0,8);
+    .then(function(items){
       if(!items.length){localFallback(q);return;}
-      renderResults(items.map(function(item){return{v:item.url.replace('/watch?v=',''),t:item.title||'',a:item.uploaderName||''};}),q);
+      renderResults(items,q);
     })
     .catch(function(){localFallback(q);});
 }
