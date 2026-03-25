@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>QueueTune 🎵 - 무료 신청곡 플랫폼</title>
-<meta name="description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요. 가게·파티·방송에서 바로 사용 가능한 QueueTune 무료 신청곡 플랫폼.">
+<meta name="description" content="QueueTune은 링크·QR 하나로 신청곡을 모으고 함께 음악을 즐기는 무료 실시간 플레이리스트 플랫폼입니다. 앱 설치·회원가입 없이 바로 사용 가능합니다.">
 <meta name="keywords" content="신청곡, 플레이리스트, 유튜브, 파티, 가게음악, QR신청, QueueTune">
 <meta name="author" content="QueueTune">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://applaylist.com/">
 <meta property="og:title" content="QueueTune 🎵 - 무료 신청곡 플랫폼">
-<meta property="og:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
+<meta property="og:description" content="QueueTune — 링크·QR 하나로 신청곡을 모으고 함께 즐기는 무료 실시간 플레이리스트 플랫폼">
 <meta property="og:image" content="https://applaylist.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,7 +19,7 @@
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="QueueTune 🎵 - 무료 신청곡 플랫폼">
-<meta name="twitter:description" content="링크·QR 하나로 누구나 신청곡을 올리고 함께 음악을 즐겨요.">
+<meta name="twitter:description" content="QueueTune — 링크·QR 하나로 신청곡을 모으고 함께 즐기는 무료 실시간 플레이리스트 플랫폼">
 <meta name="twitter:image" content="https://applaylist.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
@@ -229,6 +229,14 @@ h1 em{font-style:normal;color:var(--ac);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .hidden{display:none!important;}
 #homev{max-width:1200px;margin:0 auto;}
+.faq-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
+.faq-wrap details{background:var(--sf);border-bottom:1px solid var(--bd);}
+.faq-wrap details:last-child{border-bottom:none;}
+.faq-wrap details summary{padding:16px 20px;font-size:14px;font-weight:700;color:var(--tx);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-wrap details summary::-webkit-details-marker{display:none;}
+.faq-wrap details summary::after{content:'＋';font-size:15px;color:var(--ac);flex-shrink:0;}
+.faq-wrap details[open] summary::after{content:'－';}
+.faq-wrap .faq-body{padding:0 20px 16px;font-size:13px;color:var(--tx2);line-height:1.7;}
 .bottom-zone{border-top:1px solid var(--bd);margin-top:40px;}
 .bottom-sup{padding:12px 20px;display:flex;justify-content:center;}.bottom-sup .supbtn{max-width:500px;}
 .bottom-ad{background:var(--sf);padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:10px;}
@@ -289,97 +297,95 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
     <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 내 플레이룸</div>
     <div class="live-grid" id="live-rooms-list"></div>
   </div>
+  <!-- 핵심 특징 아이콘 -->
+  <div class="ftrs">
+    <div class="fi"><div class="fiico">🎵</div><div class="finm">유튜브 연동</div><div class="fidsc">검색 또는 링크 추가</div></div>
+    <div class="fi"><div class="fiico">📡</div><div class="finm">실시간 동기화</div><div class="fidsc">모든 기기에서 동시 참여</div></div>
+    <div class="fi"><div class="fiico">📺</div><div class="finm">영상/음악 선택</div><div class="fidsc">보기 모드 자유선택</div></div>
+    <div class="fi"><div class="fiico">📱</div><div class="finm">QR 상시 노출</div><div class="fidsc">파티·행사에서 즉시</div></div>
+    <div class="fi"><div class="fiico">👑</div><div class="finm">호스트 권한</div><div class="fidsc">곡 삭제·순서 변경</div></div>
+  </div>
+
   <!-- 서비스 소개 콘텐츠 섹션 -->
   <div style="max-width:860px;margin:0 auto 56px;padding:0 20px;">
 
-    <!-- 섹션A: 서비스 소개 -->
-    <section style="margin-bottom:44px;">
-      <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tx);margin-bottom:14px;letter-spacing:-.3px;">QueueTune이란?</h2>
-      <p style="color:var(--tx2);font-size:14px;line-height:1.9;">
-        QueueTune(큐튠)은 <strong style="color:var(--tx);">링크와 QR 코드 하나로 누구나 신청곡을 올리고 함께 음악을 즐길 수 있는 무료 실시간 플레이리스트 플랫폼</strong>입니다.
-        앱 설치도 회원가입도 필요 없이, 스마트폰으로 QR 코드를 스캔하거나 링크를 클릭하는 것만으로 바로 플레이룸에 입장할 수 있습니다.
-        호스트는 플레이룸을 생성하고 참여자들의 신청곡을 실시간으로 확인하고 관리할 수 있으며,
-        승인 기능을 활용하면 신청곡을 직접 선별해 재생 목록을 구성하는 것도 가능합니다.
-        파티, 행사, 모임, DJ·MC 무대, 카페·매장 BGM 등 음악이 필요한 모든 자리에서 간편하게 활용할 수 있도록 설계된 서비스입니다.
-        유튜브 영상 검색 또는 링크 붙여넣기로 신청곡을 추가할 수 있으며, 실시간으로 모든 참여자의 화면에 동기화됩니다.
+    <!-- 서비스 소개 요약 -->
+    <section style="margin-bottom:44px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px 28px;">
+      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);margin-bottom:10px;letter-spacing:-.3px;">QueueTune이란?</h2>
+      <p style="color:var(--tx2);font-size:14px;line-height:1.85;margin:0;">
+        QueueTune(큐튠)은 <strong style="color:var(--tx);">링크·QR 하나로 신청곡을 모으고 함께 음악을 즐기는 무료 실시간 플레이리스트 플랫폼</strong>입니다.
+        앱 설치·회원가입 없이 QR 스캔 또는 링크 클릭만으로 바로 입장할 수 있습니다.
+        호스트는 신청곡을 실시간으로 관리하고, 승인 기능으로 플레이리스트를 직접 큐레이션할 수 있습니다.
+        파티, 행사, 모임, DJ·MC 무대 등 음악이 필요한 모든 자리에 적합합니다.
       </p>
     </section>
 
-    <!-- 섹션B: 사용 방법 -->
+    <!-- 사용 방법 4단계 -->
     <section style="margin-bottom:44px;">
-      <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tx);margin-bottom:18px;letter-spacing:-.3px;">사용 방법</h2>
-      <div style="display:flex;flex-direction:column;gap:16px;">
+      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);margin-bottom:18px;letter-spacing:-.3px;">사용 방법</h2>
+      <div style="display:flex;flex-direction:column;gap:14px;">
         <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="flex-shrink:0;width:32px;height:32px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">1</div>
-          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;">플레이룸 만들기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">홈 화면에서 '플레이룸 만들기'를 클릭하고 방 이름과 닉네임을 입력하면 바로 플레이룸이 생성됩니다. 비밀번호 설정, 신청곡 제한, 인원 제한, 승인 기능 등 다양한 옵션을 사전에 설정할 수 있습니다.</div></div>
+          <div style="flex-shrink:0;width:30px;height:30px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">1</div>
+          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px;">플레이룸 만들기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">방 이름과 닉네임을 입력하면 바로 생성됩니다. 비밀번호, 신청곡 제한, 인원 제한, 승인 기능 등 사전 설정 가능합니다.</div></div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="flex-shrink:0;width:32px;height:32px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">2</div>
-          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;">QR 또는 링크 공유하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">생성된 플레이룸의 QR 코드를 화면에 띄우거나 링크를 카카오톡, 문자, SNS 등으로 공유하세요. 참여자는 QR 스캔 한 번으로 별도 입력 없이 바로 입장할 수 있습니다.</div></div>
+          <div style="flex-shrink:0;width:30px;height:30px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">2</div>
+          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px;">QR 또는 링크 공유하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">QR 코드를 화면에 띄우거나 링크를 카카오톡·문자·SNS로 공유하세요. QR 스캔 한 번으로 즉시 입장할 수 있습니다.</div></div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="flex-shrink:0;width:32px;height:32px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">3</div>
-          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;">참여자가 신청곡 추가하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">입장한 참여자는 유튜브 검색 또는 링크 붙여넣기로 원하는 곡을 신청할 수 있습니다. 신청곡은 실시간으로 목록에 반영되며 모든 참여자 화면에 동시에 표시됩니다.</div></div>
+          <div style="flex-shrink:0;width:30px;height:30px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">3</div>
+          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px;">참여자가 신청곡 추가하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">유튜브 검색 또는 링크 붙여넣기로 신청곡을 추가합니다. 신청곡은 실시간으로 모든 참여자 화면에 동기화됩니다.</div></div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="flex-shrink:0;width:32px;height:32px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">4</div>
-          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;">호스트가 승인·관리하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">호스트는 신청곡 순서를 드래그로 변경하거나 삭제할 수 있습니다. 승인 기능을 켜두면 참여자가 신청한 곡을 검토한 뒤 승인하거나 거절할 수 있어 원하는 분위기에 맞게 플레이리스트를 운영할 수 있습니다.</div></div>
+          <div style="flex-shrink:0;width:30px;height:30px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);">4</div>
+          <div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px;">호스트가 승인·관리하기</div><div style="font-size:13px;color:var(--tx2);line-height:1.7;">신청곡 순서를 드래그로 바꾸거나 삭제할 수 있습니다. 승인 기능을 켜면 곡을 검토 후 승인·거절할 수 있습니다.</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 섹션C: 활용 상황 -->
+    <!-- 활용 상황 -->
     <section style="margin-bottom:44px;">
-      <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tx);margin-bottom:14px;letter-spacing:-.3px;">이런 상황에 잘 맞아요</h2>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">🎉 파티·집들이</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">🎓 대학 축제·행사</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">💒 웨딩 2부 피로연</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">🎸 동아리·소모임</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">🎧 DJ·행사 진행</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">☕ 카페·매장 BGM</span>
-        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--tx2);">🏟 스포츠 응원 행사</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);margin-bottom:14px;letter-spacing:-.3px;">이런 상황에 잘 맞아요</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">🎉 파티·집들이</span>
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">🎓 대학 축제·행사</span>
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">💒 웨딩 2부 피로연</span>
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">🎸 동아리·소모임</span>
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">🎧 DJ·행사 진행</span>
+        <span style="background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:5px 13px;font-size:13px;color:var(--tx2);">🏟 스포츠 응원 행사</span>
       </div>
-      <p style="color:var(--tx2);font-size:13px;line-height:1.8;">음악이 함께하는 모든 자리에서 QueueTune을 활용해보세요. 복잡한 준비 없이 스마트폰 하나로 실시간 신청곡 서비스를 운영할 수 있습니다. 참여자가 직접 원하는 음악을 신청할 수 있어 더욱 활기차고 즐거운 분위기를 만들 수 있습니다.</p>
+      <p style="color:var(--tx2);font-size:13px;line-height:1.8;">복잡한 준비 없이 스마트폰 하나로 실시간 신청곡 서비스를 운영할 수 있습니다. 참여자가 직접 원하는 음악을 신청해 더욱 활기찬 분위기를 만들어보세요.</p>
     </section>
 
-    <!-- 섹션D: FAQ -->
+    <!-- FAQ (접힘형) -->
     <section>
-      <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tx);margin-bottom:18px;letter-spacing:-.3px;">자주 묻는 질문</h2>
-      <div style="display:flex;flex-direction:column;gap:1px;border-radius:12px;overflow:hidden;border:1px solid var(--bd);">
-        <div style="background:var(--sf);padding:16px 20px;border-bottom:1px solid var(--bd);">
-          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:6px;">앱 설치가 필요한가요?</div>
-          <div style="font-size:13px;color:var(--tx2);line-height:1.7;">앱 설치가 전혀 필요하지 않습니다. QR 코드를 스캔하거나 링크를 클릭하면 모바일 브라우저에서 바로 이용할 수 있습니다. iOS, 안드로이드 모두 지원되며 별도의 다운로드 없이 즉시 사용 가능합니다.</div>
-        </div>
-        <div style="background:var(--sf);padding:16px 20px;border-bottom:1px solid var(--bd);">
-          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:6px;">회원가입이 필요한가요?</div>
-          <div style="font-size:13px;color:var(--tx2);line-height:1.7;">회원가입이 필요하지 않습니다. 닉네임만 입력하면 바로 플레이룸에 참여할 수 있습니다. 호스트 역시 별도의 계정 없이 플레이룸을 생성하고 관리할 수 있어 누구나 간편하게 시작할 수 있습니다.</div>
-        </div>
-        <div style="background:var(--sf);padding:16px 20px;border-bottom:1px solid var(--bd);">
-          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:6px;">호스트가 신청곡을 관리할 수 있나요?</div>
-          <div style="font-size:13px;color:var(--tx2);line-height:1.7;">네, 호스트는 신청된 곡의 순서를 드래그로 변경하거나 삭제할 수 있습니다. 또한 '승인 필요' 옵션을 켜면 참여자가 신청한 곡을 검토한 후 승인 또는 거절할 수 있어 원하는 분위기에 맞는 플레이리스트를 유지할 수 있습니다.</div>
-        </div>
-        <div style="background:var(--sf);padding:16px 20px;border-bottom:1px solid var(--bd);">
-          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:6px;">QR로 바로 입장할 수 있나요?</div>
-          <div style="font-size:13px;color:var(--tx2);line-height:1.7;">네, 플레이룸의 QR 코드를 스캔하면 별도의 링크 입력 없이 바로 해당 플레이룸으로 이동합니다. 호스트가 QR 코드를 화면이나 프로젝터에 크게 띄워두면 참여자들이 더욱 편리하게 입장할 수 있습니다.</div>
-        </div>
-        <div style="background:var(--sf);padding:16px 20px;">
-          <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:6px;">무료인가요?</div>
-          <div style="font-size:13px;color:var(--tx2);line-height:1.7;">QueueTune의 모든 핵심 기능은 완전 무료로 제공됩니다. 플레이룸 생성, 신청곡 추가, QR·링크 공유, 실시간 동기화, 호스트 관리 기능 모두 무료입니다. 서비스가 마음에 드셨다면 커피 한 잔 후원으로 응원해 주시면 서비스 운영에 큰 힘이 됩니다.</div>
-        </div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);margin-bottom:14px;letter-spacing:-.3px;">자주 묻는 질문</h2>
+      <div class="faq-wrap">
+        <details>
+          <summary>앱 설치가 필요한가요?</summary>
+          <div class="faq-body">앱 설치가 전혀 필요하지 않습니다. QR 코드를 스캔하거나 링크를 클릭하면 모바일 브라우저에서 바로 이용할 수 있습니다. iOS, 안드로이드 모두 지원되며 별도의 다운로드 없이 즉시 사용 가능합니다.</div>
+        </details>
+        <details>
+          <summary>회원가입이 필요한가요?</summary>
+          <div class="faq-body">회원가입이 필요하지 않습니다. 닉네임만 입력하면 바로 플레이룸에 참여할 수 있습니다. 호스트 역시 별도의 계정 없이 플레이룸을 생성하고 관리할 수 있어 누구나 간편하게 시작할 수 있습니다.</div>
+        </details>
+        <details>
+          <summary>호스트가 신청곡을 관리할 수 있나요?</summary>
+          <div class="faq-body">네, 호스트는 신청된 곡의 순서를 드래그로 변경하거나 삭제할 수 있습니다. 또한 '승인 필요' 옵션을 켜면 참여자가 신청한 곡을 검토한 후 승인 또는 거절할 수 있어 원하는 분위기에 맞는 플레이리스트를 유지할 수 있습니다.</div>
+        </details>
+        <details>
+          <summary>QR로 바로 입장할 수 있나요?</summary>
+          <div class="faq-body">네, 플레이룸의 QR 코드를 스캔하면 별도의 링크 입력 없이 바로 해당 플레이룸으로 이동합니다. 호스트가 QR 코드를 화면이나 프로젝터에 크게 띄워두면 참여자들이 더욱 편리하게 입장할 수 있습니다.</div>
+        </details>
+        <details>
+          <summary>무료인가요?</summary>
+          <div class="faq-body">QueueTune의 모든 핵심 기능은 완전 무료로 제공됩니다. 플레이룸 생성, 신청곡 추가, QR·링크 공유, 실시간 동기화, 호스트 관리 기능 모두 무료입니다. 서비스가 마음에 드셨다면 커피 한 잔 후원으로 응원해 주시면 서비스 운영에 큰 힘이 됩니다.</div>
+        </details>
       </div>
     </section>
 
   </div>
   <!-- /서비스 소개 콘텐츠 섹션 끝 -->
-
-  <div class="ftrs">
-    <div class="fi"><div class="fiico">🎵</div><div class="finm">유튜브 연동</div><div class="fidsc">검색 또는 링크 추가</div></div>
-    <div class="fi"><div class="fiico">📡</div><div class="finm">실시간 동기화</div><div class="fidsc">모든 기기에서 동시 참여</div></div>
-    <div class="fi"><div class="fiico">📺</div><div class="finm">영상/음악 선택</div><div class="fidsc">보기 모드 자유선택</div></div>
-    <div class="fi"><div class="fiico">📱</div><div class="finm">QR 상시 노출</div><div class="fidsc">매장·파티에서 즉시</div></div>
-    <div class="fi"><div class="fiico">👑</div><div class="finm">호스트 권한</div><div class="fidsc">곡 삭제·순서 변경</div></div>
-  </div>
 </div>
 <div id="room">
   <div class="pcol">
@@ -441,7 +447,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 </div>
 </main>
 <div class="bottom-zone hidden" id="home-bottom"><div class="bottom-sup"><button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기 (카카오페이 · 토스)</button></div><!-- ADSENSE_REVIEW: 심사 후 활성화 --><div class="bottom-ad" style="display:none;"><span class="ad-lbl">AD</span><div class="ad-slot ad-refresh-slot" data-ad-size="970x90" style="max-width:970px;padding:12px 0;"></div></div></div>
-<footer><p>© 2025 <strong>QueueTune</strong> · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.18.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 무료 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;">v1.19.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*">
