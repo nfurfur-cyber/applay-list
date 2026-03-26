@@ -637,13 +637,15 @@ function attachListener(){
         }
       }else if(cur===-1)stopPlayer();
     }else if(newVid&&d.playStartedAt&&d.playStartedAt!==prevPlayStartedAt&&!newPaused){
-      // 반복재생: 같은 곡이지만 playStartedAt 변경 → 처음부터 재시작
+      // 같은 곡이지만 playStartedAt 변경 — seek(elapsed>2s) 또는 반복재생(elapsed<=2s)
+      var elapsed=Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000));
       if(isHost){
-        playCur(0);
+        if(elapsed>2){ytCmd('seekTo',elapsed);ytCmd('playVideo');}
+        // elapsed<=2: 반복재생 — fbNextSong에서 playCur(0) 이미 호출됨, 중복 방지
       }else{
-        var rs=Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000));
         if(/iPad|iPhone|iPod/.test(navigator.userAgent)){showIosTapPrompt(d.playStartedAt);}
-        else{playCur(rs);}
+        else if(elapsed>2){_guestInitialPlay=true;ytCmd('seekTo',elapsed);ytCmd('playVideo');}
+        else{playCur(0);}
       }
     }else if(!isHost&&newPaused!==_prevRoomPaused){
       // 같은 곡에서 일시정지/재개 변화
