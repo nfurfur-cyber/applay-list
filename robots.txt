@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /firebase-debug.log
-Sitemap: https://www.applaylist.com/sitemap.xml
+Sitemap: https://applaylist.com/sitemap.xml
