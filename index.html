@@ -1346,7 +1346,17 @@ function openCreateRoom(){
   var activeRoom=localStorage.getItem('apl_activeRoom');
   if(activeRoom){
     db.ref('rooms/'+activeRoom).once('value').then(function(s){
-      if(s.exists()){showToast('⚠️ 이미 다른 플레이룸에 참여 중입니다. 먼저 나가주세요.');return;}
+      if(s.exists()){
+        if(s.val().hostId===myHostId){
+          // 내 방 → hosts/ 복원 후 재시도 (checkExistingRoom에서 처리)
+          db.ref('hosts/'+myHostId).set(activeRoom);
+          localStorage.removeItem('apl_activeRoom');
+          openCreateRoom();
+        }else{
+          showToast('⚠️ 이미 다른 플레이룸에 참여 중입니다. 먼저 나가주세요.');
+        }
+        return;
+      }
       localStorage.removeItem('apl_activeRoom');openCreateRoom();
     });return;
   }
@@ -1630,6 +1640,21 @@ checkExistingRoom(function(code,name){
     document.getElementById('host-banner').classList.remove('hidden');
     document.getElementById('host-banner-name').textContent=name||code;
     document.getElementById('exist-room-code').textContent=code;
+  }else{
+    // hosts/ 기록 없어도 apl_activeRoom이 내 방이면 복원
+    var savedRoom=localStorage.getItem('apl_activeRoom');
+    if(savedRoom){
+      db.ref('rooms/'+savedRoom).once('value').then(function(s){
+        if(s.exists()&&s.val().hostId===myHostId){
+          var d=s.val();
+          db.ref('hosts/'+myHostId).set(savedRoom);
+          existingRoomCode=savedRoom;
+          document.getElementById('host-banner').classList.remove('hidden');
+          document.getElementById('host-banner-name').textContent=d.name||savedRoom;
+          document.getElementById('exist-room-code').textContent=savedRoom;
+        }
+      });
+    }
   }
 });
 // URL 파라미터: QR/링크 접속 + 새로고침 자동 재입장
