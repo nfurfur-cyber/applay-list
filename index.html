@@ -196,7 +196,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .reorder-banner button{background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:10px;padding:3px 10px;border-radius:5px;cursor:pointer;}
 .playmode-btn{padding:3px 10px;border-radius:6px;background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .playmode-btn:hover{border-color:var(--ac);color:var(--ac);}
-.limit-input{width:52px;padding:4px 6px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:12px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;}
+.limit-input{width:52px;padding:2px 5px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:12px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;}
 .limit-input:focus{border-color:var(--ac);}
 .limit-input::-webkit-outer-spin-button,.limit-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .qinum{font-size:11px;color:var(--tx3);width:18px;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;}
@@ -213,12 +213,12 @@ h1 em{font-style:normal;color:var(--ac);}
 .hcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .htit{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;align-items:center;gap:5px;}
 .htit span{font-size:9px;background:var(--ac);color:var(--bg);padding:1px 7px;border-radius:3px;font-weight:700;}
-.trow{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:8px;}
+.trow{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:6px;}
 .tog{width:33px;height:18px;background:var(--bd);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;border:none;}
 .tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;}
 .tog.on{background:var(--ac3);}.tog.on::after{transform:translateX(15px);}
 .limit-sel{display:flex;gap:4px;align-items:center;flex-shrink:0;}
-.limit-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;}
+.limit-btn{padding:2px 8px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;white-space:nowrap;}
 .limit-btn.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:700;}
 .gcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
 .gtit{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;align-items:center;gap:5px;}
@@ -427,7 +427,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('audio')">🎵 음악만</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span id="volIcon" style="font-size:14px;color:var(--tx3);cursor:pointer;" onclick="toggleMute()">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
     </div>
     <div class="sbox"><div class="srow"><input class="sinput" id="sin" placeholder="🔍 노래 제목·아티스트 검색 또는 유튜브 URL 삽입" onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
-    <div class="qcard" id="queueCard"><div class="qhdr"><div class="qtit">신청곡 목록</div><button class="playmode-btn" id="playmodeBtn" onclick="cyclePlayMode()" title="재생 모드 변경">▶ 자동재생</button><div class="qcnt" id="qcnt">0곡</div></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
+    <div class="qcard" id="queueCard"><div class="qhdr"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div><button class="playmode-btn" id="playmodeBtn" onclick="cyclePlayMode()" title="재생 모드 변경">▶ 자동재생</button></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
       <div class="qhdr"><div class="qtit" style="color:var(--ac);">⏳ 승인 대기</div><div class="qcnt" id="pendCnt" style="background:rgba(239,68,68,.1);color:var(--ac2);">0곡</div></div>
@@ -455,7 +455,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div id="infoBody" style="display:block;">
         <div class="grow"><span>게스트 신청</span><span class="gval" id="gi1">허용</span></div>
         <div class="grow"><span>재생 모드</span><span class="gval" id="gi2">자동재생</span></div>
-        <div class="grow"><span>곡 제한</span><span class="gval" id="gi3">무제한</span></div>
+        <div class="grow"><span>게스트 곡 제한</span><span class="gval" id="gi3">무제한</span></div>
         <div class="grow"><span>신청곡 최대</span><span class="gval" id="gi4">무제한</span></div>
         <div class="grow"><span>승인 필요</span><span class="gval" id="gi5">OFF</span></div>
         <div class="grow"><span>최대 인원</span><span class="gval" id="gi6">무제한</span></div>
@@ -487,11 +487,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 <!-- 호스트 설정 모달 -->
 <div class="mbg" id="settings-modal"><div class="modal" style="max-width:360px;text-align:left;">
   <h3 style="text-align:center;">⚙ 플레이룸 설정</h3>
-  <div class="trow"><span>게스트 신청 허용</span><button class="tog on" id="togguest" onclick="toggleGuests()"></button></div>
-  <div class="trow"><span>재생 완료 곡 자동 삭제</span><button class="tog" id="togremove" onclick="toggleAutoRemove()"></button></div>
   <div class="trow"><span>신청곡 승인 필요</span><button class="tog" id="togapproval" onclick="toggleApproval()"></button></div>
   <div class="trow"><span>QR/링크 공유</span><button class="tog on" id="togqr" onclick="toggleQR()"></button></div>
-  <div class="trow"><span>인원당 곡 제한</span><div class="limit-sel" id="limitSel"><input class="limit-input" id="limitInput" type="number" min="1" max="99" placeholder="숫자" onchange="setLimitInput(this.value)"><button class="limit-btn on" id="limitUnlim" onclick="setLimit(0)">무제한</button></div></div>
+  <div class="trow"><span>재생 완료 곡 자동 삭제</span><button class="tog" id="togremove" onclick="toggleAutoRemove()"></button></div>
+  <div class="trow"><span>게스트 신청 허용</span><button class="tog on" id="togguest" onclick="toggleGuests()"></button></div>
+  <div class="trow"><span>게스트 곡 제한</span><div class="limit-sel" id="limitSel"><input class="limit-input" id="limitInput" type="number" min="1" max="99" placeholder="숫자" onchange="setLimitInput(this.value)"><button class="limit-btn on" id="limitUnlim" onclick="setLimit(0)">무제한</button></div></div>
   <div class="trow"><span>신청곡 최대 수</span><div class="limit-sel" id="maxQSel"><input class="limit-input" id="maxQInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxQueueInput(this.value)"><button class="limit-btn on" id="maxQUnlim" onclick="setMaxQueue(0)">무제한</button></div></div>
   <div class="trow"><span>최대 입장 인원</span><div class="limit-sel" id="maxMSel"><input class="limit-input" id="maxMInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxMembersInput(this.value)"><button class="limit-btn on" id="maxMUnlim" onclick="setMaxMembers(0)">무제한</button></div></div>
   <button class="mclose" style="width:100%;margin-top:12px;" onclick="closeModal('settings-modal')">닫기</button>
@@ -817,9 +817,9 @@ function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 /* ═══ 신청곡 큐 ═══ */
 function checkLimit(){
   if(maxQueueSize>0&&queue.length>=maxQueueSize){showToast('⚠️ 신청곡 목록이 가득 찼습니다 (최대 '+maxQueueSize+'곡)');return false;}
-  if(songLimit===0)return true;
+  if(songLimit===0||isHost)return true;
   var cnt=queue.filter(function(s){return s.nick===myNick;}).length;
-  if(cnt>=songLimit){showToast('⚠️ 1인당 최대 '+songLimit+'곡까지 신청 가능');return false;}
+  if(cnt>=songLimit){showToast('⚠️ 게스트 최대 '+songLimit+'곡까지 신청 가능');return false;}
   return true;
 }
 function fbAddQ(v,t,a,th,nick){
@@ -1050,7 +1050,7 @@ function toggleInfoCard(){
 }
 
 /* ═══ 호스트 설정 ═══ */
-function setLimit(n){songLimit=n;fbSave({limit:n});showToast(n===0?'곡 제한 해제':'1인당 '+n+'곡 제한');syncHostPanel();}
+function setLimit(n){songLimit=n;fbSave({limit:n});showToast(n===0?'게스트 곡 제한 해제':'게스트 최대 '+n+'곡 제한');syncHostPanel();}
 function setLimitInput(v){var n=parseInt(v);if(!n||n<1)return;setLimit(n);}
 function setMaxQueue(n){maxQueueSize=n;fbSave({maxQueue:n});showToast(n===0?'신청곡 수 제한 없음':'신청곡 최대 '+n+'곡');syncHostPanel();}
 function setMaxQueueInput(v){var n=parseInt(v);if(!n||n<1)return;setMaxQueue(n);}
