@@ -10,6 +10,7 @@
 | 2026-03-26 | 11:49:26 | v1.7.0 | index.html | 모바일QR수정, INFO배지 괄호삭제/오른쪽이동/회색, 후원배너삭제, 말풍선그리드, 호스트참여자고정, 삭제버튼색상 |
 | 2026-03-26 | 13:44:14 | v1.19.1 | index.html | 설정 숫자 입력칸/무제한 버튼 높이 통일 (28px, flex 정렬) |
 | 2026-03-26 | 16:06:58 | v1.26.0 | index.html | 홈페이지 8분이하 음악 안내 삽입, 볼륨·모바일삭제·8분차단·서버폴백 등 v1.22~v1.26 종합 |
+| 2026-03-26 | 20:28:26 | **v1.27.4** | **index.html** | **🎯 AdSense 심사 제출 체크포인트** — 검색초기화(v1.27.3) + sitemap정리 + 소유권메타태그 |
 
 ---
 
@@ -94,5 +95,34 @@ git push
 
 ---
 
+### 2026-03-26 v1.27.4 ⭐ AdSense 심사 제출 체크포인트
+
+**시간**: 20:28:26
+**파일**: `2026-03-26_20-28-26_v1.27.4_index.html`
+**git commit**: `40ac296`
+
+**변경사항**:
+
+**1. 검색 초기화 강화 (v1.27.3 → v1.27.4)**
+   - 방 나가기(`goHome()`), 방 삭제(`confirmDeleteRoom()`)에도 검색창 초기화 추가
+   - `searchTimer` 대기 중인 검색도 함께 취소
+   - 새 방 생성 시 이전 검색 결과가 남는 버그 완전 해결
+
+**2. AdSense 심사 최적화 (v1.27.4)**
+   - `sitemap.xml`: noindex 페이지(privacy/terms) 제거 → 메인 페이지만 포함
+   - `index.html`: `<meta name="google-adsense-account" content="ca-pub-2061027569183097">` 추가
+   - `ads.txt`: 정상 확인 (google.com, pub-2061027569183097, DIRECT)
+   - `robots.txt`: 정상 확인
+
+**심사 제출 전 콘솔 설정 3가지 (코드 외)**:
+   1. Google Cloud Console → YouTube API 키 HTTP 리퍼러 제한 (`applaylist.com/*`)
+   2. Firebase Console → Realtime Database Rules 확인
+   3. Vercel Dashboard → www → non-www 301 리다이렉트
+
+**상태**: ✅ 코드 레벨 모든 항목 완료, AdSense 제출 준비 완료
+**다음 단계**: 콘솔 설정 3가지 + AdSense 심사 대기
+
+---
+
 **마지막 업데이트**: 2026-03-26
-**최신 버전**: v1.26.0
+**최신 버전**: v1.27.4 (AdSense 심사 체크포인트)
