@@ -109,7 +109,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .rmembers b{color:var(--ac);}
 .bsm{padding:5px 11px;border-radius:6px;background:var(--sf);border:1px solid var(--bd);color:var(--tx2);font-size:11px;cursor:pointer;transition:all .2s;}
 .bsm:hover{border-color:var(--tx2);}
-.bsm.d{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.5);color:var(--ac2);}
+.bsm.d{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.35);color:var(--ac2);}
 .bsm.d:hover{background:var(--ac2);border-color:var(--ac2);color:#fff;}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
@@ -187,8 +187,10 @@ h1 em{font-style:normal;color:var(--ac);}
 .qi:hover{background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.15);}
 .qi.cur{border-color:var(--ac);background:rgba(245,158,11,.06);}
 .qi.dragging{opacity:.4;}
-.drag-handle{color:var(--tx3);font-size:14px;cursor:grab;flex-shrink:0;line-height:1;padding:0 2px;}
+.drag-handle{color:var(--tx3);font-size:14px;cursor:grab;flex-shrink:0;line-height:1;padding:4px 6px;touch-action:none;user-select:none;}
 .drag-handle:active{cursor:grabbing;}
+.qi.touch-dragging{opacity:.5;background:rgba(245,158,11,.15)!important;}
+.qi.touch-over{border-top:2px solid var(--ac);}
 .qinum{font-size:11px;color:var(--tx3);width:18px;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;}
 .qi.cur .qinum{color:var(--ac);}
 .qith{width:52px;height:38px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--bd);}
@@ -708,15 +710,14 @@ window.addEventListener('message',function(e){
     }
   }
 });
-/* ═══ 게스트 주기적 호스트 동기화 (5초마다) ═══ */
+/* ═══ 게스트 주기적 호스트 동기화 (3초마다) ═══ */
 function startGuestSync(){
   stopGuestSync();
   _guestSyncTimer=setInterval(function(){
     if(isHost||!rid||cur<0||!_roomPlayStartedAt||_prevRoomPaused)return;
     var f=document.getElementById('yt-iframe');if(!f)return;
-    // iframe에서 현재 재생 시간 요청 (infoDelivery로 수신)
     try{f.contentWindow.postMessage(JSON.stringify({event:'command',func:'getCurrentTime',args:''}),'*');}catch(e){}
-  },5000);
+  },3000);
 }
 function stopGuestSync(){if(_guestSyncTimer){clearInterval(_guestSyncTimer);_guestSyncTimer=null;}}
 var _guestCurrentTime=0;
@@ -730,7 +731,7 @@ window.addEventListener('message',function(e){
     if(rid&&cur>=0&&_roomPlayStartedAt&&!_prevRoomPaused){
       var hostElapsed=Math.max(0,(fbNow()-_roomPlayStartedAt)/1000);
       var drift=Math.abs(_guestCurrentTime-hostElapsed);
-      if(drift>3){_guestInitialPlay=true;ytCmd('seekTo',Math.floor(hostElapsed));}
+      if(drift>2){_guestInitialPlay=true;ytCmd('seekTo',Math.floor(hostElapsed));}
     }
   }
 });
@@ -885,6 +886,55 @@ function onDrop(e,idx){
   dragSrcIdx=null;
   fbUpdateQueue(newQueue,newCur);
 }
+
+/* ═══ 모바일 터치 드래그 (호스트 전용) ═══ */
+var _touchDragIdx=null,_touchOverIdx=null,_touchStartY=0;
+function initTouchDrag(){
+  var list=document.getElementById('qlist');if(!list)return;
+  list.addEventListener('touchstart',function(e){
+    var handle=e.target.closest('.drag-handle');if(!handle||!isHost)return;
+    var qi=handle.closest('.qi');if(!qi)return;
+    var items=Array.from(list.querySelectorAll('.qi'));
+    _touchDragIdx=items.indexOf(qi);
+    _touchStartY=e.touches[0].clientY;
+    qi.classList.add('touch-dragging');
+  },{passive:true});
+  list.addEventListener('touchmove',function(e){
+    if(_touchDragIdx===null)return;
+    e.preventDefault();
+    var touch=e.touches[0];
+    var items=Array.from(list.querySelectorAll('.qi'));
+    items.forEach(function(el){el.classList.remove('touch-over');});
+    var target=document.elementFromPoint(touch.clientX,touch.clientY);
+    if(target){
+      var qi=target.closest('.qi');
+      if(qi&&list.contains(qi)){
+        var idx=items.indexOf(qi);
+        if(idx!==-1&&idx!==_touchDragIdx){
+          _touchOverIdx=idx;
+          qi.classList.add('touch-over');
+        }
+      }
+    }
+  },{passive:false});
+  list.addEventListener('touchend',function(e){
+    if(_touchDragIdx===null)return;
+    var items=Array.from(list.querySelectorAll('.qi'));
+    items.forEach(function(el){el.classList.remove('touch-dragging','touch-over');});
+    if(_touchOverIdx!==null&&_touchOverIdx!==_touchDragIdx){
+      var newQueue=queue.slice();
+      var moved=newQueue.splice(_touchDragIdx,1)[0];
+      newQueue.splice(_touchOverIdx,0,moved);
+      var newCur=cur;
+      if(cur===_touchDragIdx)newCur=_touchOverIdx;
+      else if(cur>_touchDragIdx&&cur<=_touchOverIdx)newCur--;
+      else if(cur<_touchDragIdx&&cur>=_touchOverIdx)newCur++;
+      fbUpdateQueue(newQueue,newCur);
+    }
+    _touchDragIdx=null;_touchOverIdx=null;
+  },{passive:true});
+}
+document.addEventListener('DOMContentLoaded',initTouchDrag);
 
 /* ═══ 참여자 ═══ */
 function renderMembers(){
