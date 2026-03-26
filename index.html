@@ -196,8 +196,9 @@ h1 em{font-style:normal;color:var(--ac);}
 .reorder-banner button{background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:10px;padding:3px 10px;border-radius:5px;cursor:pointer;}
 .playmode-btn{padding:3px 10px;border-radius:6px;background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .playmode-btn:hover{border-color:var(--ac);color:var(--ac);}
-.limit-input{width:56px;padding:4px 6px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:11px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;}
+.limit-input{width:52px;padding:4px 6px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:12px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;}
 .limit-input:focus{border-color:var(--ac);}
+.limit-input::-webkit-outer-spin-button,.limit-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .qinum{font-size:11px;color:var(--tx3);width:18px;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;}
 .qi.cur .qinum{color:var(--ac);}
 .qith{width:52px;height:38px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--bd);}
@@ -216,7 +217,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .tog{width:33px;height:18px;background:var(--bd);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;border:none;}
 .tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;}
 .tog.on{background:var(--ac3);}.tog.on::after{transform:translateX(15px);}
-.limit-sel{display:flex;gap:4px;flex-wrap:wrap;}
+.limit-sel{display:flex;gap:4px;align-items:center;flex-shrink:0;}
 .limit-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;}
 .limit-btn.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:700;}
 .gcard{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:15px;}
@@ -488,11 +489,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <h3 style="text-align:center;">⚙ 플레이룸 설정</h3>
   <div class="trow"><span>게스트 신청 허용</span><button class="tog on" id="togguest" onclick="toggleGuests()"></button></div>
   <div class="trow"><span>재생 완료 곡 자동 삭제</span><button class="tog" id="togremove" onclick="toggleAutoRemove()"></button></div>
-  <div class="trow"><span>인원당 곡 제한</span><div class="limit-sel" id="limitSel"><input class="limit-input" id="limitInput" type="number" min="1" max="99" placeholder="숫자" onchange="setLimitInput(this.value)"><button class="limit-btn on" id="limitUnlim" onclick="setLimit(0)">무제한</button></div></div>
-  <div class="trow"><span>신청곡 최대 수</span><div class="limit-sel" id="maxQSel"><input class="limit-input" id="maxQInput" type="number" min="1" max="999" placeholder="숫자" onchange="setMaxQueueInput(this.value)"><button class="limit-btn on" id="maxQUnlim" onclick="setMaxQueue(0)">무제한</button></div></div>
   <div class="trow"><span>신청곡 승인 필요</span><button class="tog" id="togapproval" onclick="toggleApproval()"></button></div>
   <div class="trow"><span>QR/링크 공유</span><button class="tog on" id="togqr" onclick="toggleQR()"></button></div>
-  <div class="trow"><span>최대 입장 인원</span><div class="limit-sel" id="maxMSel"><input class="limit-input" id="maxMInput" type="number" min="1" max="999" placeholder="숫자" onchange="setMaxMembersInput(this.value)"><button class="limit-btn on" id="maxMUnlim" onclick="setMaxMembers(0)">무제한</button></div></div>
+  <div class="trow"><span>인원당 곡 제한</span><div class="limit-sel" id="limitSel"><input class="limit-input" id="limitInput" type="number" min="1" max="99" placeholder="숫자" onchange="setLimitInput(this.value)"><button class="limit-btn on" id="limitUnlim" onclick="setLimit(0)">무제한</button></div></div>
+  <div class="trow"><span>신청곡 최대 수</span><div class="limit-sel" id="maxQSel"><input class="limit-input" id="maxQInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxQueueInput(this.value)"><button class="limit-btn on" id="maxQUnlim" onclick="setMaxQueue(0)">무제한</button></div></div>
+  <div class="trow"><span>최대 입장 인원</span><div class="limit-sel" id="maxMSel"><input class="limit-input" id="maxMInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxMembersInput(this.value)"><button class="limit-btn on" id="maxMUnlim" onclick="setMaxMembers(0)">무제한</button></div></div>
   <button class="mclose" style="width:100%;margin-top:12px;" onclick="closeModal('settings-modal')">닫기</button>
 </div></div>
 
