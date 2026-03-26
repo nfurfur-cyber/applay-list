@@ -637,12 +637,10 @@ function attachListener(){
         }
       }else if(cur===-1)stopPlayer();
     }else if(newVid&&d.playStartedAt&&d.playStartedAt!==prevPlayStartedAt&&!newPaused){
-      // 같은 곡이지만 playStartedAt 변경 — seek(elapsed>2s) 또는 반복재생(elapsed<=2s)
-      var elapsed=Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000));
-      if(isHost){
-        if(elapsed>2){ytCmd('seekTo',elapsed);ytCmd('playVideo');}
-        // elapsed<=2: 반복재생 — fbNextSong에서 playCur(0) 이미 호출됨, 중복 방지
-      }else{
+      // 같은 곡이지만 playStartedAt 변경 — seek 또는 반복재생
+      if(!isHost){
+        // 게스트만 동기화 — 호스트는 이미 올바른 위치에 있음
+        var elapsed=Math.max(0,Math.floor((fbNow()-d.playStartedAt)/1000));
         if(/iPad|iPhone|iPod/.test(navigator.userAgent)){showIosTapPrompt(d.playStartedAt);}
         else if(elapsed>2){_guestInitialPlay=true;ytCmd('seekTo',elapsed);ytCmd('playVideo');}
         else{playCur(0);}
@@ -759,15 +757,18 @@ window.addEventListener('message',function(e){
     // 자동재생 성공 → 오버레이 적용 + 타이머 해제
     if(!isHost&&_autoplayTimer){clearTimeout(_autoplayTimer);_autoplayTimer=null;}
     if(isHost&&rid&&cur>=0){
-      var newStart;
       if(_prevRoomPaused){
-        newStart=fbNow()-(_lastPausedAt*1000);
+        var newStart=fbNow()-(_lastPausedAt*1000);
         _lastPausedAt=0;_prevRoomPaused=false;
-      }else if(_hostSeekPending){
-        newStart=fbNow()-Math.floor(_hostCurrentTime*1000);
-      }
-      if(newStart!==undefined){
         db.ref('rooms/'+rid).update({paused:false,pausedAt:0,playStartedAt:newStart});
+      }else if(_hostSeekPending){
+        // seek 후 infoDelivery가 새 위치를 반영할 때까지 500ms 대기
+        setTimeout(function(){
+          if(rid&&cur>=0){
+            var ns=fbNow()-Math.floor(_hostCurrentTime*1000);
+            db.ref('rooms/'+rid).update({playStartedAt:ns});
+          }
+        },500);
       }
       _hostSeekPending=false;
     }else if(!isHost&&rid&&cur>=0&&_roomPlayStartedAt){
