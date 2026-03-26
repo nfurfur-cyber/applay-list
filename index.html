@@ -196,7 +196,8 @@ h1 em{font-style:normal;color:var(--ac);}
 .reorder-banner button{background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:10px;padding:3px 10px;border-radius:5px;cursor:pointer;}
 .playmode-btn{padding:3px 10px;border-radius:6px;background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .playmode-btn:hover{border-color:var(--ac);color:var(--ac);}
-.limit-input{width:46px!important;min-width:46px;max-width:46px;padding:2px 4px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:11px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;}
+.limit-input{width:46px!important;min-width:46px;max-width:46px;padding:0 4px;height:22px;line-height:22px;background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:11px;text-align:center;outline:none;font-family:'Noto Sans KR',sans-serif;box-sizing:border-box;vertical-align:middle;}
+.limit-btn{padding:0 8px;height:22px;line-height:22px;}
 .limit-input:focus{border-color:var(--ac);}
 .limit-input::-webkit-outer-spin-button,.limit-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .qinum{font-size:11px;color:var(--tx3);width:18px;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;}
@@ -1057,7 +1058,12 @@ function setMaxQueueInput(v){var n=parseInt(v);if(!n||n<1)return;setMaxQueue(n);
 function toggleGuests(){allowGuests=!allowGuests;fbSave({allowGuests:allowGuests});showToast(allowGuests?'게스트 신청 허용':'게스트 신청 차단');}
 /* ═══ 재생 모드 순환 ═══ */
 var _playModes=['auto','manual','repeat','shuffle'];
-var _playModeInfo={auto:{icon:'▶',label:'자동재생'},manual:{icon:'⏹',label:'수동재생'},repeat:{icon:'🔁',label:'반복재생'},shuffle:{icon:'🔀',label:'랜덤재생'}};
+var _playModeInfo={
+  auto:  {icon:'▶', label:'자동재생', color:'var(--ac3)',  border:'rgba(16,185,129,.5)'},
+  manual:{icon:'⏹', label:'수동재생', color:'var(--tx3)',  border:'var(--bd)'},
+  repeat:{icon:'🔁', label:'반복재생', color:'var(--ac)',   border:'rgba(245,158,11,.5)'},
+  shuffle:{icon:'🔀',label:'랜덤재생', color:'#a78bfa',    border:'rgba(167,139,250,.5)'}
+};
 function cyclePlayMode(){
   if(!isHost){showToast('⚠️ 호스트만 변경 가능합니다');return;}
   var idx=(_playModes.indexOf(playMode)+1)%_playModes.length;
@@ -1068,7 +1074,12 @@ function cyclePlayMode(){
 }
 function syncPlayModeBtn(){
   var btn=document.getElementById('playmodeBtn');
-  if(btn){var m=_playModeInfo[playMode]||_playModeInfo.auto;btn.textContent=m.icon+' '+m.label;}
+  if(btn){
+    var m=_playModeInfo[playMode]||_playModeInfo.auto;
+    btn.textContent=m.icon+' '+m.label;
+    btn.style.color=m.color;
+    btn.style.borderColor=m.border;
+  }
 }
 function toggleAutoRemove(){autoRemovePlayed=!autoRemovePlayed;fbSave({autoRemovePlayed:autoRemovePlayed});showToast(autoRemovePlayed?'재생 완료 곡 자동 삭제 ON':'자동 삭제 OFF');}
 function toggleApproval(){requireApproval=!requireApproval;fbSave({requireApproval:requireApproval});showToast(requireApproval?'신청곡 승인 모드 ON':'승인 없이 바로 재생');}
@@ -1497,17 +1508,34 @@ checkExistingRoom(function(code,name){
     document.getElementById('exist-room-code').textContent=code;
   }
 });
-// URL 파라미터: QR/링크로 접속 시 자동 입장 프로세스
+// URL 파라미터: QR/링크 접속 + 새로고침 자동 재입장
 var rp=new URLSearchParams(location.search).get('r');
 if(rp){
   var rCode=rp.toUpperCase();
   var savedRoom=localStorage.getItem('apl_activeRoom');
   var savedNick=localStorage.getItem('apl_nick');
-  // 게스트 새로고침: 저장된 방 코드와 닉이 있으면 모달 없이 자동 재입장
-  if(savedRoom===rCode&&savedNick){
-    myNick=savedNick;
-    pendingCode=rCode;
-    setTimeout(function(){doJoin();},600);
+  if(savedRoom===rCode){
+    // 방 정보 조회 후 호스트/게스트 분기 자동 재입장
+    db.ref('rooms/'+rCode).once('value').then(function(snap){
+      if(!snap.exists()){localStorage.removeItem('apl_activeRoom');return;}
+      var d=snap.val();
+      if(d.hostId===myHostId){
+        // 호스트 자동 재입장
+        rid=rCode;isHost=true;myNick=d.hostNick||'호스트';myNickId=myHostId;
+        var hRef=db.ref('rooms/'+rid+'/members/'+myHostId);
+        hRef.set({nick:myNick,host:true,joinedAt:Date.now()});
+        hRef.onDisconnect().remove();
+        localStorage.setItem('apl_activeRoom',rid);
+        enterRoom(d.name||rid);
+        attachListener();
+      }else if(savedNick){
+        // 게스트 자동 재입장
+        myNick=savedNick;pendingCode=rCode;doJoin();
+      }else{
+        document.getElementById('jcode').value=rCode;
+        promptJoinNick();
+      }
+    });
   }else{
     document.getElementById('jcode').value=rCode;
     setTimeout(function(){promptJoinNick();},500);
