@@ -1564,6 +1564,9 @@ function goHome(){
   localStorage.removeItem('apl_nick');
   rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';pending=[];currentPlayingVid=null;
   document.getElementById('jcode').value='';
+  var _s=document.getElementById('sin');if(_s)_s.value='';
+  var _r=document.getElementById('rlist');if(_r)_r.innerHTML='';
+  if(searchTimer){clearTimeout(searchTimer);searchTimer=null;}
   history.replaceState(null,'',location.pathname);
   loadLiveRooms();
 }
@@ -1579,6 +1582,9 @@ function confirmDeleteRoom(){
   document.getElementById('homev').classList.remove('hidden');
   document.getElementById('live-rooms-wrap').classList.remove('hidden');
   stopPlayer();rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};pending=[];currentPlayingVid=null;
+  var _s2=document.getElementById('sin');if(_s2)_s2.value='';
+  var _r2=document.getElementById('rlist');if(_r2)_r2.innerHTML='';
+  if(searchTimer){clearTimeout(searchTimer);searchTimer=null;}
   // 배너 숨김 + 상태 초기화
   document.getElementById('host-banner').classList.add('hidden');
   existingRoomCode='';
