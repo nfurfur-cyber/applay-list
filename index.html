@@ -1413,6 +1413,7 @@ function confirmCreate(){
   _crSettings={guest:true,approval:false,qr:true};
   ['guest','approval','qr'].forEach(function(k){var t=document.getElementById('cr-tog'+k);if(t)t.classList.toggle('on',_crSettings[k]);});
   data.members[myHostId]={nick:hostNick,host:true,joinedAt:Date.now()};
+  members=data.members; // 로컬 즉시 반영 — Firebase 응답 전에도 1명 표시
   db.ref('rooms/'+rid).set(data);
   db.ref('hosts/'+myHostId).set(rid);
   db.ref('rooms/'+rid+'/members/'+myHostId).onDisconnect().remove();
