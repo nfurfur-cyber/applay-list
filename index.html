@@ -756,6 +756,8 @@ window.addEventListener('message',function(e){
     }
     // 자동재생 성공 → 오버레이 적용 + 타이머 해제
     if(!isHost&&_autoplayTimer){clearTimeout(_autoplayTimer);_autoplayTimer=null;}
+    // 게스트 음소거 유지: iframe 새로 생성될 때마다 _muted 상태 재적용
+    if(!isHost&&_muted){ytCmd('mute');ytCmd('setVolume',0);}
     if(isHost&&rid&&cur>=0){
       if(_prevRoomPaused){
         var newStart=fbNow()-(_lastPausedAt*1000);
