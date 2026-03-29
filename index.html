@@ -1520,7 +1520,13 @@ function enterRoom(name){
   // 이전 검색 내용 초기화
   var sinEl=document.getElementById('sin');if(sinEl)sinEl.value='';
   var rlistEl=document.getElementById('rlist');if(rlistEl)rlistEl.innerHTML='';
-  if(!isHost)startGuestSync();
+  if(!isHost){
+    startGuestSync();
+    // 게스트는 음소거로 시작 — 호스트 오디오와 겹침 방지
+    _muted=true;ytCmd('mute');
+    var _vr=document.getElementById('vol-range');if(_vr)_vr.value=0;
+    var _vi=document.getElementById('volIcon');if(_vi)_vi.textContent='🔇';
+  }
   placeQueueCard();
   window.scrollTo(0,0);
 }
@@ -1650,22 +1656,30 @@ loadLiveRooms();
 // 호스트 기존 방 확인
 checkExistingRoom(function(code,name){
   if(code){
+    // URL 파라미터로 이미 입장했으면 스킵
+    if(rid) return;
     existingRoomCode=code;
-    document.getElementById('host-banner').classList.remove('hidden');
-    document.getElementById('host-banner-name').textContent=name||code;
     document.getElementById('exist-room-code').textContent=code;
+    var savedRoom=localStorage.getItem('apl_activeRoom');
+    if(savedRoom===code){
+      // 이전에 활성 상태였던 방 → 자동 재입장
+      rejoinExistingRoom();
+    }else{
+      document.getElementById('host-banner').classList.remove('hidden');
+      document.getElementById('host-banner-name').textContent=name||code;
+    }
   }else{
     // hosts/ 기록 없어도 apl_activeRoom이 내 방이면 복원
     var savedRoom=localStorage.getItem('apl_activeRoom');
     if(savedRoom){
       db.ref('rooms/'+savedRoom).once('value').then(function(s){
         if(s.exists()&&s.val().hostId===myHostId){
+          if(rid) return;
           var d=s.val();
           db.ref('hosts/'+myHostId).set(savedRoom);
           existingRoomCode=savedRoom;
-          document.getElementById('host-banner').classList.remove('hidden');
-          document.getElementById('host-banner-name').textContent=d.name||savedRoom;
           document.getElementById('exist-room-code').textContent=savedRoom;
+          rejoinExistingRoom();
         }
       });
     }
