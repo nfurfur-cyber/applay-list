@@ -91,6 +91,20 @@ h1 em{font-style:normal;color:var(--ac);}
 .room-card-code{font-family:'Space Mono',monospace;font-size:10px;color:var(--tx3);margin-top:6px;}
 .room-card-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4);color:var(--ac2);font-size:18px;cursor:pointer;padding:8px 12px;border-radius:6px;transition:all .15s;flex-shrink:0;align-self:center;}
 .room-card-del:hover{color:#fff;background:var(--ac2);border-color:var(--ac2);}
+/* 인기곡 차트 — 가로 스크롤 */
+.top-chart{max-width:660px;margin:32px auto 0;padding:0 20px;}
+.top-chart-title{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.top-chart-title span{font-size:12px;color:var(--tx3);font-weight:400;}
+.chart-scroll{overflow-x:auto;overflow-y:hidden;display:flex;gap:10px;padding-bottom:8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.chart-scroll::-webkit-scrollbar{display:none;}
+.chart-item{flex:0 0 140px;min-width:0;overflow:hidden;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px;cursor:pointer;transition:border-color .2s,transform .2s;scroll-snap-align:start;text-align:center;}
+.chart-item:hover{border-color:var(--ac);transform:translateY(-2px);}
+.chart-rank{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--tx3);margin-bottom:6px;}
+.chart-item:nth-child(-n+3) .chart-rank{color:var(--ac);}
+.chart-thumb{width:80px;height:80px;border-radius:8px;object-fit:cover;margin:0 auto 8px;display:block;}
+.chart-song{font-size:11px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chart-artist{font-size:10px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chart-count{font-size:10px;color:var(--tx3);margin-top:4px;}
 .ftrs{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:44px;margin-bottom:60px;padding:0 20px;}
 .fi{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;max-width:110px;}
 .fiico{width:42px;height:42px;background:var(--sf);border:1px solid var(--bd);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s;}
@@ -384,6 +398,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
     <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 내 플레이룸</div>
     <div class="live-grid" id="live-rooms-list"></div>
   </div>
+  <!-- 인기곡 차트 -->
+  <div class="top-chart hidden" id="top-chart-wrap">
+    <div class="top-chart-title">🏆 인기곡 TOP 10 <span>전체 플레이룸 기준</span></div>
+    <div class="chart-scroll" id="top-chart-list"></div>
+  </div>
   <!-- 핵심 특징 아이콘 -->
   <div class="ftrs">
     <div class="fi"><div class="fiico">🎵</div><div class="finm">유튜브 연동</div><div class="fidsc">8분 이하 음악만 신청</div></div>
@@ -548,7 +567,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.29.2</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.30.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -1091,6 +1110,17 @@ window.addEventListener('message',function(e){
   if(!e.origin||!e.origin.includes('youtube'))return;
   var data;try{data=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(err){return;}
   if(!data)return;
+  // ★ YouTube 오류 처리 (150, 153 = 임베딩 불가)
+  if(data.event==='onError'){
+    var errCode=data.info;
+    if(errCode===150||errCode===153){
+      showToast('⚠️ 이 영상은 임베딩이 차단되어 재생할 수 없습니다');
+    }else if(errCode===2||errCode===5||errCode===100||errCode===101){
+      showToast('⚠️ 영상을 재생할 수 없습니다 (오류 '+errCode+')');
+    }
+    if(isHost){setTimeout(function(){if(queue.length>1)fbNextSong();else stopPlayer();},1500);}
+    return;
+  }
   // 호스트 현재 재생 위치 추적 (seek 동기화용)
   if(data.event==='infoDelivery'&&data.info&&data.info.currentTime!==undefined&&isHost){
     _hostCurrentTime=data.info.currentTime;
@@ -1287,6 +1317,8 @@ function _fbAddQConfirmed(v,t,a,th,nick){
   db.ref('rooms/'+rid).update(upd);
   // 첫 곡 추가 시 즉시 로컬 재생 (Firebase 리스너 왕복 대기 없이)
   if(cur===-1&&isHost){queue=newQueue;cur=0;currentPlayingVid=song.v;playCur(0);renderQ();}
+  // 인기곡 통계 수집
+  try{var statRef=db.ref('stats/songs/'+v);statRef.transaction(function(d){if(!d)d={t:t,a:a,th:th,count:0};d.count=(d.count||0)+1;d.t=t;d.a=a;d.th=th;return d;});}catch(e){}
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
 }
 function fbRemoveQ(i){
@@ -1750,6 +1782,7 @@ function rejoinExistingRoom(){
     var hmRef=db.ref('rooms/'+rid+'/members/'+myHostId);
     hmRef.set({nick:myNick,host:true,joinedAt:Date.now()});
     hmRef.onDisconnect().remove();
+    members=snap.val().members||{};members[myHostId]={nick:myNick,host:true,joinedAt:Date.now()};
     enterRoom(snap.val().name||'🎉 신청곡 플레이룸');
     attachListener();
   });
@@ -1948,7 +1981,7 @@ function goHome(){
   var _r=document.getElementById('rlist');if(_r)_r.innerHTML='';
   if(searchTimer){clearTimeout(searchTimer);searchTimer=null;}
   history.replaceState(null,'',location.pathname);
-  loadLiveRooms();
+  loadLiveRooms();loadTopSongs();
 }
 function deleteRoom(){openModal('del-modal');}
 function confirmDeleteRoom(){
@@ -2009,6 +2042,28 @@ function loadLiveRooms(){
   });
 }
 function htmlEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* ═══ 인기곡 차트 ═══ */
+function loadTopSongs(){
+  db.ref('stats/songs').orderByChild('count').limitToLast(10).once('value',function(snap){
+    var items=[];
+    snap.forEach(function(child){var d=child.val();d.vid=child.key;items.push(d);});
+    items.reverse();
+    var wrap=document.getElementById('top-chart-wrap');
+    var list=document.getElementById('top-chart-list');
+    if(!items.length){if(wrap)wrap.classList.add('hidden');return;}
+    if(wrap)wrap.classList.remove('hidden');
+    list.innerHTML=items.map(function(s,i){
+      var thumb=s.th||'https://img.youtube.com/vi/'+s.vid+'/default.jpg';
+      return '<div class="chart-item" onclick="window.open(\'https://youtube.com/watch?v='+s.vid+'\',\'_blank\')">'
+        +'<div class="chart-rank">#'+(i+1)+'</div>'
+        +'<img class="chart-thumb" src="'+htmlEsc(thumb)+'" alt="" loading="lazy">'
+        +'<div class="chart-song">'+htmlEsc(s.t||'')+'</div>'
+        +'<div class="chart-artist">'+htmlEsc(s.a||'')+'</div>'
+        +'<div class="chart-count">'+s.count+'회</div>'
+        +'</div>';
+    }).join('');
+  });
+}
 function deleteRoomCard(code){if(confirm('플레이룸 "'+code+'"을(를) 삭제하시겠습니까?')){db.ref('rooms/'+code).remove().then(function(){showToast('플레이룸이 삭제되었습니다');if(code===existingRoomCode){existingRoomCode='';document.getElementById('host-banner').classList.add('hidden');db.ref('hosts/'+myHostId).remove();}}).catch(function(){showToast('삭제 중 오류가 발생했습니다');});}}
 
 
@@ -2022,7 +2077,7 @@ function showToast(msg){var t=document.getElementById('toast');t.textContent=msg
 /* ═══ 초기화 ═══ */
 initIds();
 applyPlanLocks();
-loadLiveRooms();
+loadLiveRooms();loadTopSongs();
 // 호스트 기존 방 확인
 checkExistingRoom(function(code,name){
   if(code){
@@ -2073,6 +2128,7 @@ if(rp){
         hRef.set({nick:myNick,host:true,joinedAt:Date.now()});
         hRef.onDisconnect().remove();
         localStorage.setItem('apl_activeRoom',rid);
+        members=d.members||{};members[myHostId]={nick:myNick,host:true,joinedAt:Date.now()};
         enterRoom(d.name||rid);
         attachListener();
       }else if(savedNick){
