@@ -219,6 +219,64 @@ h1 em{font-style:normal;color:var(--ac);}
 .tog{width:33px;height:18px;background:var(--bd);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;border:none;}
 .tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;}
 .tog.on{background:var(--ac3);}.tog.on::after{transform:translateX(15px);}
+/* [TEST] 플랜 잠금 표시 */
+.trow.plan-locked{opacity:.55;position:relative;}
+.trow.plan-locked .tog{pointer-events:none;background:var(--bd) !important;}
+.trow.plan-locked .tog::after{background:#666 !important;}
+.trow.plan-locked .tog.on{background:var(--bd) !important;}
+.plan-lock-icon{font-size:13px;margin-left:6px;cursor:pointer;}
+.plan-lock-badge{display:inline-block;font-size:9px;color:var(--ac);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:1px 6px;margin-left:6px;vertical-align:middle;white-space:nowrap;}
+.plan-locked-input{position:relative;}
+.plan-locked-input input{pointer-events:none;opacity:.4;}
+.plan-locked-input .plan-lock-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;background:rgba(11,15,21,.5);}
+/* 공지 배너 */
+.notice-banner{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
+.notice-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac);border-radius:3px 0 0 3px;}
+.notice-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.notice-title .notice-icon{font-size:16px;}
+.notice-desc{font-size:12px;color:var(--tx2);line-height:1.6;}
+.notice-banner.size-md .notice-title{font-size:17px;}.notice-banner.size-md .notice-desc{font-size:14px;}
+.notice-banner.size-lg .notice-title{font-size:20px;}.notice-banner.size-lg .notice-desc{font-size:16px;}
+.notice-banner.size-lg{padding:18px 20px;}
+.notice-promo{background:var(--sf);border:1px dashed var(--bd);border-radius:12px;padding:14px 16px;margin-bottom:10px;text-align:center;cursor:pointer;}
+.notice-promo:hover{border-color:var(--ac);background:rgba(245,158,11,.03);}
+.notice-promo-text{font-size:12px;color:var(--tx3);}
+.notice-promo-text span{color:var(--ac);font-weight:600;}
+/* 설정 — 공지 입력 */
+.notice-input-group{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin:8px 0 10px;}
+.notice-input-group label{font-size:11px;color:var(--tx3);font-weight:600;display:block;margin-bottom:4px;}
+.notice-input-group input,.notice-input-group textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;color:var(--tx);font-size:12px;font-family:inherit;resize:none;outline:none;}
+.notice-input-group input:focus,.notice-input-group textarea:focus{border-color:var(--ac);}
+.notice-input-group .char-count{font-size:10px;color:var(--tx3);text-align:right;margin-top:3px;}
+/* 설정 — 화면 표시 */
+.section-toggle-group{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin:8px 0 10px;}
+.section-toggle-group .stg-title{font-size:11px;color:var(--tx3);font-weight:600;margin-bottom:8px;}
+.stg-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:5px;}
+.stg-row:last-child{margin-bottom:0;}
+/* 승인 모드 설명 팝업 */
+.approval-flow{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.approval-step{display:flex;align-items:flex-start;gap:10px;background:var(--sf2);border-radius:10px;padding:12px 14px;}
+.approval-step .step-icon{font-size:20px;flex-shrink:0;}
+.approval-step .step-text{font-size:12px;color:var(--tx2);line-height:1.6;}
+.approval-step .step-text b{color:var(--tx);display:block;margin-bottom:2px;}
+.approval-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 16px;}
+.approval-compare .cmp{border-radius:10px;padding:12px;font-size:11px;line-height:1.7;}
+.approval-compare .cmp-off{background:rgba(148,163,184,.06);border:1px solid var(--bd);color:var(--tx3);}
+.approval-compare .cmp-on{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--tx2);}
+.approval-compare .cmp-label{font-size:10px;font-weight:700;margin-bottom:6px;display:block;}
+.cmp-off .cmp-label{color:var(--tx3);}
+.cmp-on .cmp-label{color:var(--ac);}
+/* 공지 미리보기 팝업 */
+.notice-preview-modal .modal{max-width:360px;text-align:center;padding:28px 24px;}
+.notice-preview-phone{background:var(--bg);border:2px solid var(--bd);border-radius:16px;padding:16px 14px;margin:16px 0;text-align:left;position:relative;overflow:hidden;}
+.notice-preview-phone::before{content:'QR / 공유';display:block;font-size:10px;color:var(--tx3);background:var(--sf2);border-radius:8px;padding:6px 10px;margin-bottom:10px;text-align:center;opacity:.5;}
+.notice-preview-phone .np-banner{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;margin-bottom:10px;}
+.notice-preview-phone .np-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac);border-radius:3px 0 0 3px;}
+.notice-preview-phone .np-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+.notice-preview-phone .np-desc{font-size:11px;color:var(--tx2);line-height:1.5;}
+.notice-preview-phone::after{content:'참여자  ·  신청곡 목록';display:block;font-size:10px;color:var(--tx3);background:var(--sf2);border-radius:8px;padding:6px 10px;text-align:center;opacity:.5;}
+.notice-preview-caption{font-size:12px;color:var(--tx2);line-height:1.7;margin:14px 0 18px;}
+.notice-preview-caption b{color:var(--tx);}
 .limit-sel{display:flex;gap:4px;align-items:center;flex-shrink:0;height:28px;}
 .limit-btn{padding:0 10px;height:28px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx3);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500;white-space:nowrap;box-sizing:border-box;display:flex;align-items:center;}
 .limit-btn.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:700;}
@@ -257,66 +315,24 @@ h1 em{font-style:normal;color:var(--ac);}
 footer{border-top:1px solid var(--bd);padding:18px 20px;text-align:center;color:var(--tx3);font-size:11px;}
 footer a{color:var(--ac);text-decoration:none;}
 .info-badge{background:var(--bd);border:1px solid var(--tx3);color:var(--tx2);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;}
-/* 플랜 잠금 표시 */
-.trow.plan-locked{position:relative;}
-.trow.plan-locked .tog{pointer-events:none;background:var(--bd) !important;}
-.trow.plan-locked .tog::after{background:#666 !important;}
-.trow.plan-locked .tog.on{background:var(--bd) !important;}
-.plan-lock-icon{font-size:13px;margin-left:6px;cursor:pointer;}
-.plan-lock-badge{display:inline-block;font-size:9px;color:var(--ac);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:1px 6px;margin-left:6px;vertical-align:middle;white-space:nowrap;}
-.plan-locked-input{position:relative;}.plan-locked-input input{pointer-events:none;opacity:.4;}
-.plan-locked-input .plan-lock-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;background:rgba(11,15,21,.5);}
-/* 공지 배너 */
-.notice-banner{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
-.notice-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac);border-radius:3px 0 0 3px;}
-.notice-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
-.notice-title .notice-icon{font-size:16px;}
-.notice-desc{font-size:12px;color:var(--tx2);line-height:1.6;}
-.notice-banner.size-md .notice-title{font-size:17px;}.notice-banner.size-md .notice-desc{font-size:14px;}
-.notice-banner.size-lg .notice-title{font-size:20px;}.notice-banner.size-lg .notice-desc{font-size:16px;}
-.notice-banner.size-lg{padding:18px 20px;}
-.notice-promo{background:var(--sf);border:1px dashed var(--bd);border-radius:12px;padding:14px 16px;margin-bottom:10px;text-align:center;cursor:pointer;}
-.notice-promo:hover{border-color:var(--ac);background:rgba(245,158,11,.03);}
-.notice-promo-text{font-size:12px;color:var(--tx3);}
-.notice-promo-text span{color:var(--ac);font-weight:600;}
-/* 설정 — 공지 입력 */
-.notice-input-group{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin:8px 0 10px;}
-.notice-input-group label{font-size:11px;color:var(--tx3);font-weight:600;display:block;margin-bottom:4px;}
-.notice-input-group input,.notice-input-group textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;color:var(--tx);font-size:12px;font-family:inherit;resize:none;outline:none;}
-.notice-input-group input:focus,.notice-input-group textarea:focus{border-color:var(--ac);}
-.notice-input-group .char-count{font-size:10px;color:var(--tx3);text-align:right;margin-top:3px;}
-/* 설정 — 화면 표시 */
-.section-toggle-group{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin:8px 0 10px;}
-.stg-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:5px;}
-.stg-row:last-child{margin-bottom:0;}
-/* 승인 모드 설명 팝업 */
-.approval-flow{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
-.approval-step{display:flex;align-items:flex-start;gap:10px;background:var(--sf2);border-radius:10px;padding:12px 14px;}
-.approval-step .step-icon{font-size:20px;flex-shrink:0;}
-.approval-step .step-text{font-size:12px;color:var(--tx2);line-height:1.6;}
-.approval-step .step-text b{color:var(--tx);display:block;margin-bottom:2px;}
-.approval-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 16px;}
-.approval-compare .cmp{border-radius:10px;padding:12px;font-size:11px;line-height:1.7;}
-.approval-compare .cmp-off{background:rgba(148,163,184,.06);border:1px solid var(--bd);color:var(--tx3);}
-.approval-compare .cmp-on{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--tx2);}
-.approval-compare .cmp-label{font-size:10px;font-weight:700;margin-bottom:6px;display:block;}
-.cmp-off .cmp-label{color:var(--tx3);}.cmp-on .cmp-label{color:var(--ac);}
-/* 공지 미리보기 팝업 */
-.notice-preview-modal .modal{max-width:360px;text-align:center;padding:28px 24px;}
-.notice-preview-phone{background:var(--bg);border:2px solid var(--bd);border-radius:16px;padding:16px 14px;margin:16px 0;text-align:left;position:relative;overflow:hidden;}
-.notice-preview-phone::before{content:'QR / 공유';display:block;font-size:10px;color:var(--tx3);background:var(--sf2);border-radius:8px;padding:6px 10px;margin-bottom:10px;text-align:center;opacity:.5;}
-.notice-preview-phone .np-banner{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;margin-bottom:10px;}
-.notice-preview-phone .np-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac);border-radius:3px 0 0 3px;}
-.notice-preview-phone .np-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:5px;margin-bottom:3px;}
-.notice-preview-phone .np-desc{font-size:11px;color:var(--tx2);line-height:1.5;}
-.notice-preview-phone::after{content:'참여자  ·  신청곡 목록';display:block;font-size:10px;color:var(--tx3);background:var(--sf2);border-radius:8px;padding:6px 10px;text-align:center;opacity:.5;}
-.notice-preview-caption{font-size:12px;color:var(--tx2);line-height:1.7;margin:14px 0 18px;}
-.notice-preview-caption b{color:var(--tx);}
-/* 관리자 플랜 스위처 */
-#admin-plan-panel{position:fixed;bottom:20px;right:20px;background:#1a1f2e;border:1px solid #f59e0b;border-radius:10px;padding:10px 14px;z-index:9999;display:none;flex-direction:column;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.5);}
-#admin-plan-panel p{color:#f59e0b;font-size:10px;margin:0 0 8px;text-align:center;letter-spacing:1px;}
-#admin-plan-panel .apb{background:#0b0f15;border:1px solid #333;border-radius:6px;color:#ccc;padding:5px 12px;font-size:11px;cursor:pointer;margin:0 2px;}
-#admin-plan-panel .apb.active{border-color:#f59e0b;color:#f59e0b;}
+/* 데모 버튼 */
+.demo-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 22px;border:1px solid rgba(245,158,11,.3);border-radius:24px;background:rgba(245,158,11,.08);color:var(--ac);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;}
+.demo-btn:hover{background:rgba(245,158,11,.18);border-color:var(--ac);}
+/* 인기곡 차트 */
+.top-chart{max-width:640px;margin:0 auto 36px;padding:0 20px;}
+.top-chart-title{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.top-chart-title span{font-size:12px;color:var(--tx3);font-weight:400;}
+.chart-list{display:flex;flex-direction:column;gap:6px;}
+.chart-item{display:flex;align-items:center;gap:12px;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;cursor:pointer;transition:border-color .2s;}
+.chart-item:hover{border-color:var(--ac);}
+.chart-rank{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--tx3);min-width:24px;text-align:center;}
+.chart-item:nth-child(-n+3) .chart-rank{color:var(--ac);}
+.chart-thumb{width:44px;height:44px;border-radius:6px;object-fit:cover;flex-shrink:0;}
+.chart-info{flex:1;min-width:0;}
+.chart-song{font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chart-artist{font-size:11px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chart-count{font-size:11px;color:var(--tx3);white-space:nowrap;}
+.chart-empty{text-align:center;color:var(--tx3);font-size:13px;padding:24px 0;}
 /* 관리자 PIN 모달 */
 #admin-pin-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;display:none;align-items:center;justify-content:center;}
 #admin-pin-modal.open{display:flex;}
@@ -378,11 +394,17 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div class="card pri"><div class="ci">🎉</div><div class="ct">새 플레이룸 만들기</div><div class="cd">링크·QR로 초대하세요.</div><button class="btn-p" onclick="openCreateRoom()">플레이룸 만들기</button></div>
       <div class="card"><div class="ci">🔗</div><div class="ct">플레이룸 입장하기</div><div class="cd">코드 6자리 입력.</div><div class="jr"><input class="jinput" id="jcode" placeholder="예: AB12CD" maxlength="6" onkeydown="if(event.key==='Enter')promptJoinNick()"><button class="btn-j" onclick="promptJoinNick()">입장</button></div></div>
     </div>
+    <button class="demo-btn" onclick="enterDemo()">🎵 체험해보기 — 데모 플레이룸 입장</button>
   </section>
   <!-- 실시간 방 목록 -->
   <div class="live-section hidden" id="live-rooms-wrap">
     <div class="live-title"><span class="ldot" style="flex-shrink:0"></span> 내 플레이룸</div>
     <div class="live-grid" id="live-rooms-list"></div>
+  </div>
+  <!-- 인기곡 차트 -->
+  <div class="top-chart" id="top-chart-wrap" style="display:none;">
+    <div class="top-chart-title">🏆 인기곡 TOP 10 <span>전체 플레이룸 기준</span></div>
+    <div class="chart-list" id="top-chart-list"></div>
   </div>
   <!-- 핵심 특징 아이콘 -->
   <div class="ftrs">
@@ -548,10 +570,10 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.29.2</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.26.0</p></footer>
 
 <!-- 방 만들기 모달 -->
-<div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
+<div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" class="plan-lock-overlay" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
 <div class="opt-label" style="margin-top:10px;">⚙ 방 설정</div>
 <div class="trow" id="cr-row-approval"><span style="cursor:pointer;" onclick="openModal('approval-info-modal')">신청곡 승인 필요 <span class="plan-lock-icon" id="cr-lock-approval" style="display:none;">🔒</span><span class="plan-lock-badge" id="cr-badge-approval" style="display:none;">Plus</span></span><button class="tog" id="cr-togapproval" onclick="crToggle('approval')"></button></div>
 <div class="trow"><span>게스트 신청 허용</span><button class="tog on" id="cr-togguest" onclick="crToggle('guest')"></button></div>
@@ -576,7 +598,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <hr style="border:none;border-top:1px solid var(--bd);margin:10px 0 8px;">
   <!-- Plus 전용 -->
   <div class="trow" id="row-approval"><span style="cursor:pointer;" onclick="openModal('approval-info-modal')">신청곡 승인 필요 <span class="plan-lock-icon" id="lock-approval" style="display:none;">🔒</span><span class="plan-lock-badge" id="badge-approval" style="display:none;">Plus</span></span><button class="tog" id="togapproval" onclick="toggleApproval()"></button></div>
-  <!-- 공지 설정 -->
+  <!-- 공지 설정 (Plus+) -->
   <div id="settings-notice-section">
     <div class="trow" id="row-notice"><span style="cursor:pointer;" onclick="openModal('notice-info-modal')">📢 공지 표시 <span class="plan-lock-icon" id="lock-notice" style="display:none;">🔒</span><span class="plan-lock-badge" id="badge-notice" style="display:none;">Plus</span></span><button class="tog" id="tognotice" onclick="toggleNotice()"></button></div>
     <div class="notice-input-group" id="noticeInputGroup" style="display:none;">
@@ -595,7 +617,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <button class="btn-p" style="width:100%;margin-top:10px;padding:8px;font-size:12px;" onclick="saveNotice()">공지 저장</button>
     </div>
   </div>
-  <!-- 화면 표시 설정 -->
+  <!-- 화면 표시 설정 (Plus+) -->
   <div id="settings-display-section">
     <div class="trow" style="margin-top:2px;"><span style="cursor:pointer;" onclick="openModal('display-info-modal')">📺 화면 표시 설정 <span class="plan-lock-icon" id="lock-display" style="display:none;">🔒</span><span class="plan-lock-badge" id="badge-display" style="display:none;">Plus</span></span><span style="font-size:11px;color:var(--tx3);">▾</span></div>
     <div class="section-toggle-group" id="displayToggleGroup">
@@ -616,16 +638,31 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <h3 style="text-align:center;">✅ 신청곡 승인 필요란?</h3>
   <p style="font-size:13px;color:var(--tx2);text-align:center;margin-bottom:4px;">참여자가 신청한 곡을 호스트가<br>직접 <b style="color:var(--tx);">승인</b> 또는 <b style="color:var(--ac2);">거절</b>할 수 있는 기능이에요.</p>
   <div class="approval-compare">
-    <div class="cmp cmp-off"><span class="cmp-label">OFF (기본)</span>신청하면 바로 목록에 추가됨<br>호스트 확인 없이 재생</div>
-    <div class="cmp cmp-on"><span class="cmp-label">ON ✓</span>신청 → 대기열로 이동<br>호스트 승인 후 재생</div>
+    <div class="cmp cmp-off">
+      <span class="cmp-label">OFF (기본)</span>
+      신청하면 바로 목록에 추가됨<br>호스트 확인 없이 재생
+    </div>
+    <div class="cmp cmp-on">
+      <span class="cmp-label">ON ✓</span>
+      신청 → 대기열로 이동<br>호스트 승인 후 재생
+    </div>
   </div>
   <div class="approval-flow">
-    <div class="approval-step"><span class="step-icon">🙋</span><div class="step-text"><b>참여자가 신청</b>곡을 검색하고 신청합니다</div></div>
-    <div class="approval-step"><span class="step-icon">⏳</span><div class="step-text"><b>승인 대기</b> 목록에 쌓이고 참여자에겐 대기 중 표시</div></div>
-    <div class="approval-step"><span class="step-icon">👑</span><div class="step-text"><b>호스트가 승인/거절</b> — 승인하면 재생 목록에 추가</div></div>
+    <div class="approval-step">
+      <span class="step-icon">🙋</span>
+      <div class="step-text"><b>참여자가 신청</b>곡을 검색하고 신청합니다</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">⏳</span>
+      <div class="step-text"><b>승인 대기</b> 목록에 쌓이고 참여자에겐 대기 중 표시</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">👑</span>
+      <div class="step-text"><b>호스트가 승인/거절</b> — 승인하면 재생 목록에 추가, 거절하면 신청자에게 알림</div>
+    </div>
   </div>
   <div id="approval-info-plan-note" style="display:none;">
-    <a href="#" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;" onclick="closeModal('approval-info-modal')">🔒 Plus 플랜 보러가기</a>
+    <a href="/.backups/plantest_pricing.html" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;" onclick="closeModal('approval-info-modal')">🔒 Plus 플랜 보러가기</a>
   </div>
   <button class="mclose" style="width:100%;" onclick="closeModal('approval-info-modal')">닫기</button>
 </div></div>
@@ -635,16 +672,31 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <h3 style="text-align:center;">🗑 재생 완료 곡 자동 삭제란?</h3>
   <p style="font-size:13px;color:var(--tx2);text-align:center;margin-bottom:4px;">재생이 끝난 곡을 목록에서<br><b style="color:var(--tx);">자동으로 지워주는</b> 기능이에요.</p>
   <div class="approval-compare">
-    <div class="cmp cmp-off"><span class="cmp-label">OFF (기본)</span>재생 완료 후에도 목록에 남아있음<br>호스트가 직접 삭제</div>
-    <div class="cmp cmp-on"><span class="cmp-label">ON ✓</span>재생 끝나면 자동 삭제<br>목록이 항상 깔끔하게 유지</div>
+    <div class="cmp cmp-off">
+      <span class="cmp-label">OFF (기본)</span>
+      재생 완료 후에도 목록에 남아있음<br>호스트가 직접 삭제
+    </div>
+    <div class="cmp cmp-on">
+      <span class="cmp-label">ON ✓</span>
+      재생 끝나면 자동 삭제<br>목록이 항상 깔끔하게 유지
+    </div>
   </div>
   <div class="approval-flow">
-    <div class="approval-step"><span class="step-icon">🎵</span><div class="step-text"><b>곡 재생 완료</b> 후 다음 곡으로 넘어갈 때</div></div>
-    <div class="approval-step"><span class="step-icon">🗑</span><div class="step-text"><b>자동으로 제거</b>되어 신청곡 목록이 정리됨</div></div>
-    <div class="approval-step"><span class="step-icon">✨</span><div class="step-text"><b>항상 최신 신청곡</b>만 보여 긴 행사나 매장에 유용</div></div>
+    <div class="approval-step">
+      <span class="step-icon">🎵</span>
+      <div class="step-text"><b>곡 재생 완료</b> 후 다음 곡으로 넘어갈 때</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">🗑</span>
+      <div class="step-text"><b>자동으로 제거</b>되어 신청곡 목록이 정리됨</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">✨</span>
+      <div class="step-text"><b>항상 최신 신청곡</b>만 보여 긴 행사나 매장에 유용</div>
+    </div>
   </div>
   <div id="autoremove-plan-note" style="display:none;">
-    <a href="#" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;" onclick="closeModal('autoremove-info-modal')">🔒 Plus 플랜 보러가기</a>
+    <a href="/.backups/plantest_pricing.html" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;" onclick="closeModal('autoremove-info-modal')">🔒 Plus 플랜 보러가기</a>
   </div>
   <button class="mclose" style="width:100%;" onclick="closeModal('autoremove-info-modal')">닫기</button>
 </div></div>
@@ -654,15 +706,27 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <h3 style="text-align:center;">📢 공지 표시란?</h3>
   <p style="font-size:13px;color:var(--tx2);text-align:center;margin-bottom:12px;">QR 카드 위에 <b style="color:var(--tx);">공지사항 배너</b>를<br>띄워 참여자에게 전달하는 기능이에요.</p>
   <div class="notice-preview-phone">
-    <div class="np-banner"><div class="np-title">📢 오늘의 이벤트</div><div class="np-desc">3곡 이상 신청하시면 음료 10% 할인! 🎉</div></div>
+    <div class="np-banner">
+      <div class="np-title">📢 오늘의 이벤트</div>
+      <div class="np-desc">3곡 이상 신청하시면 음료 10% 할인! 🎉</div>
+    </div>
   </div>
   <div class="approval-flow" style="margin-top:12px;">
-    <div class="approval-step"><span class="step-icon">✏️</span><div class="step-text"><b>제목 + 내용</b>을 직접 작성</div></div>
-    <div class="approval-step"><span class="step-icon">🔤</span><div class="step-text"><b>글자 크기</b> 3단계 조절 가능 (작게·보통·크게)</div></div>
-    <div class="approval-step"><span class="step-icon">👀</span><div class="step-text">입장한 모든 <b>참여자 화면</b>에 실시간 표시</div></div>
+    <div class="approval-step">
+      <span class="step-icon">✏️</span>
+      <div class="step-text"><b>제목 + 내용</b>을 직접 작성</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">🔤</span>
+      <div class="step-text"><b>글자 크기</b> 3단계 조절 가능 (작게·보통·크게)</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">👀</span>
+      <div class="step-text">입장한 모든 <b>참여자 화면</b>에 실시간 표시</div>
+    </div>
   </div>
   <div id="notice-plan-note" style="display:none;">
-    <a href="#" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;margin-top:12px;" onclick="closeModal('notice-info-modal')">🔒 Plus 플랜 보러가기</a>
+    <a href="/.backups/plantest_pricing.html" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;margin-top:12px;" onclick="closeModal('notice-info-modal')">🔒 Plus 플랜 보러가기</a>
   </div>
   <button class="mclose" style="width:100%;" onclick="closeModal('notice-info-modal')">닫기</button>
 </div></div>
@@ -672,16 +736,31 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   <h3 style="text-align:center;">📺 화면 표시 설정이란?</h3>
   <p style="font-size:13px;color:var(--tx2);text-align:center;margin-bottom:4px;">사이드바 섹션을 <b style="color:var(--tx);">숨기거나 표시</b>해서<br>신청곡 목록을 더 넓게 볼 수 있어요.</p>
   <div class="approval-compare" style="margin:14px 0;">
-    <div class="cmp cmp-off"><span class="cmp-label">OFF (기본)</span>QR·참여자·승인대기 모두 표시</div>
-    <div class="cmp cmp-on"><span class="cmp-label">ON ✓</span>불필요한 섹션 숨겨서 신청곡 목록을 더 크게</div>
+    <div class="cmp cmp-off">
+      <span class="cmp-label">OFF (기본)</span>
+      QR·참여자·승인대기 모두 표시
+    </div>
+    <div class="cmp cmp-on">
+      <span class="cmp-label">ON ✓</span>
+      불필요한 섹션 숨겨서 신청곡 목록을 더 크게
+    </div>
   </div>
   <div class="approval-flow">
-    <div class="approval-step"><span class="step-icon">📱</span><div class="step-text"><b>QR / 공유 카드</b> 숨기기 — QR 이미 붙여놨다면 필요 없을 수 있음</div></div>
-    <div class="approval-step"><span class="step-icon">👥</span><div class="step-text"><b>참여자 목록</b> 숨기기 — 인원이 많아 목록이 길어질 때</div></div>
-    <div class="approval-step"><span class="step-icon">⏳</span><div class="step-text"><b>승인 대기 카드</b> 숨기기 — 승인 모드를 잠깐 보이지 않게 할 때</div></div>
+    <div class="approval-step">
+      <span class="step-icon">📱</span>
+      <div class="step-text"><b>QR / 공유 카드</b> 숨기기 — QR 이미 붙여놨다면 필요 없을 수 있음</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">👥</span>
+      <div class="step-text"><b>참여자 목록</b> 숨기기 — 인원이 많아 목록이 길어질 때</div>
+    </div>
+    <div class="approval-step">
+      <span class="step-icon">⏳</span>
+      <div class="step-text"><b>승인 대기 카드</b> 숨기기 — 승인 모드를 잠깐 보이지 않게 할 때</div>
+    </div>
   </div>
   <div id="display-plan-note" style="display:none;">
-    <a href="#" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;margin-top:12px;" onclick="closeModal('display-info-modal')">🔒 Plus 플랜 보러가기</a>
+    <a href="/.backups/plantest_pricing.html" style="display:block;width:100%;padding:13px;border-radius:10px;background:var(--ac);color:#000;font-size:13px;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;margin-top:12px;" onclick="closeModal('display-info-modal')">🔒 Plus 플랜 보러가기</a>
   </div>
   <button class="mclose" style="width:100%;" onclick="closeModal('display-info-modal')">닫기</button>
 </div></div>
@@ -690,9 +769,18 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 <div class="mbg notice-preview-modal" id="notice-preview-modal"><div class="modal">
   <h3>📢 공지 기능 미리보기</h3>
   <div class="notice-preview-phone">
-    <div class="np-banner"><div class="np-title">📢 오늘의 이벤트</div><div class="np-desc">3곡 이상 신청하시면 음료 10% 할인! 🎉</div></div>
+    <div class="np-banner">
+      <div class="np-title">📢 오늘의 이벤트</div>
+      <div class="np-desc">3곡 이상 신청하시면 음료 10% 할인! 🎉</div>
+    </div>
   </div>
-  <div class="notice-preview-caption">참여자가 입장하면 <b>가장 먼저 보이는 위치</b>에<br>공지사항이 표시됩니다.<br>매장 안내, 이벤트, 규칙 등을<br><b>제목 + 설명</b>으로 작성하고 <b>글자 크기</b>도 조절할 수 있어요.</div>
+  <div class="notice-preview-caption">
+    참여자가 입장하면 <b>가장 먼저 보이는 위치</b>에<br>
+    공지사항이 표시됩니다.<br>
+    매장 안내, 이벤트, 규칙 등을<br>
+    <b>제목 + 설명</b>으로 작성하고 <b>글자 크기</b>도 조절할 수 있어요.
+  </div>
+  <button class="btn-p" style="width:100%;margin-bottom:8px;" onclick="setPlan('plus');closeModal('notice-preview-modal');showToast('✨ Plus 플랜으로 전환되었습니다')">✨ Plus 시작하기</button>
   <button class="mclose" style="width:100%;" onclick="closeModal('notice-preview-modal')">닫기</button>
 </div></div>
 
@@ -735,9 +823,20 @@ var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0,_pausedByHost=fal
 var maxMembers=0;
 var _hostCurrentTime=0,_hostSeekPending=false,_guestInitialPlay=false,_guestSyncTimer=null,_autoplayTimer=null;
 
-/* ═══ 구독 플랜 시스템 ═══ */
+/* ═══ [TEST] 구독 플랜 시스템 ═══ */
 var currentPlan=localStorage.getItem('apl_plan')||'free';
 function getPlan(){return currentPlan;}
+function setPlan(p){
+  currentPlan=p;localStorage.setItem('apl_plan',p);
+  document.querySelectorAll('.plan-sw-btn').forEach(function(b){b.classList.toggle('active',b.dataset.plan===p);});
+  var label=document.getElementById('plan-label');if(label)label.textContent=p.toUpperCase();
+  // Plus 이상이면 광고 숨김
+  if(p!=='free'){document.querySelectorAll('.adsbygoogle,[id*="ad-"],.mob-sticky-ad').forEach(function(e){e.style.display='none';});}
+  applyPlanLocks(); // 잠금 UI 즉시 반영
+  var qrBtn=document.getElementById('qr-download-btn');if(qrBtn)qrBtn.style.display=planAllows('approval')?'':'none';
+  showToast('플랜 변경: '+p.toUpperCase());
+  if(rid&&isHost)syncHostPanel(); // 설정 패널 즉시 반영
+}
 var PLAN_LIMITS={
   free:{maxQueue:15,approval:false,roomPw:false,autoRemove:true,allowGuestsToggle:false},
   plus:{maxQueue:0,approval:true,roomPw:true,autoRemove:true,allowGuestsToggle:true},
@@ -747,108 +846,62 @@ function planAllows(feature){return PLAN_LIMITS[currentPlan][feature]!==false;}
 function planMaxQueue(){return PLAN_LIMITS[currentPlan].maxQueue;}
 function applyPlanLocks(){
   var isFree=currentPlan==='free';
+  // 설정 모달 — 승인 모드
   var ra=document.getElementById('row-approval');if(ra)ra.classList.toggle('plan-locked',isFree);
   var la=document.getElementById('lock-approval');if(la)la.style.display=isFree?'inline':'none';
   var ba=document.getElementById('badge-approval');if(ba)ba.style.display=isFree?'inline-block':'none';
+  // 자동삭제는 Free 포함 전체 허용 — 잠금 없음
+  // 방 만들기 모달 — 승인 모드
   var cra=document.getElementById('cr-row-approval');if(cra)cra.classList.toggle('plan-locked',isFree);
   var cla=document.getElementById('cr-lock-approval');if(cla)cla.style.display=isFree?'inline':'none';
   var cba=document.getElementById('cr-badge-approval');if(cba)cba.style.display=isFree?'inline-block':'none';
+  // 방 만들기 모달 — 비밀번호
   var pwInput=document.getElementById('rpwin');
   var pwLock=document.getElementById('cr-pw-lock');
   if(pwInput){pwInput.disabled=isFree;pwInput.style.opacity=isFree?'0.4':'1';}
   if(pwLock)pwLock.style.display=isFree?'flex':'none';
+  // 설정 모달 — 공지
   var rn=document.getElementById('row-notice');if(rn)rn.classList.toggle('plan-locked',isFree);
   var ln=document.getElementById('lock-notice');if(ln)ln.style.display=isFree?'inline':'none';
   var bn=document.getElementById('badge-notice');if(bn)bn.style.display=isFree?'inline-block':'none';
   var nig=document.getElementById('noticeInputGroup');if(nig&&isFree)nig.style.display='none';
+  // 설정 모달 — 화면 표시
   var ld=document.getElementById('lock-display');if(ld)ld.style.display=isFree?'inline':'none';
   var bd=document.getElementById('badge-display');if(bd)bd.style.display=isFree?'inline-block':'none';
   var dtg=document.getElementById('displayToggleGroup');
   if(dtg){dtg.style.opacity=isFree?'0.4':'1';dtg.style.pointerEvents=isFree?'none':'auto';}
+  // 각 설명 팝업 내 Plus 버튼 표시/숨김
   ['approval-info-plan-note','autoremove-plan-note','notice-plan-note','display-plan-note'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.style.display=isFree?'':'none';
   });
+  // 공지 배너 렌더 갱신
   renderNotice();
-  ['free','plus','pro'].forEach(function(n){
-    var b=document.getElementById('apb-'+n);
-    if(b)b.classList.toggle('active',n===currentPlan);
-  });
 }
-function setPlan(p){
-  currentPlan=p;
-  localStorage.setItem('apl_plan',p);
-  applyPlanLocks();
-}
-/* 관리자 PIN */
-function showAdminPin(){
-  var m=document.getElementById('admin-pin-modal');
-  var inp=document.getElementById('admin-pin-input');
-  var err=document.getElementById('admin-pin-err');
-  if(!m)return;
-  err.textContent='';inp.value='';
-  m.classList.add('open');
-  setTimeout(function(){inp.focus();},100);
-}
-function checkAdminPin(){
-  var inp=document.getElementById('admin-pin-input');
-  var err=document.getElementById('admin-pin-err');
-  if(inp.value==='9624'){
-    document.getElementById('admin-pin-modal').classList.remove('open');
-    var p=document.getElementById('admin-plan-panel');
-    if(p){
-      var isHidden=window.getComputedStyle(p).display==='none';
-      p.style.display=isHidden?'flex':'none';
-      if(isHidden){
-        ['free','plus','pro'].forEach(function(n){
-          var b=document.getElementById('apb-'+n);
-          if(b)b.classList.toggle('active',n===currentPlan);
-        });
-      }
-    }
-  }else{
-    err.textContent='❌ 코드가 틀렸습니다';
-    inp.value='';inp.focus();
-  }
-}
-/* 로고 5-tap 모바일 트리거 */
-var _logoTaps=0,_logoTapTm=null;
-function onLogoClick(){
-  goHome();
-  _logoTaps++;
-  if(_logoTapTm)clearTimeout(_logoTapTm);
-  _logoTapTm=setTimeout(function(){_logoTaps=0;},2000);
-  if(_logoTaps>=5){_logoTaps=0;showAdminPin();}
-}
-(function(){
-  /* PIN 모달 외부 클릭 닫기 */
-  document.addEventListener('click',function(e){
-    var m=document.getElementById('admin-pin-modal');
-    if(m&&m.classList.contains('open')&&e.target===m)m.classList.remove('open');
-  });
-  /* 데스크탑: Ctrl+Shift+A */
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&e.shiftKey&&e.key==='A'){
-      e.preventDefault();
-      showAdminPin();
-    }
-  });
-})();
 
-/* ═══ 공지 시스템 ═══ */
+/* ═══ [TEST] 공지 시스템 ═══ */
 var noticeOn=false,noticeTitle='',noticeDesc='',noticeSize='sm';
 var hiddenSections={qr:false,members:false,pending:false};
+
 function toggleNotice(){
   if(!planAllows('approval')){openModal('notice-info-modal');return;}
   noticeOn=!noticeOn;
   var tog=document.getElementById('tognotice');if(tog)tog.classList.toggle('on',noticeOn);
   var grp=document.getElementById('noticeInputGroup');if(grp)grp.style.display=noticeOn?'':'none';
   if(rid)fbSave({noticeOn:noticeOn});
+  if(!noticeOn&&rid)fbSave({noticeOn:false});
   renderNotice();
   showToast(noticeOn?'📢 공지 ON':'공지 OFF');
 }
 function updateNoticeCount(type){
-  if(type==='title'){var v=document.getElementById('noticeInputTitle');var c=document.getElementById('noticeTitleCount');if(v&&c)c.textContent=v.value.length;}
-  else{var v2=document.getElementById('noticeInputDesc');var c2=document.getElementById('noticeDescCount');if(v2&&c2)c2.textContent=v2.value.length;}
+  if(type==='title'){
+    var v=document.getElementById('noticeInputTitle');
+    var c=document.getElementById('noticeTitleCount');
+    if(v&&c)c.textContent=v.value.length;
+  }else{
+    var v2=document.getElementById('noticeInputDesc');
+    var c2=document.getElementById('noticeDescCount');
+    if(v2&&c2)c2.textContent=v2.value.length;
+  }
 }
 function saveNotice(){
   var t=document.getElementById('noticeInputTitle').value.trim();
@@ -863,7 +916,9 @@ function saveNotice(){
 }
 function setNoticeSize(sz){
   noticeSize=sz;
-  ['sm','md','lg'].forEach(function(s){var b=document.getElementById('nsize-'+s);if(b)b.classList.toggle('on',s===sz);});
+  ['sm','md','lg'].forEach(function(s){
+    var b=document.getElementById('nsize-'+s);if(b)b.classList.toggle('on',s===sz);
+  });
   renderNotice();
 }
 function renderNotice(){
@@ -871,20 +926,29 @@ function renderNotice(){
   var promo=document.getElementById('noticePromo');
   if(!banner||!promo)return;
   var isFree=currentPlan==='free';
-  if(isFree&&isHost){banner.style.display='none';promo.style.display='';return;}
+  // Free 플랜 + 호스트 → 프로모 배너
+  if(isFree&&isHost){
+    banner.style.display='none';
+    promo.style.display='';
+    return;
+  }
   promo.style.display='none';
+  // 공지가 켜져 있고 제목이 있으면 배너 표시
   if(noticeOn&&noticeTitle){
     document.getElementById('noticeTitle').textContent=noticeTitle;
     document.getElementById('noticeDesc').textContent=noticeDesc;
     document.getElementById('noticeDesc').style.display=noticeDesc?'':'none';
     banner.className='notice-banner'+(noticeSize!=='sm'?' size-'+noticeSize:'');
     banner.style.display='';
-  }else{banner.style.display='none';}
+  }else{
+    banner.style.display='none';
+  }
 }
 function toggleSection(key){
   if(!planAllows('approval')){openModal('display-info-modal');return;}
   hiddenSections[key]=!hiddenSections[key];
-  var tog=document.getElementById('togshow-'+key);if(tog)tog.classList.toggle('on',!hiddenSections[key]);
+  var tog=document.getElementById('togshow-'+key);
+  if(tog)tog.classList.toggle('on',!hiddenSections[key]);
   if(rid)fbSave({hiddenSections:hiddenSections});
   applySectionVisibility();
   showToast(hiddenSections[key]?'해당 섹션을 숨겼습니다':'섹션을 다시 표시합니다');
@@ -895,12 +959,8 @@ function applySectionVisibility(){
   var pend=document.getElementById('pendingCard');
   if(qr)qr.style.display=hiddenSections.qr?'none':'';
   if(mem)mem.style.display=hiddenSections.members?'none':'';
+  // pending은 승인모드+호스트일 때만 기본 표시되므로 추가 조건
   if(pend&&hiddenSections.pending)pend.style.display='none';
-}
-function downloadQR(){
-  var canvas=document.querySelector('#qrcv canvas');
-  if(!canvas){showToast('QR코드가 아직 생성되지 않았습니다');return;}
-  var link=document.createElement('a');link.download='queuetune-qr.png';link.href=canvas.toDataURL('image/png');link.click();
 }
 
 /* ═══ ID 생성 ═══ */
@@ -940,6 +1000,21 @@ function attachListener(){
     requireApproval=!!d.requireApproval;
     maxMembers=d.maxMembers||0;
     members=d.members||{};
+    // [TEST] 공지 & 섹션 표시 동기화
+    noticeOn=!!d.noticeOn;noticeTitle=d.noticeTitle||'';noticeDesc=d.noticeDesc||'';noticeSize=d.noticeSize||'sm';
+    if(d.hiddenSections)hiddenSections=d.hiddenSections;
+    renderNotice();applySectionVisibility();
+    // 호스트 설정 UI 동기화
+    if(isHost){
+      var tn=document.getElementById('tognotice');if(tn)tn.classList.toggle('on',noticeOn);
+      var ng=document.getElementById('noticeInputGroup');if(ng)ng.style.display=noticeOn?'':'none';
+      var nit=document.getElementById('noticeInputTitle');if(nit&&document.activeElement!==nit)nit.value=noticeTitle;
+      var nid=document.getElementById('noticeInputDesc');if(nid&&document.activeElement!==nid)nid.value=noticeDesc;
+      ['sm','md','lg'].forEach(function(s){var b=document.getElementById('nsize-'+s);if(b)b.classList.toggle('on',s===noticeSize);});
+      ['qr','members','pending'].forEach(function(k){
+        var t=document.getElementById('togshow-'+k);if(t)t.classList.toggle('on',!hiddenSections[k]);
+      });
+    }
     // 플레이룸 제목
     var titleEl=document.getElementById('rtitle');
     if(titleEl&&titleEl.tagName==='DIV'){titleEl.textContent=d.name||'신청곡 플레이룸';if(isHost){titleEl.onclick=editTitle;titleEl.style.cursor='pointer';}}
@@ -1023,6 +1098,7 @@ function attachListener(){
 function syncHostPanel(){
   var tog=function(id,on){var el=document.getElementById(id);if(el)el.classList.toggle('on',on);};
   tog('togguest2',allowGuests);tog('togremove',autoRemovePlayed);tog('togapproval',requireApproval);tog('togqr',qrEnabled);
+  // [TEST] 플랜별 잠금 표시
   applyPlanLocks();
   // 인원당 곡 제한
   var li=document.getElementById('limitInput'),lu=document.getElementById('limitUnlim');
@@ -1250,7 +1326,11 @@ function replayCur(){if(cur>=0&&cur<queue.length)playCur();}
 
 /* ═══ 신청곡 큐 ═══ */
 function checkLimit(){
-  if(maxQueueSize>0&&queue.length>=maxQueueSize){showToast('⚠️ 신청곡 목록이 가득 찼습니다 (최대 '+maxQueueSize+'곡)');return false;}
+  // [TEST] Free 플랜 강제 제한
+  var effectiveMax=maxQueueSize;
+  var pm=planMaxQueue();
+  if(pm>0&&(effectiveMax===0||effectiveMax>pm))effectiveMax=pm;
+  if(effectiveMax>0&&queue.length>=effectiveMax){showToast('⚠️ 신청곡 목록이 가득 찼습니다 (최대 '+effectiveMax+'곡)');return false;}
   if(songLimit===0||isHost)return true;
   var cnt=queue.filter(function(s){return s.nick===myNick;}).length;
   if(cnt>=songLimit){showToast('⚠️ 게스트 최대 '+songLimit+'곡까지 신청 가능');return false;}
@@ -1288,6 +1368,15 @@ function _fbAddQConfirmed(v,t,a,th,nick){
   // 첫 곡 추가 시 즉시 로컬 재생 (Firebase 리스너 왕복 대기 없이)
   if(cur===-1&&isHost){queue=newQueue;cur=0;currentPlayingVid=song.v;playCur(0);renderQ();}
   showToast('✅ '+a+' - '+t.slice(0,15)+' 추가!');
+  // 인기곡 통계 수집
+  try{
+    var statRef=db.ref('stats/songs/'+v);
+    statRef.transaction(function(data){
+      if(!data)data={t:t,a:a,th:th,count:0};
+      data.count=(data.count||0)+1;data.t=t;data.a=a;data.th=th;data.lastPlayed=firebase.database.ServerValue.TIMESTAMP;
+      return data;
+    });
+  }catch(e){}
 }
 function fbRemoveQ(i){
   if(!isHost){showToast('⚠️ 신청곡 목록 조작은 호스트만 가능합니다');return;}
@@ -1477,7 +1566,8 @@ function updateGuestInfo(){
   var modeLabels={auto:'자동재생',manual:'수동',repeat:'반복재생',shuffle:'랜덤재생'};
   if(e2)e2.textContent=modeLabels[playMode]||'자동재생';
   if(e3)e3.textContent=songLimit===0?'무제한':songLimit+'곡';
-  if(e4)e4.textContent=maxQueueSize===0?'무제한':maxQueueSize+'곡';
+  var dispMax=maxQueueSize;var pm=planMaxQueue();if(pm>0&&(dispMax===0||dispMax>pm))dispMax=pm;
+  if(e4)e4.textContent=dispMax===0?'무제한':dispMax+'곡'+(pm>0?' (Free)':'');
   if(e5)e5.textContent=requireApproval?'ON':'OFF';
   if(e6)e6.textContent=maxMembers===0?'무제한':maxMembers+'명';
 }
@@ -1498,7 +1588,7 @@ function toggleInfoCard(){
 /* ═══ 호스트 설정 ═══ */
 function setLimit(n){songLimit=n;fbSave({limit:n});showToast(n===0?'게스트 곡 제한 해제':'게스트 최대 '+n+'곡 제한');syncHostPanel();}
 function setLimitInput(v){var n=parseInt(v);if(!n||n<1)return;setLimit(n);}
-function setMaxQueue(n){var pm=planMaxQueue();if(pm>0&&(n===0||n>pm)){showToast('🔒 Free 플랜은 최대 '+pm+'곡입니다');n=pm;}maxQueueSize=n;fbSave({maxQueue:n});showToast(n===0?'신청곡 수 제한 없음':'신청곡 최대 '+n+'곡');syncHostPanel();}
+function setMaxQueue(n){var pm=planMaxQueue();if(pm>0&&(n===0||n>pm)){showToast('🔒 Free 플랜은 최대 '+pm+'곡입니다. Plus로 업그레이드하세요.');n=pm;}maxQueueSize=n;fbSave({maxQueue:n});showToast(n===0?'신청곡 수 제한 없음':'신청곡 최대 '+n+'곡');syncHostPanel();}
 function setMaxQueueInput(v){var n=parseInt(v);if(!n||n<1)return;setMaxQueue(n);}
 function toggleGuests(){allowGuests=!allowGuests;fbSave({allowGuests:allowGuests});showToast(allowGuests?'게스트 신청 허용':'게스트 신청 차단');}
 /* ═══ 재생 모드 순환 ═══ */
@@ -1526,7 +1616,7 @@ function syncPlayModeBtn(){
     btn.style.borderColor=m.border;
   }
 }
-function toggleAutoRemove(){autoRemovePlayed=!autoRemovePlayed;fbSave({autoRemovePlayed:autoRemovePlayed});showToast(autoRemovePlayed?'재생 완료 곡 자동 삭제 ON':'자동 삭제 OFF');}
+function toggleAutoRemove(){if(!planAllows('autoRemove')){openModal('autoremove-info-modal');return;}autoRemovePlayed=!autoRemovePlayed;fbSave({autoRemovePlayed:autoRemovePlayed});showToast(autoRemovePlayed?'재생 완료 곡 자동 삭제 ON':'자동 삭제 OFF');}
 function toggleApproval(){if(!planAllows('approval')){openModal('approval-info-modal');return;}requireApproval=!requireApproval;fbSave({requireApproval:requireApproval});var pc=document.getElementById('pendingCard');if(pc)pc.style.display=requireApproval?'':'none';showToast(requireApproval?'신청곡 승인 모드 ON':'승인 없이 바로 재생');}
 function toggleQR(){qrEnabled=!qrEnabled;fbSave({qrEnabled:qrEnabled});}
 function setVol(v){var vol=parseInt(v);ytCmd('setVolume',vol);if(_muted&&vol>0){_muted=false;ytCmd('unMute');var icon=document.getElementById('volIcon');if(icon)icon.textContent='🔊';}if(vol===0&&!_muted){_muted=true;ytCmd('mute');var icon2=document.getElementById('volIcon');if(icon2)icon2.textContent='🔇';}}
@@ -1763,19 +1853,23 @@ function deleteExistingAndCreate(){
 }
 var _crSettings={guest:true,approval:false,qr:true};
 function crToggle(key){
+  // [TEST] Free 플랜 제한
   if(key==='approval'&&!planAllows('approval')){openModal('approval-info-modal');return;}
   _crSettings[key]=!_crSettings[key];var tog=document.getElementById('cr-tog'+key);if(tog)tog.classList.toggle('on',_crSettings[key]);
 }
 function confirmCreate(){
   var n=document.getElementById('rnin').value.trim()||'🎉 신청곡 플레이룸';
   var pw=document.getElementById('rpwin').value.trim();
+  // [TEST] Free 플랜: 비밀번호 방 불가
   if(pw&&!planAllows('roomPw')){showToast('🔒 비밀번호 방은 Plus 이상에서 사용 가능합니다');return;}
   if(pw&&(pw.length!==4||!/^\d+$/.test(pw))){showToast('비밀번호는 숫자 4자리여야 합니다');return;}
+  // [TEST] Free 플랜: 승인 모드 강제 해제
   if(!planAllows('approval'))_crSettings.approval=false;
   closeModal('cr-modal');
   var hostNick=document.getElementById('rnickin').value.trim()||'호스트';
   rid=Math.random().toString(36).slice(2,8).toUpperCase();
   isHost=true;myNick=hostNick;myNickId=myHostId;roomPw=pw;
+  // [TEST] Free 플랜: maxQueue 강제 15곡
   var initMaxQueue=planMaxQueue();
   var data={name:n,hostId:myHostId,hostNick:hostNick,pw:pw,cur:-1,limit:0,maxQueue:initMaxQueue,maxMembers:0,autoRemovePlayed:false,allowGuests:_crSettings.guest,autoNext:true,playMode:'auto',requireApproval:_crSettings.approval,qrEnabled:_crSettings.qr,createdAt:Date.now(),queue:[],members:{}};
   // crSettings 기본값 초기화
@@ -1928,6 +2022,47 @@ window.addEventListener('resize',function(){
   _qcResizeTimer=setTimeout(function(){if(document.getElementById('room').classList.contains('on'))placeQueueCard();},150);
 });
 function confirmLeave(){if(!isHost){openModal('leave-modal');return;}goHome();}
+
+/* ═══ 데모 플레이룸 ═══ */
+var DEMO_ROOM='DEMO00';
+function enterDemo(){
+  if(rid){showToast('⚠️ 이미 플레이룸에 참여 중입니다');return;}
+  myNick='게스트';myNickId='demo_'+Math.random().toString(36).slice(2,8);
+  db.ref('rooms/'+DEMO_ROOM).once('value',function(snap){
+    if(!snap.exists()){
+      showToast('⚠️ 데모 플레이룸이 아직 준비되지 않았습니다');return;
+    }
+    rid=DEMO_ROOM;isHost=false;
+    var d=snap.val();
+    db.ref('rooms/'+DEMO_ROOM+'/members/'+myNickId).set({nick:myNick,joinedAt:firebase.database.ServerValue.TIMESTAMP});
+    db.ref('rooms/'+DEMO_ROOM+'/members/'+myNickId).onDisconnect().remove();
+    localStorage.setItem('apl_activeRoom',DEMO_ROOM);
+    enterRoom(d.name||'데모 플레이룸');
+  });
+}
+
+/* ═══ 인기곡 차트 ═══ */
+function loadTopSongs(){
+  db.ref('stats/songs').orderByChild('count').limitToLast(10).once('value',function(snap){
+    var items=[];
+    snap.forEach(function(child){var d=child.val();d.vid=child.key;items.push(d);});
+    items.reverse(); // count 내림차순
+    var wrap=document.getElementById('top-chart-wrap');
+    var list=document.getElementById('top-chart-list');
+    if(!items.length){if(wrap)wrap.style.display='none';return;}
+    if(wrap)wrap.style.display='';
+    list.innerHTML=items.map(function(s,i){
+      var thumb=s.th||'https://img.youtube.com/vi/'+s.vid+'/default.jpg';
+      return '<div class="chart-item" onclick="window.open(\'https://youtube.com/watch?v='+s.vid+'\',\'_blank\')">'
+        +'<div class="chart-rank">'+(i+1)+'</div>'
+        +'<img class="chart-thumb" src="'+htmlEsc(thumb)+'" alt="" loading="lazy">'
+        +'<div class="chart-info"><div class="chart-song">'+htmlEsc(s.t||'')+'</div><div class="chart-artist">'+htmlEsc(s.a||'')+'</div></div>'
+        +'<div class="chart-count">'+s.count+'회</div>'
+        +'</div>';
+    }).join('');
+  });
+}
+
 function goHome(){
   document.getElementById('mob-sticky-ad').classList.remove('on');
   document.body.classList.remove('has-sticky-ad');
@@ -1948,10 +2083,11 @@ function goHome(){
   var _r=document.getElementById('rlist');if(_r)_r.innerHTML='';
   if(searchTimer){clearTimeout(searchTimer);searchTimer=null;}
   history.replaceState(null,'',location.pathname);
-  loadLiveRooms();
+  loadLiveRooms();loadTopSongs();
 }
 function deleteRoom(){openModal('del-modal');}
 function confirmDeleteRoom(){
+  if(rid===DEMO_ROOM){showToast('⚠️ 데모 플레이룸은 삭제할 수 없습니다');closeModal('del-modal');return;}
   closeModal('del-modal');
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
   db.ref('rooms/'+rid).remove();
@@ -1984,7 +2120,23 @@ function shareLink(){
   }
 }
 function copyCode(){navigator.clipboard.writeText(rid).then(function(){showToast('📋 플레이룸 코드 '+rid+' 복사 완료!');}).catch(function(){showToast('플레이룸 코드: '+rid);});}
-function drawQR(url){var el=document.getElementById('qrcv');el.innerHTML='';try{new QRCode(el,{text:url,width:110,height:110,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){el.innerHTML='<div style="width:150px;height:150px;display:flex;align-items:center;justify-content:center;background:#fff;color:#999;font-size:11px;">QR 생성 실패</div>';}}
+function drawQR(url){
+  var el=document.getElementById('qrcv');el.innerHTML='';
+  try{new QRCode(el,{text:url,width:110,height:110,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+  catch(e){el.innerHTML='<div style="width:150px;height:150px;display:flex;align-items:center;justify-content:center;background:#fff;color:#999;font-size:11px;">QR 생성 실패</div>';}
+  // Plus 이상이면 다운로드 버튼 표시
+  var btn=document.getElementById('qr-download-btn');
+  if(btn)btn.style.display=planAllows('approval')?'':'none';
+}
+function downloadQR(){
+  if(!planAllows('approval')){showToast('🔒 QR 다운로드는 Plus 플랜부터 사용할 수 있습니다');return;}
+  var canvas=document.querySelector('#qrcv canvas');
+  if(!canvas){showToast('QR코드를 먼저 생성해주세요');return;}
+  var link=document.createElement('a');
+  link.download='QueueTune_QR_'+(rid||'code')+'.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+}
 
 /* ═══ 실시간 방 목록 ═══ */
 function loadLiveRooms(){
@@ -2021,8 +2173,9 @@ function showToast(msg){var t=document.getElementById('toast');t.textContent=msg
 
 /* ═══ 초기화 ═══ */
 initIds();
-applyPlanLocks();
+applyPlanLocks(); // [TEST] 초기 플랜 잠금 적용
 loadLiveRooms();
+loadTopSongs();
 // 호스트 기존 방 확인
 checkExistingRoom(function(code,name){
   if(code){
@@ -2110,6 +2263,74 @@ function refreshMarquees(){
 }
 // 렌더링 후 주기적으로 체크
 setInterval(refreshMarquees,2000);
+
+/* ═══ [TEST] 플랜 스위처 UI 삽입 ═══ */
+/* 관리자 PIN */
+function showAdminPin(){
+  var m=document.getElementById('admin-pin-modal');
+  var inp=document.getElementById('admin-pin-input');
+  var err=document.getElementById('admin-pin-err');
+  if(!m)return;
+  err.textContent='';inp.value='';
+  m.classList.add('open');
+  setTimeout(function(){inp.focus();},100);
+}
+function checkAdminPin(){
+  var inp=document.getElementById('admin-pin-input');
+  var err=document.getElementById('admin-pin-err');
+  if(inp.value==='9624'){
+    document.getElementById('admin-pin-modal').classList.remove('open');
+    var p=document.getElementById('admin-plan-panel');
+    if(p){
+      var isHidden=window.getComputedStyle(p).display==='none';
+      p.style.display=isHidden?'flex':'none';
+      if(isHidden){
+        ['free','plus','pro'].forEach(function(n){
+          var b=document.getElementById('apb-'+n);
+          if(b)b.classList.toggle('active',n===currentPlan);
+        });
+      }
+    }
+  }else{
+    err.textContent='❌ 코드가 틀렸습니다';
+    inp.value='';inp.focus();
+  }
+}
+/* 로고 5-tap 모바일 트리거 */
+var _logoTaps=0,_logoTapTm=null;
+function onLogoClick(){
+  goHome();
+  _logoTaps++;
+  if(_logoTapTm)clearTimeout(_logoTapTm);
+  _logoTapTm=setTimeout(function(){_logoTaps=0;},2000);
+  if(_logoTaps>=5){_logoTaps=0;showAdminPin();}
+}
+(function(){
+  /* PIN 모달 외부 클릭 닫기 */
+  document.addEventListener('click',function(e){
+    var m=document.getElementById('admin-pin-modal');
+    if(m&&m.classList.contains('open')&&e.target===m)m.classList.remove('open');
+  });
+  /* 데스크탑: Ctrl+Shift+A */
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&e.shiftKey&&e.key==='A'){e.preventDefault();showAdminPin();}
+  });
+  /* 어드민 패널 생성 */
+  var sw=document.createElement('div');
+  sw.id='admin-plan-panel';
+  sw.innerHTML='<p>🔧 ADMIN</p><div style="display:flex;gap:4px;">'
+    +'<button id="apb-free" class="apb'+(currentPlan==='free'?' active':'')+'" onclick="setPlan(\'free\')">Free</button>'
+    +'<button id="apb-plus" class="apb'+(currentPlan==='plus'?' active':'')+'" onclick="setPlan(\'plus\')">Plus</button>'
+    +'<button id="apb-pro" class="apb'+(currentPlan==='pro'?' active':'')+'" onclick="setPlan(\'pro\')">Pro</button>'
+    +'</div>';
+  var s=document.createElement('style');
+  s.textContent='#admin-plan-panel{position:fixed;bottom:20px;right:20px;background:#1a1f2e;border:1px solid #f59e0b;border-radius:10px;padding:10px 14px;z-index:9999;display:none;flex-direction:column;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.5);}'
+    +'#admin-plan-panel p{color:#f59e0b;font-size:10px;margin:0 0 8px;text-align:center;letter-spacing:1px;}'
+    +'.apb{background:#0b0f15;border:1px solid #333;border-radius:6px;color:#ccc;padding:5px 12px;font-size:11px;cursor:pointer;margin:0 2px;}'
+    +'.apb.active{border-color:#f59e0b;color:#f59e0b;}';
+  document.head.appendChild(s);
+  document.body.appendChild(sw);
+})();
 </script>
 <div id="admin-pin-modal">
   <div id="admin-pin-box">
@@ -2117,14 +2338,6 @@ setInterval(refreshMarquees,2000);
     <input id="admin-pin-input" type="password" inputmode="numeric" maxlength="4"
       placeholder="••••" onkeydown="if(event.key==='Enter')checkAdminPin()">
     <div id="admin-pin-err"></div>
-  </div>
-</div>
-<div id="admin-plan-panel">
-  <p>🔧 ADMIN</p>
-  <div style="display:flex;gap:4px;">
-    <button class="apb" id="apb-free" onclick="setPlan('free')">Free</button>
-    <button class="apb" id="apb-plus" onclick="setPlan('plus')">Plus</button>
-    <button class="apb" id="apb-pro" onclick="setPlan('pro')">Pro</button>
   </div>
 </div>
 </body>
