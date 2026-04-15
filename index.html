@@ -762,7 +762,7 @@ var apiDisabled=false,searchTimer=null,dragSrcIdx=null;
 var _fbTimeOffset=0;
 db.ref('.info/serverTimeOffset').on('value',function(snap){_fbTimeOffset=snap.val()||0;});
 function fbNow(){return Date.now()+_fbTimeOffset;}
-var requireApproval=false,pending=[],_prevPending=[];
+var requireApproval=false,pending=[],_prevPending=[],_fbDataLoaded=false;
 var currentPlayingVid=null;
 var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0,_pausedByHost=false;
 var maxMembers=0;
@@ -971,6 +971,7 @@ function attachListener(){
     playMode=d.playMode||(autoNextOn?'auto':'manual');
     qrEnabled=d.qrEnabled!==false;
     requireApproval=!!d.requireApproval;
+    _fbDataLoaded=true;
     maxMembers=d.maxMembers||0;
     members=d.members||{};
     // 플레이룸 제목
@@ -1302,6 +1303,7 @@ function checkLimit(){
 }
 var _addGatePending=false;
 function fbAddQ(v,t,a,th,nick){
+  if(!_fbDataLoaded){showToast('⏳ 잠시 후 다시 시도해주세요');return;}
   if(!allowGuests&&!isHost){showToast('⚠️ 게스트 신청이 비활성화되어 있습니다');return;}
   if(!checkLimit())return;
   if(queue.some(function(s){return s.v===v;})||pending.some(function(s){return s.v===v;})){showToast('⚠️ 이미 추가된 곡입니다');return;}
@@ -1319,8 +1321,11 @@ function _fbAddQConfirmed(v,t,a,th,nick){
   var song={v:v,t:t,a:a,th:th,nick:nick,nickId:myNickId};
   // 승인 필요 모드 + 게스트 → 대기열로
   if(requireApproval&&!isHost){
-    var newPending=pending.concat([song]);
-    db.ref('rooms/'+rid+'/pending').set(newPending);
+    db.ref('rooms/'+rid+'/pending').transaction(function(cur){
+      if(!cur)cur=[];
+      cur.push(song);
+      return cur;
+    });
     showToast('📋 승인 대기에 추가됨 — 호스트 승인 후 재생됩니다');
     return;
   }
@@ -1601,17 +1606,29 @@ function renderPending(){
 function fbApprove(i){
   if(i<0||i>=pending.length)return;
   var song=pending[i];
-  var newPending=pending.slice();newPending.splice(i,1);
-  var newQueue=queue.concat([song]);
-  var newCur=cur===-1?0:cur;
-  db.ref('rooms/'+rid).update({queue:newQueue,cur:newCur,pending:newPending});
+  db.ref('rooms/'+rid).transaction(function(d){
+    if(!d)return d;
+    var p=d.pending||[];
+    var idx=p.findIndex(function(s){return s.v===song.v;});
+    if(idx===-1)return d;
+    p.splice(idx,1);
+    d.pending=p;
+    if(!d.queue)d.queue=[];
+    d.queue.push(song);
+    if(d.cur==null||d.cur===-1)d.cur=0;
+    return d;
+  });
   showToast('✅ 승인: '+song.a+' - '+song.t.slice(0,15));
 }
 function fbReject(i){
   if(i<0||i>=pending.length)return;
   var song=pending[i];
-  var newPending=pending.slice();newPending.splice(i,1);
-  db.ref('rooms/'+rid+'/pending').set(newPending);
+  db.ref('rooms/'+rid+'/pending').transaction(function(p){
+    if(!p)return p;
+    var idx=p.findIndex(function(s){return s.v===song.v;});
+    if(idx!==-1)p.splice(idx,1);
+    return p;
+  });
   showToast('❌ 거절: '+song.t.slice(0,20));
 }
 
