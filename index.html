@@ -30,8 +30,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HZHPQSKFKV"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HZHPQSKFKV');</script>
 <!-- Google AdSense -->
-<meta name="google-adsense-account" content="ca-pub-2061027569183097">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2061027569183097" crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3103263572730555">
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -1308,6 +1307,7 @@ function fbAddQ(v,t,a,th,nick){
   if(!checkLimit())return;
   if(queue.some(function(s){return s.v===v;})||pending.some(function(s){return s.v===v;})){showToast('⚠️ 이미 추가된 곡입니다');return;}
   if(_addGatePending){return;}_addGatePending=true;
+  setTimeout(function(){_addGatePending=false;},10000);
   checkVideoInfo(v,function(info){
     _addGatePending=false;
     if(!info.error){
@@ -2006,7 +2006,7 @@ function goHome(){
   if(qc&&pc&&urlrow){urlrow.insertAdjacentElement('afterend',pc);urlrow.insertAdjacentElement('afterend',qc);}
   localStorage.removeItem('apl_activeRoom');
   localStorage.removeItem('apl_nick');
-  rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';pending=[];currentPlayingVid=null;
+  rid=null;isHost=false;queue=[];cur=-1;myNick='익명';members={};roomPw='';pending=[];currentPlayingVid=null;_fbDataLoaded=false;
   document.getElementById('jcode').value='';
   var _s=document.getElementById('sin');if(_s)_s.value='';
   var _r=document.getElementById('rlist');if(_r)_r.innerHTML='';
