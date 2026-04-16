@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0b0f15;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.og{width:1200px;height:630px;background:linear-gradient(135deg,#0b0f15 0%,#1a1f2e 50%,#0b0f15 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;font-family:'Segoe UI',sans-serif;}
+.bg-glow{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:.15;}
+.glow1{background:#f59e0b;top:-100px;right:-50px;}
+.glow2{background:#10b981;bottom:-150px;left:-100px;}
+.notes{position:absolute;font-size:80px;opacity:.06;}
+.n1{top:40px;left:60px;transform:rotate(-15deg);}
+.n2{bottom:40px;right:80px;transform:rotate(20deg);}
+.n3{top:50%;left:80px;transform:rotate(10deg);}
+.n4{bottom:30%;right:60px;transform:rotate(-25deg);}
+.content{text-align:center;z-index:1;padding:40px;}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3);border-radius:24px;padding:8px 20px;font-size:16px;color:#f59e0b;margin-bottom:28px;font-weight:500;}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;}
+.title{font-size:72px;font-weight:800;color:#fff;letter-spacing:-3px;margin-bottom:8px;line-height:1.1;}
+.title span{font-style:italic;background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sub{font-size:24px;color:rgba(255,255,255,.5);margin-bottom:36px;letter-spacing:1px;}
+.features{display:flex;gap:32px;justify-content:center;}
+.feat{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.6);font-size:15px;}
+.feat-icon{font-size:20px;}
+.url{position:absolute;bottom:28px;right:40px;color:rgba(255,255,255,.2);font-size:14px;letter-spacing:1px;}
+.qr-icon{position:absolute;bottom:24px;left:40px;opacity:.15;font-size:48px;}
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="bg-glow glow1"></div>
+  <div class="bg-glow glow2"></div>
+  <div class="notes n1">♪</div>
+  <div class="notes n2">♫</div>
+  <div class="notes n3">♬</div>
+  <div class="notes n4">♪</div>
+  <div class="content">
+    <div class="badge"><div class="badge-dot"></div>실시간 신청곡 플랫폼</div>
+    <div class="title">실시간 플레이리스트<br><span>QueueTune</span></div>
+    <div class="sub">QR 하나로 신청곡 받고, 함께 즐기는 음악 공간</div>
+    <div class="features">
+      <div class="feat"><span class="feat-icon">📱</span>앱 설치 없이</div>
+      <div class="feat"><span class="feat-icon">🎵</span>실시간 동기화</div>
+      <div class="feat"><span class="feat-icon">👑</span>호스트 관리</div>
+    </div>
+  </div>
+  <div class="qr-icon">📎</div>
+  <div class="url">applaylist.com</div>
+</div>
+</body>
+</html>
