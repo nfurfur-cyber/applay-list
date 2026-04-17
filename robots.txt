@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /.backups/
+Disallow: /og-preview.html
 Disallow: /firebase-debug.log
+Disallow: /api/
+
 Sitemap: https://applaylist.com/sitemap.xml
