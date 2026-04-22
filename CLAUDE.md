@@ -10,12 +10,14 @@
 ## 기술 스택
 - **Frontend**: 순수 HTML/CSS/JS (단일 파일 index.html)
 - **DB**: Firebase Realtime Database
-- **광고**: Google AdSense (ca-pub-2061027569183097) — 심사 대기 중
+- **광고**: Kakao AdFit (DAN-BbG1ANjRmS9ooN0b) — AdSense는 최종 거절 후 제거 (v1.31.0)
+- **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.30.10
+## 현재 버전: v1.31.0
 
 ## 버전 히스토리
+- v1.31.0: AdSense 제거 → Plus 피봇 (pricing 페이지 배포, Plus CTA 4개 연결, empty state 개선)
 - v1.30.10: 쿠키 배너 롤백 — privacy.html 명시로 충분, UX 우선
 - v1.30.9: 쿠키 동의 배너 추가 (롤백됨)
 - v1.30.0: 인기곡 TOP 10 가로 스크롤 차트 + YouTube 오류 153 자동 스킵
