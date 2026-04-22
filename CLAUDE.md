@@ -14,9 +14,10 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.31.1
+## 현재 버전: v1.31.2
 
 ## 버전 히스토리
+- v1.31.2: K-pop MV 카테고리 필터 확장 (음악=10만 허용 → 10/22/24) — 아이유/BTS 등 공식 MV 대부분이 cat=24(Entertainment) 인데 차단되던 버그. 에러 메시지도 category/duration 구분해서 정확하게 표시
 - v1.31.1: 검색 결과 +신청 버튼 SyntaxError 수정 (esc() 에 큰따옴표/백슬래시/개행 처리 추가) — 제목에 `"` 포함된 영상 신청 가능
 - v1.31.0: AdSense 제거 → Plus 피봇 (pricing 페이지 배포, Plus CTA 4개 연결, empty state 개선)
 - v1.30.10: 쿠키 배너 롤백 — privacy.html 명시로 충분, UX 우선
@@ -88,7 +89,7 @@
 ### 2. 노래 신청 — 8분 제한 및 비음악 필터
 - **3중 구조로 되어 있음**: ① `checkVideoInfo()` 제출 시 길이 확인 ② 검색 키워드에 'MV' 강제 추가 ③ `getDuration()` 폴링으로 런타임 재확인
 - **수정 시 절대 이 구조를 단순화하지 말 것** — 하나라도 빠지면 8분 초과 영상이 재생됨
-- **비음악 필터**: `checkVideoInfo()`에서 카테고리 ID 확인 — 음악(10) 외 카테고리 차단
+- **비음악 필터**: `checkVideoInfo()`에서 카테고리 ID 확인 — `MUSIC_CATS=['10','22','24']` 만 허용 (10=Music, 22=People&Blogs, 24=Entertainment). K-pop 공식 MV 대부분이 24 라 10만 허용하면 전부 차단됨 (v1.31.2 에서 발견)
 - **URL 직접 삽입 경로도 동일한 검증 통과** — URL 입력 시 `checkVideoInfo()` 반드시 호출해야 함
 
 ### 3. 참여자 숫자 오류
