@@ -14,9 +14,10 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.31.2
+## 현재 버전: v1.31.3
 
 ## 버전 히스토리
+- v1.31.3: 토스트 알림이 AdFit 하단 배너에 가려지던 문제 수정 (bottom 26px→80px, z-index 300→10000)
 - v1.31.2: K-pop MV 카테고리 필터 확장 (음악=10만 허용 → 10/22/24) — 아이유/BTS 등 공식 MV 대부분이 cat=24(Entertainment) 인데 차단되던 버그. 에러 메시지도 category/duration 구분해서 정확하게 표시
 - v1.31.1: 검색 결과 +신청 버튼 SyntaxError 수정 (esc() 에 큰따옴표/백슬래시/개행 처리 추가) — 제목에 `"` 포함된 영상 신청 가능
 - v1.31.0: AdSense 제거 → Plus 피봇 (pricing 페이지 배포, Plus CTA 4개 연결, empty state 개선)
