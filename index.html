@@ -1601,7 +1601,7 @@ function editTitle(){
 }
 
 /* ═══ 검색 ═══ */
-var YT_API_KEY='AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I';
+var YT_API_KEY='AIzaSyDbE5LQSnQCp_LGa-5bd4KjXOY4W8pdKt4';
 var DEMO=[{v:'4fndeDfaWCg',t:'좋은 날',a:'아이유 (IU)'},{v:'AJTsXYREMgw',t:'ETA',a:'NewJeans'},{v:'Km71Rr9K-Bw',t:'Fantastic Baby',a:'BIGBANG'},{v:'nZqzELysFaU',t:'Dynamite',a:'BTS'},{v:'gdZLi9oWNZg',t:'Next Level',a:'aespa'},{v:'CK026xBpTuU',t:'RINGA LINGA',a:'태양'},{v:'GkZJ7oi_B5E',t:'ELEVEN',a:'IVE'},{v:'uCOIGDtBgCM',t:'DDU-DU DDU-DU',a:'BLACKPINK'},{v:'9bZkp7q19f0',t:'강남스타일',a:'PSY'},{v:'2ips2mM7Zqw',t:'ANTIFRAGILE',a:'LE SSERAFIM'},{v:'R3PqVMFEMpE',t:'박수 (CLAP)',a:'SEVENTEEN'},{v:'pSudEWBAYRE',t:'Cherry Bomb',a:'NCT 127'},{v:'7C2z4GqqS5E',t:'Supernova',a:'aespa'},{v:'ArmDp-zijuc',t:'APT.',a:'ROSÉ, Bruno Mars'},{v:'pBuZEGYXA6E',t:'Love Lee',a:'AKMU'},{v:'iFUwwIgblqk',t:'SPOT!',a:'ZICO, JENNIE'},{v:'UmkIZEBlm_k',t:'Love Dive',a:'IVE'},{v:'_IrQHeDcMJo',t:'Magnetic',a:'ILLIT'}];
 function focusSearch(){var el=document.getElementById('sin');if(!el)return;el.focus();el.scrollIntoView({behavior:'smooth',block:'center'});}
 function doSearch(){var q=document.getElementById('sin').value.trim(),c=document.getElementById('rlist');if(!q){c.innerHTML='';return;}if(extractVid(q)){previewUrl(q);return;}if(searchTimer)clearTimeout(searchTimer);searchTimer=setTimeout(function(){doSearchNow(q);},400);}
