@@ -14,9 +14,10 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.31.0
+## 현재 버전: v1.31.1
 
 ## 버전 히스토리
+- v1.31.1: 검색 결과 +신청 버튼 SyntaxError 수정 (esc() 에 큰따옴표/백슬래시/개행 처리 추가) — 제목에 `"` 포함된 영상 신청 가능
 - v1.31.0: AdSense 제거 → Plus 피봇 (pricing 페이지 배포, Plus CTA 4개 연결, empty state 개선)
 - v1.30.10: 쿠키 배너 롤백 — privacy.html 명시로 충분, UX 우선
 - v1.30.9: 쿠키 동의 배너 추가 (롤백됨)
