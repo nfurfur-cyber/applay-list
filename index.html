@@ -31,6 +31,7 @@
 <!-- Firebase SDK (SRI: 무결성 해시 v10.12.2 고정) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" integrity="sha384-AQ3POAMqIhwS81FrUH95ekxqBZHeP5tG2JfEL3+7GuTtfRLWnrRh32UxwzM+//A9" crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js" integrity="sha384-1/m+A1jVWbD3yiK3/vtFvm1+LjK1WLpSoDY+Kaxppwn/yP9BVSgdHTNQVOjrzUO5" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js" integrity="sha384-TnlRYaR4JYz/lpaGuaiU61PjNberSA4vjLjtF+oRC/IkohkJqnWxw5EmDSOt1vA1" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -725,10 +726,11 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 const firebaseConfig={apiKey:'AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I',authDomain:'appplay-list.firebaseapp.com',databaseURL:'https://appplay-list-default-rtdb.firebaseio.com',projectId:'appplay-list',storageBucket:'appplay-list.firebasestorage.app',messagingSenderId:'7281735403',appId:'1:7281735403:web:fe34ff66786678d75930ae'};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
+const auth=firebase.auth();
 
 /* ═══ 상태 변수 ═══ */
 var rid=null,isHost=false,queue=[],cur=-1,pmode='video';
-var myNick='익명',myNickId=null,myHostId=null;
+var myNick='익명',myNickId=null,myHostId=null,myUid=null;
 var songLimit=0,maxQueueSize=0,autoRemovePlayed=false;
 var allowGuests=true,autoNextOn=true,qrEnabled=true;
 var playMode='auto'; // 'auto','manual','repeat','shuffle'
@@ -749,9 +751,9 @@ var _roomPlayStartedAt=0,_prevRoomPaused=false,_lastPausedAt=0,_pausedByHost=fal
 var maxMembers=0;
 var _hostCurrentTime=0,_hostSeekPending=false,_guestInitialPlay=false,_guestSyncTimer=null,_autoplayTimer=null;
 
-/* ═══ 구독 플랜 시스템 ═══ */
-/* Phase 1에서 Firebase Auth + 서버 플랜으로 교체 예정. 그 전까지 free 고정 */
-var currentPlan='free';
+/* ═══ 구독 플랜 시스템 (Phase 1: Firebase Anonymous Auth) ═══ */
+var currentPlan='free';  // 기본 free — signInAnonymously 후 /users/{uid}/plan 에서 갱신
+var _planRef=null;
 function getPlan(){return currentPlan;}
 var PLAN_LIMITS={
   free:{maxQueue:15,approval:false,roomPw:false,autoRemove:true,allowGuestsToggle:false},
@@ -760,6 +762,26 @@ var PLAN_LIMITS={
 };
 function planAllows(feature){return PLAN_LIMITS[currentPlan][feature]!==false;}
 function planMaxQueue(){return PLAN_LIMITS[currentPlan].maxQueue;}
+/* initPlan: 익명 로그인 → /users/{uid}/plan 실시간 구독 */
+function initPlan(){
+  auth.signInAnonymously()
+    .then(function(cred){
+      myUid=cred.user.uid;
+      // /users/{uid}/plan 실시간 감시 — 관리자가 Firebase console에서 변경 시 즉시 반영
+      _planRef=db.ref('users/'+myUid+'/plan');
+      _planRef.on('value',function(snap){
+        var p=snap.val();
+        var valid=['free','plus','pro'];
+        currentPlan=(p&&valid.indexOf(p)!==-1)?p:'free';
+        applyPlanLocks();
+        // pricing.html 이메일 링크에 uid 반영 (같은 도메인 localStorage 공유)
+        try{localStorage.setItem('apl_uid',myUid);}catch(e){}
+      });
+    })
+    .catch(function(e){
+      console.warn('[Auth] 익명 로그인 실패, free 유지:',e.message);
+    });
+}
 function applyPlanLocks(){
   var isFree=currentPlan==='free';
   var ra=document.getElementById('row-approval');if(ra)ra.classList.toggle('plan-locked',isFree);
@@ -789,12 +811,7 @@ function applyPlanLocks(){
     if(b)b.classList.toggle('active',n===currentPlan);
   });
 }
-/* setPlan, showAdminPin, checkAdminPin 제거 — Phase 1에서 서버 권한으로 교체 */
-function showAdminPin(){
-  /* 비활성화 */
-  /* 비활성화 — Phase 1에서 Firebase Auth 기반 관리자 기능으로 교체 */
-}
-function checkAdminPin(){/* 비활성화 */}
+/* 관리자 기능: Phase 2(Firebase Auth Custom Claims)에서 재도입 예정 */
 function onLogoClick(){goHome();}
 
 /* ═══ 공지 시스템 ═══ */
@@ -1748,7 +1765,7 @@ function confirmCreate(){
   rid=Math.random().toString(36).slice(2,8).toUpperCase();
   isHost=true;myNick=hostNick;myNickId=myHostId;roomPw=pw;
   var initMaxQueue=planMaxQueue();
-  var data={name:n,hostId:myHostId,hostNick:hostNick,pw:pw,cur:-1,limit:0,maxQueue:initMaxQueue,maxMembers:0,autoRemovePlayed:false,allowGuests:_crSettings.guest,autoNext:true,playMode:'auto',requireApproval:_crSettings.approval,qrEnabled:_crSettings.qr,createdAt:Date.now(),queue:[],members:{}};
+  var data={name:n,hostId:myHostId,uid:myUid||'',hostNick:hostNick,pw:pw,cur:-1,limit:0,maxQueue:initMaxQueue,maxMembers:0,autoRemovePlayed:false,allowGuests:_crSettings.guest,autoNext:true,playMode:'auto',requireApproval:_crSettings.approval,qrEnabled:_crSettings.qr,createdAt:Date.now(),queue:[],members:{}};
   // crSettings 기본값 초기화
   _crSettings={guest:true,approval:false,qr:true};
   ['guest','approval','qr'].forEach(function(k){var t=document.getElementById('cr-tog'+k);if(t)t.classList.toggle('on',_crSettings[k]);});
@@ -2014,6 +2031,7 @@ function showToast(msg){var t=document.getElementById('toast');t.textContent=msg
 
 /* ═══ 초기화 ═══ */
 initIds();
+initPlan();    // Firebase Anonymous Auth → 서버 플랜 로드
 applyPlanLocks();
 loadLiveRooms();loadTopSongs();
 // 호스트 기존 방 확인
