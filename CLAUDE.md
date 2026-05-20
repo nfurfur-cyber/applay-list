@@ -14,9 +14,10 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.33.0
+## 현재 버전: v1.34.0
 
 ## 버전 히스토리
+- v1.34.0: Phase 1 Firebase Anonymous Auth — initPlan(): signInAnonymously→/users/{uid}/plan 실시간 구독, currentPlan 서버갱신(auth실패 시 free 폴백), myUid 상태변수+방생성시uid저장, pricing.html 이메일에 사용자ID 자동삽입, database.rules.json+firebase.json 추가
 - v1.33.0: Phase 0 보안/정책 패치 — ① YouTube ToS 준수: audio-mode(height:0) → compact-mode(height:80px) 영상 항상 표시 ② 관리자 패널 완전 제거: Ctrl+Shift+A 단축키·로고 5-tap·PIN(9624)·setPlan() 모두 제거, Phase 1 Firebase Auth 이후 재도입 예정 ③ localStorage 플랜 조작 차단: currentPlan 하드코딩 'free'로 고정 ④ Plus 문의 연결: pricing.html 버튼 이메일 링크(n.furfur@gmail.com)로 교체 ⑤ 법률문서 현행화: privacy.html AdSense→AdFit, terms.html 광고사 수정, 날짜 갱신
 - v1.32.0: Plus 요금제 CTA 노출 개선 — 헤더 우측 [요금제] [✨ Plus] 2단 버튼 + AdFit 배너 위 "광고 없이 듣기 Plus →" 미니 CTA. 기존 Plus 진입점 4개는 관리자 패널 숨김 상태라 노출 0% 였음 → 전환 퍼널 3개 신설 (Notion/Figma/Spotify Free 패턴 차용)
 - v1.31.3: 토스트 알림이 AdFit 하단 배너에 가려지던 문제 수정 (bottom 26px→80px, z-index 300→10000)
