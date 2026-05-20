@@ -2,19 +2,23 @@
   "rules": {
     "rooms": {
       ".read": true,
-      ".write": "auth !== null"
+      ".write": "auth !== null",
+      ".indexOn": ["createdAt"]
     },
     "hosts": {
       ".read": true,
       ".write": "auth !== null"
     },
     "stats": {
-      ".read": true,
-      ".write": "auth !== null"
+      "songs": {
+        ".read": true,
+        ".write": "auth !== null",
+        ".indexOn": ["count"]
+      }
     },
     "users": {
       "$uid": {
-        ".read": "auth !== null && auth.uid === $uid",
+        ".read":  "auth !== null && auth.uid === $uid",
         ".write": false
       }
     }
