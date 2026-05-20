@@ -315,11 +315,12 @@ footer{border-top:1px solid var(--bd);padding:28px 20px;text-align:center;}
     <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--tx2);font-size:18px;cursor:pointer;">✕</button>
     <div style="font-size:20px;font-weight:700;margin-bottom:8px;" id="modal-title">Plus 플랜 시작하기</div>
     <div style="font-size:13px;color:var(--tx2);margin-bottom:24px;" id="modal-desc">아래 채널로 문의해주시면 24시간 내 안내해드립니다.</div>
-    <div style="background:var(--sf2);border-radius:10px;padding:16px;margin-bottom:16px;">
-      <div style="font-size:12px;color:var(--tx3);margin-bottom:6px;">카카오톡 오픈채팅</div>
-      <div style="font-size:14px;font-weight:700;color:var(--ac);">준비 중</div>
-    </div>
-    <div style="font-size:11px;color:var(--tx3);line-height:1.7;">문의 시 원하는 플랜과 사용 목적(카페, 행사, 모임 등)을 함께 알려주시면 빠르게 안내드립니다.</div>
+    <a href="mailto:n.furfur@gmail.com?subject=QueueTune Plus 문의&body=안녕하세요. Plus 플랜 문의드립니다.%0A%0A사용 목적(카페/행사/모임 등):%0A연락 가능한 연락처:%0A희망 시작일:" style="display:block;background:var(--sf2);border-radius:10px;padding:16px;margin-bottom:16px;text-decoration:none;transition:border-color .2s;border:1px solid var(--bd);" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'">
+      <div style="font-size:12px;color:var(--tx3);margin-bottom:6px;">이메일 문의</div>
+      <div style="font-size:14px;font-weight:700;color:var(--ac);">n.furfur@gmail.com →</div>
+      <div style="font-size:11px;color:var(--tx2);margin-top:4px;">클릭하면 메일 앱이 열립니다</div>
+    </a>
+    <div style="font-size:11px;color:var(--tx3);line-height:1.7;">문의 시 <b style="color:var(--tx2);">사용 목적(카페·행사·모임 등)</b>과 <b style="color:var(--tx2);">연락처</b>를 함께 알려주시면 빠르게 안내드립니다. 24시간 내 회신합니다.</div>
   </div>
 </div>
 

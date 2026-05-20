@@ -135,7 +135,7 @@ h1 em{font-style:normal;color:var(--ac);}
 .bsm.d:hover{background:var(--ac2);border-color:var(--ac2);color:#fff;}
 .pwrap{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--bd);}
 .pvideo{aspect-ratio:16/9;position:relative;transition:all .3s;}
-.pvideo.audio-mode{aspect-ratio:unset!important;height:0!important;overflow:hidden!important;}
+.pvideo.compact-mode{aspect-ratio:unset!important;height:80px!important;overflow:hidden!important;}
 /* 게스트: JS 기반 동기화만 사용 (오버레이 없음 — 일시정지·전체화면 허용) */
 .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;}
 .phold{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--tx3);font-size:12px;z-index:7;background:var(--bg);transition:opacity .3s;}
@@ -331,19 +331,7 @@ footer a{color:var(--ac);text-decoration:none;}
 .notice-preview-phone::after{content:'참여자  ·  신청곡 목록';display:block;font-size:10px;color:var(--tx3);background:var(--sf2);border-radius:8px;padding:6px 10px;text-align:center;opacity:.5;}
 .notice-preview-caption{font-size:12px;color:var(--tx2);line-height:1.7;margin:14px 0 18px;}
 .notice-preview-caption b{color:var(--tx);}
-/* 관리자 플랜 스위처 */
-#admin-plan-panel{position:fixed;bottom:20px;right:20px;background:#1a1f2e;border:1px solid #f59e0b;border-radius:10px;padding:10px 14px;z-index:9999;display:none;flex-direction:column;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.5);}
-#admin-plan-panel p{color:#f59e0b;font-size:10px;margin:0 0 8px;text-align:center;letter-spacing:1px;}
-#admin-plan-panel .apb{background:#0b0f15;border:1px solid #333;border-radius:6px;color:#ccc;padding:5px 12px;font-size:11px;cursor:pointer;margin:0 2px;}
-#admin-plan-panel .apb.active{border-color:#f59e0b;color:#f59e0b;}
-/* 관리자 PIN 모달 */
-#admin-pin-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;display:none;align-items:center;justify-content:center;}
-#admin-pin-modal.open{display:flex;}
-#admin-pin-box{background:#1a1f2e;border:1px solid #f59e0b;border-radius:12px;padding:20px 24px;text-align:center;width:240px;}
-#admin-pin-box p{color:#f59e0b;font-size:11px;letter-spacing:1px;margin-bottom:10px;}
-#admin-pin-input{width:100%;padding:10px;background:#0b0f15;border:1px solid #333;border-radius:7px;color:#fff;font-size:18px;text-align:center;letter-spacing:6px;outline:none;font-family:'Space Mono',monospace;}
-#admin-pin-input:focus{border-color:#f59e0b;}
-#admin-pin-err{color:#ef4444;font-size:11px;margin-top:6px;min-height:16px;}
+/* 관리자 패널: Phase 1 (Firebase Auth) 이후 재도입 예정 */
 /* 텍스트 오버플로 슬라이드 애니메이션 */
 @keyframes marquee{0%{transform:translateX(0)}10%{transform:translateX(0)}90%{transform:translateX(var(--marquee-dist))}100%{transform:translateX(var(--marquee-dist))}}
 .marquee-wrap{overflow:hidden;white-space:nowrap;}.marquee-wrap .marquee-inner{display:inline-block;animation:marquee var(--marquee-dur,6s) ease-in-out infinite alternate;}
@@ -521,7 +509,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
     <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="pwrap">
       <div class="pvideo" id="pvideo"><div class="phold" id="phold" onclick="focusSearch()" style="cursor:pointer;"><div class="pi">🎵</div><div>신청곡을 추가하면 자동 재생됩니다</div><div style="font-size:11px;opacity:.5;">여기를 눌러 검색하기</div></div><div id="yt-frame-slot"></div></div>
-      <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('audio')">🎵 음악만</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span id="volIcon" style="font-size:14px;color:var(--tx3);cursor:pointer;" onclick="toggleMute()">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
+      <div class="modebar"><span class="mlbl">🎬 재생 모드</span><div class="mbtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('compact')">📻 컴팩트 보기</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span id="volIcon" style="font-size:14px;color:var(--tx3);cursor:pointer;" onclick="toggleMute()">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
     </div>
     <div class="sbox"><div class="srow"><input class="sinput" id="sin" placeholder="🔍 노래 제목·아티스트 검색 또는 유튜브 URL 삽입" onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
     <div class="qcard" id="queueCard"><div class="qhdr"><div style="display:flex;align-items:center;gap:7px;"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><button class="playmode-btn" id="playmodeBtn" onclick="cyclePlayMode()" title="재생 모드 변경">▶ 자동재생</button></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
@@ -573,7 +561,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.32.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.33.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -762,7 +750,8 @@ var maxMembers=0;
 var _hostCurrentTime=0,_hostSeekPending=false,_guestInitialPlay=false,_guestSyncTimer=null,_autoplayTimer=null;
 
 /* ═══ 구독 플랜 시스템 ═══ */
-var currentPlan=localStorage.getItem('apl_plan')||'free';
+/* Phase 1에서 Firebase Auth + 서버 플랜으로 교체 예정. 그 전까지 free 고정 */
+var currentPlan='free';
 function getPlan(){return currentPlan;}
 var PLAN_LIMITS={
   free:{maxQueue:15,approval:false,roomPw:false,autoRemove:true,allowGuestsToggle:false},
@@ -800,65 +789,13 @@ function applyPlanLocks(){
     if(b)b.classList.toggle('active',n===currentPlan);
   });
 }
-function setPlan(p){
-  currentPlan=p;
-  localStorage.setItem('apl_plan',p);
-  applyPlanLocks();
-}
-/* 관리자 PIN */
+/* setPlan, showAdminPin, checkAdminPin 제거 — Phase 1에서 서버 권한으로 교체 */
 function showAdminPin(){
-  var m=document.getElementById('admin-pin-modal');
-  var inp=document.getElementById('admin-pin-input');
-  var err=document.getElementById('admin-pin-err');
-  if(!m)return;
-  err.textContent='';inp.value='';
-  m.classList.add('open');
-  setTimeout(function(){inp.focus();},100);
+  /* 비활성화 */
+  /* 비활성화 — Phase 1에서 Firebase Auth 기반 관리자 기능으로 교체 */
 }
-function checkAdminPin(){
-  var inp=document.getElementById('admin-pin-input');
-  var err=document.getElementById('admin-pin-err');
-  if(inp.value==='9624'){
-    document.getElementById('admin-pin-modal').classList.remove('open');
-    var p=document.getElementById('admin-plan-panel');
-    if(p){
-      var isHidden=window.getComputedStyle(p).display==='none';
-      p.style.display=isHidden?'flex':'none';
-      if(isHidden){
-        ['free','plus','pro'].forEach(function(n){
-          var b=document.getElementById('apb-'+n);
-          if(b)b.classList.toggle('active',n===currentPlan);
-        });
-      }
-    }
-  }else{
-    err.textContent='❌ 코드가 틀렸습니다';
-    inp.value='';inp.focus();
-  }
-}
-/* 로고 5-tap 모바일 트리거 */
-var _logoTaps=0,_logoTapTm=null;
-function onLogoClick(){
-  goHome();
-  _logoTaps++;
-  if(_logoTapTm)clearTimeout(_logoTapTm);
-  _logoTapTm=setTimeout(function(){_logoTaps=0;},2000);
-  if(_logoTaps>=5){_logoTaps=0;showAdminPin();}
-}
-(function(){
-  /* PIN 모달 외부 클릭 닫기 */
-  document.addEventListener('click',function(e){
-    var m=document.getElementById('admin-pin-modal');
-    if(m&&m.classList.contains('open')&&e.target===m)m.classList.remove('open');
-  });
-  /* 데스크탑: Ctrl+Shift+A */
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&e.shiftKey&&e.key==='A'){
-      e.preventDefault();
-      showAdminPin();
-    }
-  });
-})();
+function checkAdminPin(){/* 비활성화 */}
+function onLogoClick(){goHome();}
 
 /* ═══ 공지 시스템 ═══ */
 var noticeOn=false,noticeTitle='',noticeDesc='',noticeSize='sm';
@@ -1221,8 +1158,8 @@ window.addEventListener('message',function(e){
     }
   }
 });
-function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='audio');applyMode();showToast(m==='audio'?'🎵 음악 전용 모드':'📺 영상+음악 모드');}
-function applyMode(){var pv=document.getElementById('pvideo');pv.classList.toggle('audio-mode',pmode==='audio');}
+function setMode(m){pmode=m;document.getElementById('mbv').classList.toggle('on',m==='video');document.getElementById('mba').classList.toggle('on',m==='compact');applyMode();showToast(m==='compact'?'📻 컴팩트 보기 (영상 작게)':'📺 영상+음악 모드');}
+function applyMode(){var pv=document.getElementById('pvideo');pv.classList.toggle('compact-mode',pmode==='compact');}
 function extractVid(url){url=url.trim();var m;m=url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/embed\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];m=url.match(/shorts\/([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url))return url;return null;}
 function playCur(startSec){if(cur<0||cur>=queue.length)return;var s=queue[cur];currentPlayingVid=s.v;_hostCurrentTime=0;_rtDurCheckedVid=null;if(_rtDurPollTimer){clearInterval(_rtDurPollTimer);_rtDurPollTimer=null;}if(!isHost)_guestInitialPlay=true;
   document.getElementById('phold').classList.add('gone');buildIframe(s.v,startSec||0);document.getElementById('npt').textContent=s.a+' - '+s.t;document.getElementById('npm').textContent='신청: @'+s.nick;document.getElementById('eq').classList.remove('p');
@@ -2168,26 +2105,11 @@ function refreshMarquees(){
 // 렌더링 후 주기적으로 체크
 setInterval(refreshMarquees,2000);
 </script>
-<div id="admin-pin-modal">
-  <div id="admin-pin-box">
-    <p>🔐 ADMIN CODE</p>
-    <input id="admin-pin-input" type="password" inputmode="numeric" maxlength="4"
-      placeholder="••••" onkeydown="if(event.key==='Enter')checkAdminPin()">
-    <div id="admin-pin-err"></div>
-  </div>
-</div>
-<div id="admin-plan-panel">
-  <p>🔧 ADMIN</p>
-  <div style="display:flex;gap:4px;">
-    <button class="apb" id="apb-free" onclick="setPlan('free')">Free</button>
-    <button class="apb" id="apb-plus" onclick="setPlan('plus')">Plus</button>
-    <button class="apb" id="apb-pro" onclick="setPlan('pro')">Pro</button>
-  </div>
-</div>
+<!-- 관리자 패널: Phase 1 (Firebase Auth) 이후 재도입 -->
 
 <!-- AdFit 모바일 하단 고정 배너 -->
 <div id="adfit-bottom" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:320px;z-index:999;background:transparent;">
-  <a href="/pricing.html" target="_blank" rel="noopener" class="adfit-plus-hint">✨ 광고 없이 듣기 <b>Plus</b> →</a>
+  <a href="/pricing.html" target="_blank" rel="noopener" class="adfit-plus-hint">✨ QueueTune 배너 광고 제거 — <b>Plus</b> →</a>
   <ins class="kakao_ad_area" style="display:none;"
     data-ad-unit="DAN-BbG1ANjRmS9ooN0b"
     data-ad-width="320"
