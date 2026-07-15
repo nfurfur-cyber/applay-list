@@ -2,7 +2,11 @@ module.exports = async function handler(req, res) {
   const q = req.query.q;
   if (!q) return res.status(400).json({ error: 'Missing q parameter' });
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS: 우리 도메인만 허용 (외부 사이트의 API 무단 사용 → 쿼터/비용 소진 차단)
+  const ALLOWED_ORIGINS = ['https://applaylist.com', 'https://www.applaylist.com'];
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   // 1차: YouTube Data API v3

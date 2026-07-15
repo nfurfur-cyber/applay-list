@@ -2,8 +2,14 @@
   "rules": {
     "rooms": {
       ".read": true,
-      ".write": "auth !== null",
-      ".indexOn": ["createdAt"]
+      ".indexOn": ["createdAt"],
+      "$rid": {
+        ".write": "auth !== null && (newData.exists() || !data.child('uid').exists() || data.child('uid').val() === '' || data.child('uid').val() === auth.uid)",
+        "uid":       { ".validate": "!data.exists() || newData.val() === data.val()" },
+        "hostId":    { ".validate": "!data.exists() || newData.val() === data.val()" },
+        "createdAt": { ".validate": "!data.exists() || newData.val() === data.val()" },
+        "pw":        { ".validate": "!data.exists() || data.val() === '' || newData.val() === data.val()" }
+      }
     },
     "hosts": {
       ".read": true,
