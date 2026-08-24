@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>요금제 - QueueTune</title>
+<!-- 베타 기간: 전 기능 무료 개방 중이라 검색 노출 차단 (정식 출시 시 제거) -->
+<meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+KR:wght@400;500;700&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -130,9 +132,10 @@ footer{border-top:1px solid var(--bd);padding:28px 20px;text-align:center;}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">💳 요금제</div>
-  <h1>원하는 방식으로<br><span>바로 시작하세요</span></h1>
-  <p>가볍게 써보고 싶다면 Free로, 더 많은 기능이 필요하다면 Plus로.<br>모든 플랜에서 8분 이하 음악 컨텐츠를 신청할 수 있습니다.</p>
+  <div class="hero-badge">🎁 베타 기간 — 전 기능 무료</div>
+  <h1>지금은 모든 기능이<br><span>무료입니다</span></h1>
+  <p><strong>베타 기간 동안 아래 Plus 기능까지 전부 무료로 열려 있습니다.</strong><br>
+     아래 요금제는 정식 출시 후 적용될 예정이며, 베타 참여자에게는 별도 혜택을 드립니다.</p>
   <div class="toggle-billing">
     <button class="on" id="btn-monthly" onclick="setBilling('monthly')">월간 결제</button>
     <button id="btn-annual" onclick="setBilling('annual')">연간 결제 <span class="save-badge">2개월 무료</span></button>
@@ -179,7 +182,7 @@ footer{border-top:1px solid var(--bd);padding:28px 20px;text-align:center;}
         <span class="period">/월</span>
       </div>
       <div class="plan-price-annual" id="plus-annual">&nbsp;</div>
-      <button class="plan-btn plus-btn" onclick="openPlusApply()">Plus 시작하기</button>
+      <button class="plan-btn plus-btn" onclick="openPlusApply()">정식 출시 알림 받기</button>
       <hr class="plan-divider">
       <div class="plan-features-title">Free의 모든 기능 +</div>
       <ul class="plan-features">
@@ -347,8 +350,8 @@ function toggleFaq(el){
   item.classList.toggle('open');
 }
 function openPlusApply(){
-  document.getElementById('modal-title').textContent='Plus 플랜 시작하기';
-  document.getElementById('modal-desc').textContent='아래 채널로 문의해주시면 24시간 내 안내해드립니다.';
+  document.getElementById('modal-title').textContent='정식 출시 알림 받기';
+  document.getElementById('modal-desc').textContent='지금은 베타 기간으로 전 기능이 무료입니다. 정식 출시와 베타 참여자 혜택을 가장 먼저 안내받으시려면 아래로 연락 주세요.';
   document.getElementById('apply-modal').style.display='flex';
 }
 function openProApply(){

@@ -14,9 +14,10 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.35.0
+## 현재 버전: v1.36.0
 
 ## 버전 히스토리
+- v1.36.0: 베타 전면 무료 개방 + 게스트→호스트 확산 CTA — `BETA_FREE_ALL=true` 플래그 하나로 전 기능 무료 개방(planAllows/planMaxQueue 조기반환, isFreeLocked() 헬퍼로 applyPlanLocks·renderNotice 판정 교체). Plus/요금제 CTA 숨김 + 헤더 `BETA · 무료` 배지(applyBetaFreeUI). 게스트 전용 `#guestPromo` CTA 신설(새 탭 — 참여 중인 방 유지). pricing.html noindex + 베타 안내. **플랜 로직은 삭제하지 않음 — `BETA_FREE_ALL=false` 로 즉시 복구 (양방향 검증 완료)**
 - v1.35.0: 폰 잠금 시 멤버 카운트 깜빡임 버그 수정 — `.info/connected` + `visibilitychange` 리스너로 재연결 즉시 멤버 + onDisconnect 핸들러 재등록. attachListener에 setupAutoRejoin, goHome/confirmDeleteRoom에 teardownAutoRejoin 추가. 호스트·게스트 동일 적용 (`host:!!isHost`)
 - v1.34.0: Phase 1 Firebase Anonymous Auth — initPlan(): signInAnonymously→/users/{uid}/plan 실시간 구독, currentPlan 서버갱신(auth실패 시 free 폴백), myUid 상태변수+방생성시uid저장, pricing.html 이메일에 사용자ID 자동삽입, database.rules.json+firebase.json 추가
 - v1.33.0: Phase 0 보안/정책 패치 — ① YouTube ToS 준수: audio-mode(height:0) → compact-mode(height:80px) 영상 항상 표시 ② 관리자 패널 완전 제거: Ctrl+Shift+A 단축키·로고 5-tap·PIN(9624)·setPlan() 모두 제거, Phase 1 Firebase Auth 이후 재도입 예정 ③ localStorage 플랜 조작 차단: currentPlan 하드코딩 'free'로 고정 ④ Plus 문의 연결: pricing.html 버튼 이메일 링크(n.furfur@gmail.com)로 교체 ⑤ 법률문서 현행화: privacy.html AdSense→AdFit, terms.html 광고사 수정, 날짜 갱신
