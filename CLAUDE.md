@@ -14,9 +14,15 @@
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-MCTVK42K72)
 
-## 현재 버전: v1.36.0
+## 현재 버전: v1.36.1
 
 ## 버전 히스토리
+- v1.36.1: 토스트 알림이 AdFit 배너 위에 영구 잔류하던 버그 수정 + FAQ 베타 안내 + 홈 후원 섹션 복원
+  - **원인**: `.toast{bottom:80px; transform:translateY(80px)}` — 숨김 이동량(80px)이 `bottom`(80px)과 정확히 상쇄되어, 토스트가 화면 밖으로 안 나가고 **뷰포트 최하단(광고 배너 위)에 그대로 표시**됨. v1.31.3에서 `bottom`만 26→80px 올리고 `translateY`는 그대로 둬서 생긴 회귀
+  - **수정**: 숨김 transform 을 `translateY(calc(100% + 200px))` 로 변경(자기 높이 기반이라 bottom 값과 무관하게 항상 화면 밖) + `pointer-events:none`
+  - `showToast()`가 `#adfit-bottom` 실제 렌더 높이를 측정해 `bottom` 동적 설정 (AdFit이 선언값 320x50보다 큰 크리에이티브를 내보내는 경우 대응, 상한 180px). 광고 55/100/140px 전부 비겹침 검증
+  - FAQ "무료인가요?" → 베타 기간 전 기능 무료 + **베타 종료 후 일부 유료 전환 가능** + 베타 참여자 혜택 명시
+  - 홈 화면 후원 섹션 복원 (`.bottom-sup` CSS만 있고 HTML에선 미사용 상태였음)
 - v1.36.0: 베타 전면 무료 개방 + 게스트→호스트 확산 CTA — `BETA_FREE_ALL=true` 플래그 하나로 전 기능 무료 개방(planAllows/planMaxQueue 조기반환, isFreeLocked() 헬퍼로 applyPlanLocks·renderNotice 판정 교체). Plus/요금제 CTA 숨김 + 헤더 `BETA · 무료` 배지(applyBetaFreeUI). 게스트 전용 `#guestPromo` CTA 신설(새 탭 — 참여 중인 방 유지). pricing.html noindex + 베타 안내. **플랜 로직은 삭제하지 않음 — `BETA_FREE_ALL=false` 로 즉시 복구 (양방향 검증 완료)**
 - v1.35.0: 폰 잠금 시 멤버 카운트 깜빡임 버그 수정 — `.info/connected` + `visibilitychange` 리스너로 재연결 즉시 멤버 + onDisconnect 핸들러 재등록. attachListener에 setupAutoRejoin, goHome/confirmDeleteRoom에 teardownAutoRejoin 추가. 호스트·게스트 동일 적용 (`host:!!isHost`)
 - v1.34.0: Phase 1 Firebase Anonymous Auth — initPlan(): signInAnonymously→/users/{uid}/plan 실시간 구독, currentPlan 서버갱신(auth실패 시 free 폴백), myUid 상태변수+방생성시uid저장, pricing.html 이메일에 사용자ID 자동삽입, database.rules.json+firebase.json 추가
