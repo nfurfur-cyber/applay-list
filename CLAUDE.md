@@ -16,9 +16,10 @@
 - **운영 대시보드**: `/ops-6674bcd4.html` — **소유자(n.furfur@gmail.com) 구글 로그인 전용**. 이름 붙인 Firebase 앱('ops')이라 메인 사이트 익명 로그인과 분리. 방·단골·방문자 분석(이용시간·이탈·막힌 이유·유입 경로)
 - **이용 분석**: `analytics/sessions/{sid}` — RTDB 규칙상 본인 세션만 쓰기, 소유자만 읽기. 90일 보관(대시보드 열 때 정리). 개인 식별 정보 저장 금지
 
-## 현재 버전: v1.39.0
+## 현재 버전: v1.40.0
 
 ## 버전 히스토리
+- v1.40.0: 재생 모드 "컴팩트 보기" → "🎵 음악만" (영상 높이 200px — **YouTube API 정책상 플레이어 최소 200x200, 숨김·오디오만 재생 금지. 위반 시 API 키 정지**. 사용자 요청은 완전 숨김이었으나 위험 설명 후 최소 크기 유지로 합의). 후원: 서비스 종료된 toss.me 버튼 제거, 카카오페이 송금코드 링크를 `SUPPORT_KAKAO_URL` 상수 하나로 관리, 컴퓨터에서는 QR 표시. 대시보드: 운영 브리핑·할 일 추천, 일별 방문, 이전 기간 대비, 호스트/사용자 여정 명칭, 전체 방 10/20/30개 페이지, Pretendard 글꼴
 - v1.39.0: 비밀번호 방 노출 수정 — 비번을 공개 읽기인 `rooms/{rid}/pw`에서 `roomPw/{rid}`(읽기 불가)로 이동, 방에는 `hasPw`만. 손님 확인은 `roomPwCheck/{rid}/{uid}`에 입력값 쓰기 → 규칙이 일치할 때만 허락(화면은 정답을 못 봄). 비번 방은 확인 통과자·방 주인·소유자만 방 데이터 수정 가능. 5회 틀리면 30초 대기. 예전 방은 방 주인 재입장 또는 대시보드 로그인 시 자동 이전(`migrateLegacyPw`/`securePasswords`). 새 규칙 게시 전에도 동작하도록 예전 방식 폴백 유지. 방 삭제는 `removeRoomData()`로 roomPw 먼저 삭제
 - v1.38.0: 이용 분석 + 대시보드 소유자 잠금 — `track(step)`/`trackFail(code)`로 방문별 단계(open_create·room_created·host_return·joined·searched·song_added·played·shared·guest_promo)와 막힌 이유 기록. 실패 이유는 `showToast` 문구를 `AN_FAIL_RULES` 패턴으로 분류(**토스트 문구 바꾸면 패턴도 같이 수정**). 화면 켜진 동안만 1분 하트비트 → 이용시간. 앱 내 브라우저(카톡·인스타) UA 구분. GA4 이벤트도 동시 전송. 대시보드 구글 로그인 게이트 + 소유자 브라우저(`apl_owner`)는 집계 제외. privacy.html 6-3 추가
 - v1.37.0: 운영 대시보드 + 유입 경로 기록 — `captureSource()`가 첫 방문 경로(google/naver/qr_link/direct 등, utm_source 우선)를 localStorage `apl_src`에 저장 → `confirmCreate()`에서 `rooms/{rid}/src`로 저장. `?r=`로 처음 온 사람이 방을 만들면 `qr_link` = 손님→호스트 확산 루프. `#guestPromo` 링크에 `utm_source=guest_promo`. 대시보드는 24시간 넘은 members 를 유령 접속으로 보고 제외
