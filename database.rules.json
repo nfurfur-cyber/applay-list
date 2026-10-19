@@ -27,6 +27,28 @@
         ".read":  "auth !== null && auth.uid === $uid",
         ".write": false
       }
+    },
+    "analytics": {
+      ".read": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
+      "sessions": {
+        ".indexOn": ["start"],
+        "$sid": {
+          ".write": "auth !== null && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && data.child('uid').val() === auth.uid) || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))",
+          ".validate": "newData.hasChildren(['uid', 'start', 'last'])",
+          "uid":   { ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())" },
+          "start": { ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())" },
+          "last":  { ".validate": "newData.isNumber()" },
+          "src":   { ".validate": "newData.isString() && newData.val().length <= 40" },
+          "first": { ".validate": "newData.isString() && newData.val().length <= 40" },
+          "land":  { ".validate": "newData.isString() && newData.val().length <= 12" },
+          "dev":   { ".validate": "newData.isString() && newData.val().length <= 12" },
+          "app":   { ".validate": "newData.isString() && newData.val().length <= 12" },
+          "role":  { ".validate": "newData.isString() && newData.val().length <= 12" },
+          "steps": { "$k": { ".validate": "newData.isNumber()" } },
+          "fails": { "$k": { ".validate": "newData.isNumber() && newData.val() <= 1000" } },
+          "$other": { ".validate": false }
+        }
+      }
     }
   }
 }

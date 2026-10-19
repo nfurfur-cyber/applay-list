@@ -13,11 +13,13 @@
 - **광고**: Kakao AdFit (DAN-BbG1ANjRmS9ooN0b) — AdSense는 최종 거절 후 제거 (v1.31.0)
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
 - **Analytics**: Google Analytics (G-HZHPQSKFKV)
-- **운영 대시보드**: `/ops-6674bcd4.html` (noindex, 링크 미노출) — Firebase 실시간 읽기 전용. 방·단골·주별 추이·유입 경로·인기곡
+- **운영 대시보드**: `/ops-6674bcd4.html` — **소유자(n.furfur@gmail.com) 구글 로그인 전용**. 이름 붙인 Firebase 앱('ops')이라 메인 사이트 익명 로그인과 분리. 방·단골·방문자 분석(이용시간·이탈·막힌 이유·유입 경로)
+- **이용 분석**: `analytics/sessions/{sid}` — RTDB 규칙상 본인 세션만 쓰기, 소유자만 읽기. 90일 보관(대시보드 열 때 정리). 개인 식별 정보 저장 금지
 
-## 현재 버전: v1.37.0
+## 현재 버전: v1.38.0
 
 ## 버전 히스토리
+- v1.38.0: 이용 분석 + 대시보드 소유자 잠금 — `track(step)`/`trackFail(code)`로 방문별 단계(open_create·room_created·host_return·joined·searched·song_added·played·shared·guest_promo)와 막힌 이유 기록. 실패 이유는 `showToast` 문구를 `AN_FAIL_RULES` 패턴으로 분류(**토스트 문구 바꾸면 패턴도 같이 수정**). 화면 켜진 동안만 1분 하트비트 → 이용시간. 앱 내 브라우저(카톡·인스타) UA 구분. GA4 이벤트도 동시 전송. 대시보드 구글 로그인 게이트 + 소유자 브라우저(`apl_owner`)는 집계 제외. privacy.html 6-3 추가
 - v1.37.0: 운영 대시보드 + 유입 경로 기록 — `captureSource()`가 첫 방문 경로(google/naver/qr_link/direct 등, utm_source 우선)를 localStorage `apl_src`에 저장 → `confirmCreate()`에서 `rooms/{rid}/src`로 저장. `?r=`로 처음 온 사람이 방을 만들면 `qr_link` = 손님→호스트 확산 루프. `#guestPromo` 링크에 `utm_source=guest_promo`. 대시보드는 24시간 넘은 members 를 유령 접속으로 보고 제외
 - v1.36.1: 토스트 알림이 AdFit 배너 위에 영구 잔류하던 버그 수정 + FAQ 베타 안내 + 홈 후원 섹션 복원
   - **원인**: `.toast{bottom:80px; transform:translateY(80px)}` — 숨김 이동량(80px)이 `bottom`(80px)과 정확히 상쇄되어, 토스트가 화면 밖으로 안 나가고 **뷰포트 최하단(광고 배너 위)에 그대로 표시**됨. v1.31.3에서 `bottom`만 26→80px 올리고 `translateY`는 그대로 둬서 생긴 회귀
