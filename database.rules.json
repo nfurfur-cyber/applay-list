@@ -4,11 +4,28 @@
       ".read": true,
       ".indexOn": ["createdAt"],
       "$rid": {
-        ".write": "auth !== null && (newData.exists() || !data.child('uid').exists() || data.child('uid').val() === '' || data.child('uid').val() === auth.uid)",
+        ".write": "auth !== null && ((newData.exists() && (!root.child('roomPw').child($rid).exists() || data.child('uid').val() === auth.uid || root.child('roomPwCheck').child($rid).child(auth.uid).val() === root.child('roomPw').child($rid).val() || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))) || (!newData.exists() && (!data.child('uid').exists() || data.child('uid').val() === '' || data.child('uid').val() === auth.uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))))",
         "uid":       { ".validate": "!data.exists() || newData.val() === data.val()" },
         "hostId":    { ".validate": "!data.exists() || newData.val() === data.val()" },
         "createdAt": { ".validate": "!data.exists() || newData.val() === data.val()" },
-        "pw":        { ".validate": "!data.exists() || data.val() === '' || newData.val() === data.val()" }
+        "pw":        { ".validate": "!data.exists() || data.val() === '' || newData.val() === data.val()" },
+        "hasPw":     { ".validate": "newData.isBoolean() && (newData.val() === false || newData.parent().parent().parent().child('roomPw').child($rid).exists())" }
+      }
+    },
+    "roomPw": {
+      ".read": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
+      "$rid": {
+        ".write": "auth !== null && (newData.parent().parent().child('rooms').child($rid).child('uid').val() === auth.uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))",
+        ".validate": "newData.isString() && newData.val().length >= 4 && newData.val().length <= 8"
+      }
+    },
+    "roomPwCheck": {
+      ".read": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
+      "$rid": {
+        "$uid": {
+          ".write": "auth !== null && (auth.uid === $uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))",
+          ".validate": "newData.isString() && newData.val() === root.child('roomPw').child($rid).val()"
+        }
       }
     },
     "hosts": {

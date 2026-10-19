@@ -461,6 +461,29 @@ function startData(){
     showErr('anErr','방문자 분석 데이터를 읽을 권한이 없어 — Firebase 규칙(analytics) 업데이트가 필요해. ('+e.code+')');
   });
   pruneOld();
+  securePasswords();
+}
+/* 비밀번호 보안 정리 (소유자 권한)
+   ① 방 정보에 평문 비번이 남은 예전 방 → roomPw 로 옮기고 방에서 삭제
+   ② 이미 지워진 방의 roomPw·roomPwCheck 기록 삭제 */
+function securePasswords(){
+  db.ref('rooms').once('value').then(function(snap){
+    var alive={}, legacy=[];
+    snap.forEach(function(c){var d=c.val()||{};alive[c.key]=1;if(d.pw)legacy.push([c.key,d.pw]);});
+    var moves=legacy.map(function(x){
+      return db.ref('roomPw/'+x[0]).set(x[1]).then(function(){return db.ref('rooms/'+x[0]).update({hasPw:true,pw:null});});
+    });
+    return Promise.all(moves).then(function(){
+      return Promise.all([db.ref('roomPw').once('value'),db.ref('roomPwCheck').once('value')]);
+    }).then(function(res){
+      var upd={};
+      res[0].forEach(function(c){if(!alive[c.key])upd['roomPw/'+c.key]=null;});
+      res[1].forEach(function(c){if(!alive[c.key])upd['roomPwCheck/'+c.key]=null;});
+      if(Object.keys(upd).length)return db.ref().update(upd);
+    }).then(function(){
+      if(legacy.length)console.info('[보안] 예전 비밀번호 방 '+legacy.length+'곳 이전 완료');
+    });
+  }).catch(function(e){showErr('err','비밀번호 보안 정리 실패 — Firebase 규칙(roomPw) 게시가 필요해. ('+(e.code||e.message)+')');});
 }
 /* 90일 지난 분석 기록 삭제 (개인정보처리방침의 보관 기간) */
 function pruneOld(){
@@ -477,7 +500,7 @@ function toRoom(code,d){
   /* 24시간 넘은 접속 기록은 연결 종료가 반영 안 된 유령 기록 → 제외 */
   var members=d.members?Object.keys(d.members).filter(function(k){var m=d.members[k]||{};return Date.now()-(m.joinedAt||0)<DAY;}).length:0;
   return {code:code,name:d.name||'(이름 없음)',created:created,lastPlay:lastPlay,last:Math.max(created,lastPlay),members:members,songs:songs,
-    span:(lastPlay&&created)?(lastPlay-created)/DAY:0,pw:!!d.pw,approval:!!d.requireApproval,notice:!!d.noticeOn,src:d.src||null,test:TEST_RE.test(d.name||'')};
+    span:(lastPlay&&created)?(lastPlay-created)/DAY:0,pw:!!(d.hasPw||d.pw),approval:!!d.requireApproval,notice:!!d.noticeOn,src:d.src||null,test:TEST_RE.test(d.name||'')};
 }
 function status(r){
   if(r.members>0)return {k:'live',t:'● 접속 중',c:'p-live'};

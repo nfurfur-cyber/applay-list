@@ -592,7 +592,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.38.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.39.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -1822,6 +1822,7 @@ function rejoinExistingRoom(){
     hmRef.set({nick:myNick,host:true,joinedAt:Date.now()});
     hmRef.onDisconnect().remove();
     members=snap.val().members||{};members[myHostId]={nick:myNick,host:true,joinedAt:Date.now()};
+    migrateLegacyPw(code,snap.val());
     track('host_return',{role:'host'});
     enterRoom(snap.val().name||'🎉 신청곡 플레이룸');
     attachListener();
@@ -1830,7 +1831,7 @@ function rejoinExistingRoom(){
 function deleteExistingAndCreate(){
   closeModal('exist-modal');
   var code=document.getElementById('exist-room-code').textContent;
-  db.ref('rooms/'+code).remove();
+  removeRoomData(code);
   db.ref('hosts/'+myHostId).remove();
   setTimeout(function(){openModal('cr-modal');},150);
 }
@@ -1844,27 +1845,56 @@ function confirmCreate(){
   var pw=document.getElementById('rpwin').value.trim();
   if(pw&&!planAllows('roomPw')){showToast('🔒 비밀번호 방은 Plus 이상에서 사용 가능합니다');return;}
   if(pw&&(pw.length!==4||!/^\d+$/.test(pw))){showToast('비밀번호는 숫자 4자리여야 합니다');return;}
+  if(pw&&!myUid){showToast('잠시 후 다시 시도해주세요 (접속 준비 중)');return;}
   if(!planAllows('approval'))_crSettings.approval=false;
   closeModal('cr-modal');
   var hostNick=document.getElementById('rnickin').value.trim()||'호스트';
   rid=Math.random().toString(36).slice(2,8).toUpperCase();
   isHost=true;myNick=hostNick;myNickId=myHostId;roomPw=pw;
   var initMaxQueue=planMaxQueue();
-  var data={name:n,hostId:myHostId,uid:myUid||'',src:getSource(),hostNick:hostNick,pw:pw,cur:-1,limit:0,maxQueue:initMaxQueue,maxMembers:0,autoRemovePlayed:false,allowGuests:_crSettings.guest,autoNext:true,playMode:'auto',requireApproval:_crSettings.approval,qrEnabled:_crSettings.qr,createdAt:Date.now(),queue:[],members:{}};
+  var data={name:n,hostId:myHostId,uid:myUid||'',src:getSource(),hostNick:hostNick,hasPw:!!pw,cur:-1,limit:0,maxQueue:initMaxQueue,maxMembers:0,autoRemovePlayed:false,allowGuests:_crSettings.guest,autoNext:true,playMode:'auto',requireApproval:_crSettings.approval,qrEnabled:_crSettings.qr,createdAt:Date.now(),queue:[],members:{}};
   // crSettings 기본값 초기화
   _crSettings={guest:true,approval:false,qr:true};
   ['guest','approval','qr'].forEach(function(k){var t=document.getElementById('cr-tog'+k);if(t)t.classList.toggle('on',_crSettings[k]);});
   data.members[myHostId]={nick:hostNick,host:true,joinedAt:Date.now()};
   members=data.members; // 로컬 즉시 반영 — Firebase 응답 전에도 1명 표시
-  db.ref('rooms/'+rid).set(data);
+  createRoomRecord(rid,data,pw);
   db.ref('hosts/'+myHostId).set(rid);
   db.ref('rooms/'+rid+'/members/'+myHostId).onDisconnect().remove();
   track('room_created',{role:'host'});
   enterRoom(n);attachListener();
 }
 
+/* ═══ 방 비밀번호 보관 ═══
+   rooms/ 는 손님 입장을 위해 누구나 읽을 수 있어서 비번을 두면 그대로 노출됨.
+   비번은 roomPw/{방코드} (RTDB 규칙상 아무도 못 읽음)에 따로 두고, 방에는 hasPw 표시만.
+   손님 확인: roomPwCheck/{방코드}/{내 uid} 에 입력값을 쓰면 규칙이 roomPw 와 같을 때만 허락
+   → 저장 성공 = 비번 일치. 화면 쪽은 정답을 볼 방법이 없음.
+   비번 방은 확인을 통과한 사람·방 주인만 방 데이터를 바꿀 수 있음 (database.rules.json) */
+function createRoomRecord(code,data,pw){
+  if(!pw)return db.ref('rooms/'+code).set(data);
+  var upd={};upd['rooms/'+code]=data;upd['roomPw/'+code]=pw;
+  return db.ref().update(upd).catch(function(){
+    /* 새 규칙이 아직 게시되지 않은 경우의 대비: 예전 방식으로라도 방은 만들어지게 */
+    var legacy={};for(var k in data)if(k!=='hasPw')legacy[k]=data[k];
+    legacy.pw=pw;
+    return db.ref('rooms/'+code).set(legacy);
+  });
+}
+/* 예전 방식(방 정보에 비번 평문)으로 만든 방 → 방 주인이 들어올 때 1회 이전 */
+function migrateLegacyPw(code,d){
+  if(!d||!d.pw)return;
+  db.ref('roomPw/'+code).set(d.pw).then(function(){
+    return db.ref('rooms/'+code).update({hasPw:true,pw:null});
+  }).catch(function(){});
+}
+/* 비번 보관소를 먼저 지워야 함 (방이 사라지면 주인 확인 근거가 없어짐) */
+function removeRoomData(code){
+  return db.ref('roomPw/'+code).remove().catch(function(){}).then(function(){return db.ref('rooms/'+code).remove();});
+}
+
 /* ═══ 방 참여 ═══ */
-var pendingCode='';
+var pendingCode='',_pendingLegacyPw=null,_pwFails=0,_pwLockUntil=0;
 function promptJoinNick(){
   var c=document.getElementById('jcode').value.trim().toUpperCase();
   if(!c){showToast('플레이룸 코드를 입력해주세요!');return;}
@@ -1896,20 +1926,26 @@ function doPromptJoin(c){
       hRef.onDisconnect().remove();
       localStorage.setItem('apl_activeRoom',rid);
       queue=d.queue||[];cur=d.cur!=null?d.cur:-1;
+      migrateLegacyPw(c,d);
       enterRoom(d.name||'신청곡 플레이룸');attachListener();
       if(cur>=0&&cur<queue.length)playCur();
       return;
     }
-    if(d.pw){document.getElementById('pwin').value='';openModal('pw-modal');}
+    _pendingLegacyPw=d.pw||null;
+    if(d.hasPw||d.pw){document.getElementById('pwin').value='';openModal('pw-modal');}
     else{document.getElementById('nick-join').value='';openModal('nick-modal');}
   });
 }
 function checkPw(){
   var pw=document.getElementById('pwin').value.trim();
-  db.ref('rooms/'+pendingCode+'/pw').once('value').then(function(snap){
-    if(snap.val()!==pw){showToast('❌ 비밀번호가 틀렸습니다');return;}
-    closeModal('pw-modal');document.getElementById('nick-join').value='';openModal('nick-modal');
-  });
+  if(!pw)return;
+  if(Date.now()<_pwLockUntil){showToast('⏳ 여러 번 틀려서 잠시 후 다시 시도할 수 있어요');return;}
+  function ok(){_pwFails=0;closeModal('pw-modal');document.getElementById('nick-join').value='';openModal('nick-modal');}
+  function bad(){_pwFails++;if(_pwFails>=5){_pwFails=0;_pwLockUntil=Date.now()+30000;}showToast('❌ 비밀번호가 틀렸습니다');}
+  /* 아직 이전 안 된 예전 방: 방 정보에 비번이 남아 있음 */
+  if(_pendingLegacyPw){if(pw===_pendingLegacyPw)ok();else bad();return;}
+  if(!myUid){showToast('잠시 후 다시 시도해주세요 (접속 준비 중)');return;}
+  db.ref('roomPwCheck/'+pendingCode+'/'+myUid).set(pw).then(ok,bad);
 }
 function confirmJoin(){
   var nv=document.getElementById('nick-join').value.trim();
@@ -1919,7 +1955,14 @@ function confirmJoin(){
 function doJoin(){
   rid=pendingCode;isHost=false;
   var memRef=db.ref('rooms/'+rid+'/members/'+myNickId);
-  memRef.set({nick:myNick,host:false,joinedAt:Date.now()});
+  var joinCode=rid;
+  memRef.set({nick:myNick,host:false,joinedAt:Date.now()}).catch(function(e){
+    /* 비번 방인데 이 기기에 확인 기록이 없음 (예: 예전에 입장했던 기기의 자동 재입장) → 비번 다시 받기 */
+    if(e&&e.code==='PERMISSION_DENIED'&&rid===joinCode){
+      goHome();pendingCode=joinCode;_pendingLegacyPw=null;
+      document.getElementById('pwin').value='';openModal('pw-modal');
+    }
+  });
   memRef.onDisconnect().remove();
   localStorage.setItem('apl_activeRoom',rid);
   localStorage.setItem('apl_nick',myNick);
@@ -2032,7 +2075,7 @@ function confirmDeleteRoom(){
   closeModal('del-modal');
   teardownAutoRejoin();
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
-  db.ref('rooms/'+rid).remove();
+  removeRoomData(rid);
   db.ref('hosts/'+myHostId).remove();
   localStorage.removeItem('apl_activeRoom');
   localStorage.removeItem('apl_nick');
@@ -2070,7 +2113,7 @@ function loadLiveRooms(){
   var wrap=document.getElementById('live-rooms-list');
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
   liveListener=db.ref('rooms').orderByChild('createdAt').limitToLast(30).on('value',function(snap){
-    var rooms=[];snap.forEach(function(child){var d=child.val();if(d&&d.hostId===myHostId)rooms.unshift({code:child.key,name:d.name,pw:d.pw,members:d.members,queue:d.queue,cur:d.cur});});
+    var rooms=[];snap.forEach(function(child){var d=child.val();if(d&&d.hostId===myHostId)rooms.unshift({code:child.key,name:d.name,pw:!!(d.hasPw||d.pw),members:d.members,queue:d.queue,cur:d.cur});});
     var sec=document.getElementById('live-rooms-wrap');
     if(!rooms.length){if(sec)sec.classList.add('hidden');wrap.innerHTML='';return;}
     if(sec)sec.classList.remove('hidden');
@@ -2110,7 +2153,7 @@ function loadTopSongs(){
     }).join('');
   });
 }
-function deleteRoomCard(code){if(confirm('플레이룸 "'+code+'"을(를) 삭제하시겠습니까?')){db.ref('rooms/'+code).remove().then(function(){showToast('플레이룸이 삭제되었습니다');if(code===existingRoomCode){existingRoomCode='';document.getElementById('host-banner').classList.add('hidden');db.ref('hosts/'+myHostId).remove();}}).catch(function(){showToast('삭제 중 오류가 발생했습니다');});}}
+function deleteRoomCard(code){if(confirm('플레이룸 "'+code+'"을(를) 삭제하시겠습니까?')){removeRoomData(code).then(function(){showToast('플레이룸이 삭제되었습니다');if(code===existingRoomCode){existingRoomCode='';document.getElementById('host-banner').classList.add('hidden');db.ref('hosts/'+myHostId).remove();}}).catch(function(){showToast('삭제 중 오류가 발생했습니다');});}}
 
 
 /* ═══ 모달 / 토스트 ═══ */
@@ -2301,6 +2344,7 @@ if(rp){
         hRef.onDisconnect().remove();
         localStorage.setItem('apl_activeRoom',rid);
         members=d.members||{};members[myHostId]={nick:myNick,host:true,joinedAt:Date.now()};
+        migrateLegacyPw(rCode,d);
         track('host_return',{role:'host'});
         enterRoom(d.name||rid);
         attachListener();
