@@ -416,7 +416,7 @@ footer a:hover{text-decoration:underline;}
 
   <div class="card sec">
     <div class="h"><b>📈 주별 새 방</b><small>최근 12주 · 월요일 기준</small></div>
-    <div class="how">베타 무료 개방(8/25) 이후 주황색. 오른쪽으로 갈수록 높아지면 성장 중이야.</div>
+    <div class="how">베타 무료 개방(8/25) 이후 주황색. 오른쪽으로 갈수록 높아지면 성장 중이야. 4주 미사용으로 정리된 방도 포함해서 세.</div>
     <div class="vbars" id="chart" style="height:170px;"></div>
     <div class="legend"><span>베타 무료 전</span><span class="lb2">베타 무료 후 (8/25~)</span></div>
   </div>
@@ -593,6 +593,11 @@ function startData(){
     state.anDenied=true;renderBriefing();
     showErr('anErr','방문자 분석 데이터를 읽을 권한이 없어 — Firebase 규칙(analytics) 업데이트가 필요해. ('+e.code+')');
   });
+  /* 4주 미사용으로 정리된 방의 통계 기록 (이름 없음) → 성장 그래프에 포함 */
+  sub(db.ref('archive/rooms'),'value',function(snap){
+    var arr=[];snap.forEach(function(c){var d=c.val()||{};arr.push({created:d.c||0});});
+    state.archive=arr;if(state.roomsLoaded)renderRooms();
+  },function(){state.archive=[];});
   pruneOld();
   securePasswords();
 }
@@ -632,7 +637,7 @@ function toRoom(code,d){
   var q=d.queue, songs=Array.isArray(q)?q.filter(Boolean).length:(q?Object.keys(q).length:0);
   /* 24시간 넘은 접속 기록은 연결 종료가 반영 안 된 유령 기록 → 제외 */
   var members=d.members?Object.keys(d.members).filter(function(k){var m=d.members[k]||{};return Date.now()-(m.joinedAt||0)<DAY;}).length:0;
-  return {code:code,name:d.name||'(이름 없음)',created:created,lastPlay:lastPlay,last:Math.max(created,lastPlay),members:members,songs:songs,
+  return {code:code,name:d.name||'(이름 없음)',created:created,lastPlay:lastPlay,last:Math.max(created,lastPlay,d.lastActive||0),members:members,songs:songs,
     span:(lastPlay&&created)?(lastPlay-created)/DAY:0,pw:!!(d.hasPw||d.pw),approval:!!d.requireApproval,notice:!!d.noticeOn,src:d.src||null,test:TEST_RE.test(d.name||'')};
 }
 function status(r){
@@ -670,6 +675,7 @@ function renderGoals(st){
   else{v.className='verdict';v.innerHTML='🟡 <b>아직 무료 유지 구간</b> — 지금은 손님을 모으는 시기야. 단골 방 하나하나가 예비창업패키지 사업계획서의 근거가 돼.';}
 }
 function renderChart(rs){
+  rs=rs.concat(state.archive||[]);
   var ws=weekStart(Date.now()), cols=[];
   for(var i=11;i>=0;i--){var s=ws-i*7*DAY,e=s+7*DAY;cols.push({s:s,n:rs.filter(function(r){return r.created>=s&&r.created<e;}).length,now:i===0,idx:11-i});}
   var max=Math.max(4,Math.max.apply(null,cols.map(function(c){return c.n;})));
@@ -815,7 +821,6 @@ function exitOf(s){
   if(has(s,'song_added')||has(s,'played'))return ['✅','호스트 — 방 만들고 노래 틀음','',true,''];
   if(has(s,'room_created'))return ['⚠️','호스트 — 방 만들고 곡 없이 나감','첫 곡까지 가는 안내가 필요',false,'방 만든 직후 "첫 곡 넣기" 안내 (추천곡 버튼 — 데이터 쌓이면 진행)'];
   if(has(s,'open_create'))return ['⚠️','만들기 창 열고 포기','입력 항목이 부담됐을 가능성',false,'방 만들기 창 입력 항목 줄이기 (이름만 받고 나머지는 기본값)'];
-  if(has(s,'open_support'))return ['☕','후원 창만 보고 나감','',false,''];
   return ['❌','홈만 보고 나감','첫 화면에서 무엇을 하는 곳인지 전달이 약할 수 있음',false,'첫 화면 상단에 "QR 하나로 신청곡 받기" 데모 영상·예시 넣기'];
 }
 function exitGroups(S){
@@ -969,6 +974,8 @@ function healthOf(d){
   if(d.requireApproval&&pend.length)out.push(['info','승인 대기 '+pend.length+'곡','호스트가 아직 승인하지 않은 신청곡','','']);
   if(d.allowGuests===false)out.push(['info','사용자 신청 막힘','호스트가 신청을 꺼둔 상태','','']);
   if(!q.length)out.push(['info','아직 신청곡 없음','','','']);
+  var idle=Date.now()-Math.max(d.createdAt||0,d.playStartedAt||0,d.lastActive||0);
+  if(idle>21*DAY)out.push(['info',Math.floor(idle/DAY)+'일째 사용 없음','4주(28일)가 지나면 자동으로 정리돼','','']);
   if(!out.some(function(x){return x[0]==='bad'||x[0]==='warn';}))out.unshift(['ok','문제 없음','바로 조치할 게 없어','','']);
   return out;
 }

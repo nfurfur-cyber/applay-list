@@ -4,7 +4,7 @@
       ".read": true,
       ".indexOn": ["createdAt"],
       "$rid": {
-        ".write": "auth !== null && ((newData.exists() && (!root.child('roomPw').child($rid).exists() || data.child('uid').val() === auth.uid || root.child('roomPwCheck').child($rid).child(auth.uid).val() === root.child('roomPw').child($rid).val() || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))) || (!newData.exists() && (!data.child('uid').exists() || data.child('uid').val() === '' || data.child('uid').val() === auth.uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))))",
+        ".write": "auth !== null && ((newData.exists() && (!root.child('roomPw').child($rid).exists() || data.child('uid').val() === auth.uid || root.child('roomPwCheck').child($rid).child(auth.uid).val() === root.child('roomPw').child($rid).val() || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))) || (!newData.exists() && (!data.child('uid').exists() || data.child('uid').val() === '' || data.child('uid').val() === auth.uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true) || (data.child('createdAt').val() < now - 2419200000 && (!data.child('playStartedAt').exists() || data.child('playStartedAt').val() < now - 2419200000) && (!data.child('lastActive').exists() || data.child('lastActive').val() < now - 2419200000)))))",
         "uid":       { ".validate": "!data.exists() || newData.val() === data.val()" },
         "hostId":    { ".validate": "!data.exists() || newData.val() === data.val()" },
         "createdAt": { ".validate": "!data.exists() || newData.val() === data.val()" },
@@ -26,6 +26,20 @@
         "$uid": {
           ".write": "auth !== null && (auth.uid === $uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))",
           ".validate": "newData.isString() && newData.val() === root.child('roomPw').child($rid).val()"
+        }
+      }
+    },
+    "archive": {
+      ".read": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
+      "rooms": {
+        "$rid": {
+          ".write": "auth !== null && !data.exists() && root.child('rooms').child($rid).exists()",
+          ".validate": "newData.hasChildren(['c', 'l']) && newData.child('c').val() === root.child('rooms').child($rid).child('createdAt').val() && newData.child('l').val() < now - 2419200000",
+          "c":   { ".validate": "newData.isNumber()" },
+          "l":   { ".validate": "newData.isNumber()" },
+          "s":   { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000" },
+          "src": { ".validate": "newData.isString() && newData.val().length <= 40" },
+          "$other": { ".validate": false }
         }
       }
     },

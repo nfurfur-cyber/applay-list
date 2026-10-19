@@ -180,8 +180,6 @@ h1 em{font-style:normal;color:var(--ac);}
 .riinfo{min-width:0;overflow:hidden;}.rittl{font-size:13px;font-weight:600;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--tx);word-break:break-word;}
 .riadd{padding:5px 12px;border-radius:5px;background:transparent;border:1px solid var(--ac);color:var(--ac);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .15s;font-weight:600;}
 .riadd:hover{background:var(--ac);color:var(--bg);}
-.supbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:8px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);color:var(--ac);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;width:100%;}
-.supbtn:hover{background:rgba(245,158,11,.12);}
 .qrcard{background:var(--sf);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:18px;text-align:center;}
 .qrcard.qr-hidden .qr-content{display:none;}.qrcard.qr-hidden .qr-off-msg{display:block;}
 .qr-off-msg{display:none;padding:20px 0;color:var(--tx3);font-size:12px;}
@@ -278,7 +276,6 @@ h1 em{font-style:normal;color:var(--ac);}
 .faq-wrap details[open] summary::after{content:'－';}
 .faq-wrap .faq-body{padding:0 20px 16px;font-size:13px;color:var(--tx2);line-height:1.7;}
 .bottom-zone{border-top:1px solid var(--bd);margin-top:40px;}
-.bottom-sup{padding:12px 20px;display:flex;justify-content:center;}.bottom-sup .supbtn{max-width:500px;}
 footer{border-top:1px solid var(--bd);padding:18px 20px;text-align:center;color:var(--tx3);font-size:11px;}
 footer a{color:var(--ac);text-decoration:none;}
 .info-badge{background:var(--bd);border:1px solid var(--tx3);color:var(--tx2);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;}
@@ -482,8 +479,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
             앱 설치나 회원가입 없이 플레이룸 생성, 신청곡 추가, QR·링크 공유, 실시간 동기화, 호스트 관리는 물론
             <b>신청곡 승인, 비밀번호 방, 공지 표시, 화면 표시 설정</b>까지 제한 없이 제공됩니다.<br><br>
             다만 <b>베타 기간 종료 후에는 일부 기능이 유료 플랜으로 전환될 수 있습니다.</b>
-            전환 시에는 사전에 공지드리며, 베타 기간에 함께해 주신 분들께는 별도의 혜택을 준비하고 있습니다.<br><br>
-            서비스가 마음에 드셨다면 커피 한 잔 후원으로 응원해 주시면 운영에 큰 힘이 됩니다 ☕
+            전환 시에는 사전에 공지드리며, 베타 기간에 함께해 주신 분들께는 별도의 혜택을 준비하고 있습니다.
           </div>
         </details>
         <details>
@@ -492,30 +488,19 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
         </details>
         <details>
           <summary>유튜브 영상은 어떤 것이든 신청할 수 있나요?</summary>
-          <div class="faq-body">8분 이하의 유튜브 영상만 신청 가능합니다. 음악 외 영상도 신청할 수 있으며, 호스트가 승인 기능으로 필터링할 수 있습니다.</div>
+          <div class="faq-body">아니요. <b>8분 이하의 음악 영상</b>만 신청할 수 있습니다. 뮤직비디오, 라이브, 커버 영상 등이 해당되며, 게임·스포츠·뉴스처럼 음악이 아닌 영상과 8분이 넘는 영상은 신청되지 않습니다. 호스트는 승인 기능을 켜서 신청곡을 한 번 더 걸러낼 수 있습니다.</div>
         </details>
         <details>
           <summary>동시에 몇 명이나 참여할 수 있나요?</summary>
-          <div class="faq-body">기본적으로 인원 제한이 없으며, 호스트가 설정에서 최대 인원을 지정할 수도 있습니다.</div>
+          <div class="faq-body">기본적으로 인원 제한이 없습니다. 호스트는 플레이룸 안의 <b>⚙ 설정 → 최대 입장 인원</b>에서 동시에 들어올 수 있는 인원을 정할 수 있으며, 인원이 가득 차면 새로 들어오려는 사람에게 안내가 표시됩니다. 호스트 본인은 인원에 포함되지 않습니다.</div>
         </details>
         <details>
           <summary>플레이룸은 얼마나 유지되나요?</summary>
-          <div class="faq-body">호스트가 나가거나 플레이룸을 종료하면 자동으로 닫힙니다. 별도의 시간 제한은 없습니다.</div>
+          <div class="faq-body">호스트가 직접 삭제하기 전까지 유지되며, 언제든 같은 기기에서 다시 들어가 이어서 사용할 수 있습니다. 다만 <b>4주 동안 아무도 사용하지 않은 플레이룸은 자동으로 정리</b>됩니다. 매장처럼 꾸준히 쓰는 곳이라면 한 번 만든 플레이룸과 QR을 계속 사용할 수 있습니다.</div>
         </details>
       </div>
     </section>
 
-    <!-- 후원 -->
-    <section>
-      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);margin-bottom:8px;letter-spacing:-.3px;">서비스가 마음에 드셨나요?</h2>
-      <p style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:14px;">
-        QueueTune은 <b style="color:var(--ac);">베타 기간 동안 모든 기능을 무료</b>로 제공하고 있습니다.<br>
-        커피 한 잔의 후원이 서버 운영과 기능 개발에 큰 힘이 됩니다.
-      </p>
-      <div class="bottom-sup" style="padding:0;">
-        <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기</button>
-      </div>
-    </section>
 
   </div>
   <!-- /서비스 소개 콘텐츠 섹션 끝 -->
@@ -591,11 +576,10 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div class="guest-promo-tit">🎉 마음에 드셨나요?</div>
       <div class="guest-promo-sub">내 파티·가게에서도 무료로 열기 →</div>
     </a>
-    <button class="supbtn" onclick="openModal('sup-modal')">☕ 커피 한 잔 후원하기</button>
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.41.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.42.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -651,10 +635,10 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
       <div class="stg-row"><span>승인 대기 카드</span><button class="tog on" id="togshow-pending" onclick="toggleSection('pending')"></button></div>
     </div>
   </div>
-  <hr class="settings-divider" style="display:none;">
+  <hr class="settings-divider">
   <div class="trow" style="display:none;"><span>게스트 곡 제한</span><div class="limit-sel" id="limitSel"><input class="limit-input" id="limitInput" type="number" min="1" max="99" placeholder="숫자" onchange="setLimitInput(this.value)"><button class="limit-btn on" id="limitUnlim" onclick="setLimit(0)">무제한</button></div></div>
   <div class="trow" style="display:none;"><span>신청곡 최대 수</span><div class="limit-sel" id="maxQSel"><input class="limit-input" id="maxQInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxQueueInput(this.value)"><button class="limit-btn on" id="maxQUnlim" onclick="setMaxQueue(0)">무제한</button></div></div>
-  <div class="trow" style="display:none;"><span>최대 입장 인원</span><div class="limit-sel" id="maxMSel"><input class="limit-input" id="maxMInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxMembersInput(this.value)"><button class="limit-btn on" id="maxMUnlim" onclick="setMaxMembers(0)">무제한</button></div></div>
+  <div class="trow"><span>최대 입장 인원 <span style="font-size:10px;color:var(--tx3);">(호스트 제외)</span></span><div class="limit-sel" id="maxMSel"><input class="limit-input" id="maxMInput" type="number" min="1" max="99" placeholder="숫자" onchange="setMaxMembersInput(this.value)"><button class="limit-btn on" id="maxMUnlim" onclick="setMaxMembers(0)">무제한</button></div></div>
   <button class="mclose" style="width:100%;margin-top:12px;" onclick="closeModal('settings-modal')">닫기</button>
 </div></div>
 
@@ -749,15 +733,6 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
 <!-- 나가기 확인 -->
 <div class="mbg" id="leave-modal"><div class="modal"><h3>👋 플레이룸을 나가시겠습니까?</h3><p>나가면 신청곡 목록에서 빠집니다.</p><button class="btn-p" style="background:var(--ac2);margin-bottom:10px" onclick="closeModal('leave-modal');goHome()">나가기</button><button class="mclose" onclick="closeModal('leave-modal')">취소</button></div></div>
 
-<!-- 후원 -->
-<div class="mbg" id="sup-modal"><div class="modal"><h3>☕ 후원하기</h3><p>QueueTune을 응원해주세요!<br>소중한 후원이 서버 운영과 기능 개발에 큰 힘이 됩니다.</p>
-  <!-- 컴퓨터에서 열면: 카카오페이 송금 링크는 휴대폰 카카오톡에서만 열려서 QR로 안내 -->
-  <div id="sup-qr-wrap" style="display:none;margin:4px 0 14px;">
-    <div id="sup-qr" style="display:inline-block;background:#fff;padding:10px;border-radius:10px;"></div>
-    <div style="font-size:12px;color:var(--tx2);margin-top:8px;line-height:1.6;">휴대폰 카메라로 찍으면<br>카카오페이 송금 화면이 열려요</div>
-  </div>
-  <button class="btn-p" style="margin-bottom:10px;background:#FEE500;color:#191919;" onclick="openSupportKakao()">💛 카카오페이로 후원</button>
-  <button class="mclose" onclick="closeModal('sup-modal')">다음에</button></div></div>
 
 <div class="toast" id="toast"></div>
 
@@ -1899,6 +1874,25 @@ function migrateLegacyPw(code,d){
     return db.ref('rooms/'+code).update({hasPw:true,pw:null});
   }).catch(function(){});
 }
+/* 4주 동안 아무도 안 쓴 방 자동 정리
+   서버 예약 작업 없이 방문자 브라우저가 하루 1번 오래된 방 몇 개를 확인해 지움 → 추가 비용·서버 없음.
+   RTDB 규칙이 "만든 시각·마지막 재생·마지막 입장이 모두 4주 이전"인 방만 누구나 지울 수 있게 허용 */
+var STALE_MS=28*86400000;
+function roomLastUsed(d){return Math.max(d.createdAt||0,d.playStartedAt||0,d.lastActive||0);}
+function cleanupStaleRooms(){
+  try{var last=+localStorage.getItem('apl_cleanup')||0;if(Date.now()-last<86400000)return;localStorage.setItem('apl_cleanup',Date.now());}catch(e){return;}
+  db.ref('rooms').orderByChild('createdAt').endAt(Date.now()-STALE_MS).limitToFirst(50).once('value').then(function(snap){
+    snap.forEach(function(c){
+      var d=c.val()||{},k=c.key;
+      if(k===rid||Date.now()-roomLastUsed(d)<=STALE_MS+3600000)return;
+      /* 지우기 전에 이름 없이 통계용 숫자만 보관 (운영 대시보드 성장 그래프 유지용, 소유자만 열람) */
+      var q=d.queue,a={c:d.createdAt||0,l:roomLastUsed(d),s:Array.isArray(q)?q.length:(q?Object.keys(q).length:0)};
+      if(d.src)a.src=String(d.src).slice(0,40);
+      /* 보관에 성공한 경우에만 삭제 (새 규칙 게시 전이면 보관이 거부돼서 아무것도 안 지움) */
+      db.ref('archive/rooms/'+k).set(a).then(function(){return db.ref('rooms/'+k).remove();}).catch(function(){});
+    });
+  }).catch(function(){});
+}
 /* 비번 보관소를 먼저 지워야 함 (방이 사라지면 주인 확인 근거가 없어짐) */
 function removeRoomData(code){
   return db.ref('roomPw/'+code).remove().catch(function(){}).then(function(){return db.ref('rooms/'+code).remove();});
@@ -1963,7 +1957,8 @@ function doPromptJoin(c){
     var d=snap.val();
     // 인원 제한 확인 (호스트는 제외)
     if(d.hostId!==myHostId&&(d.maxMembers||0)>0){
-      var cnt=d.members?Object.keys(d.members).length:0;
+      /* 호스트 제외 + 24시간 넘은 유령 접속 기록 제외 (안 그러면 빈 방인데 가득 찼다고 막힘) */
+      var cnt=d.members?Object.keys(d.members).filter(function(k){var mm=d.members[k]||{};return !mm.host&&Date.now()-(mm.joinedAt||0)<86400000;}).length:0;
       if(cnt>=(d.maxMembers)){showToast('⚠️ 입장 인원이 가득 찼습니다 (최대 '+d.maxMembers+'명)');return;}
     }
     // 호스트 자동 감지 — 비밀번호/닉네임 입력 없이 바로 입장
@@ -2050,6 +2045,8 @@ function enterRoom(name){
   var ql=document.getElementById('qrlinktxt');if(ql)ql.textContent=url;
   drawQR(url);renderQ();renderMembers();updateGuestInfo();
   localStorage.setItem('apl_activeRoom',rid);
+  /* 마지막 사용 시각 — 4주 미사용 방 자동 정리 기준 (관전 모드는 사용으로 치지 않음) */
+  if(!_watchMode)db.ref('rooms/'+rid+'/lastActive').set(firebase.database.ServerValue.TIMESTAMP).catch(function(){});
   if(liveListener){db.ref('rooms').off('value',liveListener);liveListener=null;}
   // 이전 검색 내용 초기화
   var sinEl=document.getElementById('sin');if(sinEl)sinEl.value='';
@@ -2206,29 +2203,11 @@ function deleteRoomCard(code){if(confirm('플레이룸 "'+code+'"을(를) 삭제
 
 
 /* ═══ 모달 / 토스트 ═══ */
-var AN_MODAL_STEPS={'cr-modal':'open_create','sup-modal':'open_support','nick-modal':'open_join'};
+var AN_MODAL_STEPS={'cr-modal':'open_create','nick-modal':'open_join'};
 function openModal(id){
   document.getElementById(id).classList.add('open');
   if(AN_MODAL_STEPS&&AN_MODAL_STEPS[id])track(AN_MODAL_STEPS[id]);
-  if(id==='sup-modal')renderSupportQR();
 }
-
-/* ═══ 후원 ═══
-   운영자 카카오페이 송금코드 링크 (카카오톡 → 더보기 → 스캐너 → 송금코드 → 링크 복사).
-   계좌번호를 사이트에 노출하지 않고 카카오페이가 운영자 계좌로 연결해 줌.
-   링크를 바꿀 땐 이 값만 교체 */
-var SUPPORT_KAKAO_URL='https://qr.kakaopay.com/FOFnv5qez';
-function isMobileUA(){return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);}
-function renderSupportQR(){
-  var wrap=document.getElementById('sup-qr-wrap'),box=document.getElementById('sup-qr');
-  if(!wrap||!box)return;
-  if(isMobileUA()){wrap.style.display='none';return;}
-  wrap.style.display='block';
-  if(box.getAttribute('data-url')===SUPPORT_KAKAO_URL)return;
-  box.innerHTML='';box.setAttribute('data-url',SUPPORT_KAKAO_URL);
-  try{new QRCode(box,{text:SUPPORT_KAKAO_URL,width:140,height:140,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){wrap.style.display='none';}
-}
-function openSupportKakao(){track('support_kakao');window.open(SUPPORT_KAKAO_URL,'_blank','noopener');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mbg').forEach(function(el){el.addEventListener('click',function(e){if(e.target===el)el.classList.remove('open');});});
 var tt=null;
@@ -2362,6 +2341,8 @@ initPlan();    // Firebase Anonymous Auth → 서버 플랜 로드
 applyPlanLocks();
 /* .adfit-plus-hint 는 이 스크립트보다 뒤에 있어 초기 호출 시점엔 미존재 → DOM 완료 후 재적용 */
 document.addEventListener('DOMContentLoaded',applyBetaFreeUI);
+/* 익명 로그인 뒤에 정리 실행 (규칙상 로그인 필요) */
+auth.onAuthStateChanged(function(u){if(u)setTimeout(cleanupStaleRooms,5000);});
 loadLiveRooms();loadTopSongs();
 // 운영자 관전 모드 (?r=코드&watch=1) — 대시보드 "방 화면 조용히 보기"
 var WATCH_CODE=(function(){var p=new URLSearchParams(location.search);return p.get('watch')==='1'&&p.get('r')?p.get('r').toUpperCase():'';})();
