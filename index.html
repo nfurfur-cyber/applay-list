@@ -595,7 +595,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.40.0</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><button class="btn-ghost" onclick="openModal('sup-modal')" style="margin-right:6px;">☕ 후원</button><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.41.0</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -1064,7 +1064,7 @@ function attachListener(){
         를 즉시 재등록. 페이지 visibilitychange 도 같이 감시해서 백그라운드
         복귀 시 빠르게 보정. */
 function setupAutoRejoin(){
-  if(_connListener||!rid||!myNickId) return;
+  if(_watchMode||_connListener||!rid||!myNickId) return;
   _connListener=db.ref('.info/connected');
   _connListener.on('value',function(snap){
     if(snap.val()===true && rid && myNickId){
@@ -1318,6 +1318,7 @@ function checkLimit(){
 }
 var _addGatePending=false;
 function fbAddQ(v,t,a,th,nick){
+  if(_watchMode){showToast('👁 관전 모드에서는 신청할 수 없어요 — 조치는 운영 현황에서');return;}
   if(!_fbDataLoaded){showToast('⏳ 잠시 후 다시 시도해주세요');return;}
   if(!allowGuests&&!isHost){showToast('⚠️ 게스트 신청이 비활성화되어 있습니다');return;}
   if(!checkLimit())return;
@@ -1903,6 +1904,43 @@ function removeRoomData(code){
   return db.ref('roomPw/'+code).remove().catch(function(){}).then(function(){return db.ref('rooms/'+code).remove();});
 }
 
+/* ═══ 운영자 관전 모드 ═══
+   운영 현황 대시보드에서 소유자 구글 계정으로 로그인한 브라우저만 가능 (이름 붙인 앱 'ops'의 로그인 상태 확인).
+   참여자로 등록하지 않음 → 방 안 사람들에게 안 보임. 비번 방도 보기 가능(방 데이터는 원래 공개 읽기).
+   신청 등 쓰기는 막고, 조치는 대시보드 "관리"에서 */
+var _watchMode=false,_watchBanner=null,OWNER_EMAIL='n.furfur@gmail.com';
+function startWatch(code){
+  var ops;try{ops=firebase.app('ops');}catch(e){ops=firebase.initializeApp(firebaseConfig,'ops');}
+  var stop=ops.auth().onAuthStateChanged(function(u){
+    stop();
+    if(!(u&&u.email===OWNER_EMAIL&&u.emailVerified)){
+      showToast('🔒 운영자 로그인이 필요해요 — 운영 현황에서 먼저 로그인');
+      history.replaceState(null,'',location.pathname);return;
+    }
+    db.ref('rooms/'+code).once('value').then(function(snap){
+      if(!snap.exists()){showToast('❌ 플레이룸을 찾을 수 없습니다');return;}
+      var d=snap.val();
+      _watchMode=true;rid=code;isHost=false;myNick='운영자';
+      queue=d.queue||[];cur=d.cur!=null?d.cur:-1;currentPlayingVid=null;
+      enterRoom(d.name||code);attachListener();
+      var gp=document.getElementById('guestPromo');if(gp)gp.classList.add('hidden');
+      try{localStorage.removeItem('apl_activeRoom');}catch(e){}
+      history.replaceState(null,'','?r='+code+'&watch=1');
+      showWatchBanner();
+    });
+  });
+}
+function showWatchBanner(){
+  if(_watchBanner)return;
+  var b=document.createElement('div');
+  b.setAttribute('role','status');
+  b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:2000;background:#1E293B;border-bottom:2px solid var(--ac);color:var(--tx);font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;';
+  b.innerHTML='<span>👁 <b>운영자 관전 중</b> · 참여자 목록에 표시되지 않아요</span><button style="font-family:inherit;font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--tx);cursor:pointer;">나가기</button>';
+  b.querySelector('button').addEventListener('click',function(){goHome();});
+  document.body.appendChild(b);_watchBanner=b;
+}
+function endWatch(){_watchMode=false;if(_watchBanner){_watchBanner.remove();_watchBanner=null;}}
+
 /* ═══ 방 참여 ═══ */
 var pendingCode='',_pendingLegacyPw=null,_pwFails=0,_pwLockUntil=0;
 function promptJoinNick(){
@@ -2056,9 +2094,10 @@ window.addEventListener('resize',function(){
 });
 function confirmLeave(){if(!isHost){openModal('leave-modal');return;}goHome();}
 function goHome(){
+  var wasWatch=_watchMode;if(wasWatch)endWatch();
   teardownAutoRejoin();
   if(roomListener){db.ref('rooms/'+rid).off('value',roomListener);roomListener=null;}
-  if(!isHost&&rid&&myNickId)db.ref('rooms/'+rid+'/members/'+myNickId).remove();
+  if(!wasWatch&&!isHost&&rid&&myNickId)db.ref('rooms/'+rid+'/members/'+myNickId).remove();
   document.getElementById('room').classList.remove('on');
   document.getElementById('homev').classList.remove('hidden');
   document.getElementById('live-rooms-wrap').classList.remove('hidden');
@@ -2178,7 +2217,7 @@ function openModal(id){
    운영자 카카오페이 송금코드 링크 (카카오톡 → 더보기 → 스캐너 → 송금코드 → 링크 복사).
    계좌번호를 사이트에 노출하지 않고 카카오페이가 운영자 계좌로 연결해 줌.
    링크를 바꿀 땐 이 값만 교체 */
-var SUPPORT_KAKAO_URL='https://qr.kakaopay.com/FWMiGEELB';
+var SUPPORT_KAKAO_URL='https://qr.kakaopay.com/FOFnv5qez';
 function isMobileUA(){return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);}
 function renderSupportQR(){
   var wrap=document.getElementById('sup-qr-wrap'),box=document.getElementById('sup-qr');
@@ -2324,8 +2363,11 @@ applyPlanLocks();
 /* .adfit-plus-hint 는 이 스크립트보다 뒤에 있어 초기 호출 시점엔 미존재 → DOM 완료 후 재적용 */
 document.addEventListener('DOMContentLoaded',applyBetaFreeUI);
 loadLiveRooms();loadTopSongs();
+// 운영자 관전 모드 (?r=코드&watch=1) — 대시보드 "방 화면 조용히 보기"
+var WATCH_CODE=(function(){var p=new URLSearchParams(location.search);return p.get('watch')==='1'&&p.get('r')?p.get('r').toUpperCase():'';})();
 // 호스트 기존 방 확인
 checkExistingRoom(function(code,name){
+  if(WATCH_CODE)return;
   if(code){
     // URL 파라미터로 이미 입장했으면 스킵
     if(rid) return;
@@ -2358,7 +2400,8 @@ checkExistingRoom(function(code,name){
 });
 // URL 파라미터: QR/링크 접속 + 새로고침 자동 재입장
 var rp=new URLSearchParams(location.search).get('r');
-if(rp){
+if(WATCH_CODE){startWatch(WATCH_CODE);}
+else if(rp){
   var rCode=rp.toUpperCase();
   var savedRoom=localStorage.getItem('apl_activeRoom');
   var savedNick=localStorage.getItem('apl_nick');

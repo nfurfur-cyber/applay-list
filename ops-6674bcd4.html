@@ -180,7 +180,7 @@ b,strong{font-weight:700;}
 .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .tg{margin-left:auto;font-size:13px;color:var(--tx2);display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
 .tg input{accent-color:var(--ac);width:15px;height:15px;}
-.rw{display:grid;grid-template-columns:96px minmax(0,1fr) 110px 80px 56px 92px;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid rgba(40,48,64,.6);font-size:14px;}
+.rw{display:grid;grid-template-columns:96px minmax(0,1fr) 110px 80px 56px 80px 64px;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid rgba(40,48,64,.6);font-size:14px;}
 .rw.head{font-size:12px;color:var(--tx3);padding-top:0;}
 .rw .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .rw .nm small{display:block;font-weight:400;font-size:12px;color:var(--tx3);margin-top:2px;}
@@ -202,6 +202,56 @@ b,strong{font-weight:700;}
 select{font-family:inherit;font-size:13px;background:var(--sf2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 8px;}
 
 .empty{padding:24px;text-align:center;color:var(--tx3);font-size:13.5px;line-height:1.7;}
+
+/* 운영자 방 관리 */
+.mgr-btn{font-family:inherit;font-size:12px;font-weight:700;padding:5px 11px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx2);cursor:pointer;white-space:nowrap;}
+.mgr-btn:hover{border-color:var(--ac);color:var(--ac);}
+.mgr-btn:focus-visible,.abtn:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+.reg .mgr-btn{margin-top:10px;width:100%;}
+.ov{position:fixed;inset:0;background:rgba(5,8,12,.75);z-index:50;overflow-y:auto;padding:24px 12px 40px;}
+.panel{background:var(--sf);border:1px solid var(--bd);border-radius:16px;max-width:660px;margin:0 auto;padding:20px;}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.p-head h3{font-size:20px;font-weight:800;letter-spacing:-.5px;word-break:break-all;}
+.p-head .meta{font-size:12.5px;color:var(--tx3);margin-top:4px;line-height:1.6;}
+.x{font-family:inherit;background:none;border:1px solid var(--bd);color:var(--tx2);border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;flex-shrink:0;}
+.x:hover{color:var(--tx);border-color:var(--tx3);}
+.psec{margin-top:18px;}
+.psec h4{font-size:14px;font-weight:800;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.psec h4 small{font-size:12px;color:var(--tx3);font-weight:500;}
+.chk{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:var(--sf2);margin-bottom:6px;font-size:13.5px;}
+.chk .tx{flex:1;min-width:0;line-height:1.5;}
+.chk .tx small{display:block;color:var(--tx3);font-size:12px;}
+.chk.ok{border-left:3px solid var(--green);}
+.chk.warn{border-left:3px solid var(--ac);}
+.chk.bad{border-left:3px solid var(--red);}
+.chk.info{border-left:3px solid var(--tx3);}
+.abtn{font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);cursor:pointer;white-space:nowrap;}
+.abtn:hover{border-color:var(--ac);color:var(--ac);}
+.abtn.danger{color:var(--red);border-color:rgba(248,113,113,.4);}
+.abtn.danger:hover{background:rgba(248,113,113,.1);}
+.abtn.primary{background:var(--ac);border-color:var(--ac);color:#111;}
+.abtn:disabled{opacity:.4;cursor:default;}
+.now-play{background:var(--sf2);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;}
+.now-play img{width:72px;height:54px;border-radius:6px;object-fit:cover;background:var(--bd);flex-shrink:0;}
+.now-play .tx{flex:1;min-width:0;}
+.now-play .tx b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.now-play .tx span{font-size:12px;color:var(--tx3);}
+.qitem{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid rgba(40,48,64,.6);font-size:13px;}
+.qitem:last-child{border-bottom:none;}
+.qitem.cur{background:rgba(245,158,11,.08);border-radius:8px;}
+.qitem .i{width:24px;color:var(--tx3);font-weight:700;text-align:center;flex-shrink:0;}
+.qitem .t{flex:1;min-width:0;}
+.qitem .t b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qitem .t span{font-size:11.5px;color:var(--tx3);}
+.qitem .del{font-family:inherit;background:none;border:none;color:var(--tx3);font-size:12px;cursor:pointer;padding:4px 6px;}
+.qitem .del:hover{color:var(--red);}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+.kv div{background:var(--sf2);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--tx2);}
+.kv div b{display:block;color:var(--tx);font-size:13.5px;margin-top:2px;}
+.pwbox{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--sf2);border-radius:10px;padding:10px 12px;font-size:13.5px;}
+.pwbox .pw{font-weight:800;letter-spacing:4px;font-size:16px;margin-right:auto;}
+.p-foot{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--bd);}
+.ptoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--sf2);border:1px solid var(--ac);color:var(--tx);padding:10px 16px;border-radius:10px;font-size:13.5px;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.5);}
 footer{margin-top:24px;font-size:12.5px;color:var(--tx3);line-height:1.8;}
 footer a{color:var(--ac);text-decoration:none;}
 footer a:hover{text-decoration:underline;}
@@ -214,8 +264,11 @@ footer a:hover{text-decoration:underline;}
   .vbars{gap:4px;}
   .vcol.alt .w{visibility:hidden;}
   .rw.head{display:none;}
-  .rw{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm st" "meta meta";gap:6px 10px;padding:12px 2px;}
+  .rw{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm st" "meta mg";gap:6px 10px;padding:12px 2px;}
   .rw .c-st{grid-area:st;}
+  .rw .c-mg{grid-area:mg;justify-self:end;}
+  .kv{grid-template-columns:minmax(0,1fr);}
+  .panel{padding:16px;}
   .rw .c-nm{grid-area:nm;min-width:0;}
   .rw .c-last,.rw .c-span,.rw .c-songs,.rw .c-feat{display:none;}
   .rw .c-meta{display:block !important;grid-area:meta;font-size:12.5px;color:var(--tx2);}
@@ -401,6 +454,12 @@ footer a:hover{text-decoration:underline;}
     </div>
   </div>
 
+  <!-- 운영자 방 관리 (방에 참여하지 않고 들여다보기·조치 → 참여자 목록에 안 보임) -->
+  <div class="ov hide" id="mgr" role="dialog" aria-modal="true" aria-label="방 관리">
+    <div class="panel" id="mgrPanel"></div>
+  </div>
+  <div class="ptoast hide" id="ptoast" role="status"></div>
+
   <footer>
     분석 데이터는 개인 식별 정보 없이 저장되고 90일이 지나면 자동으로 지워져. 네 계정만 읽을 수 있어.<br>
     호스트가 삭제한 방은 방 집계에서 빠져 있어서 실제 이용량은 이보다 많아.<br>
@@ -501,7 +560,7 @@ auth.onAuthStateChanged(function(u){
     setText('who',u.email);
     startData();
   }else{
-    stopData();
+    stopData();closeMgr();
     $('app').classList.add('hide');$('gate').classList.remove('hide');
     if(u){setText('gmsg','이 계정('+u.email+')은 열람 권한이 없어.');auth.signOut();}
   }
@@ -626,7 +685,8 @@ function renderRegulars(regs){
     var st=status(r);
     return '<div class="reg"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><div class="nm">'+esc(r.name)+'</div><span class="pill '+st.c+'">'+st.t+'</span></div>'
       +'<div class="big">'+Math.round(r.span)+'<small>일째 사용</small></div>'
-      +'<div class="meta">마지막 재생 '+rel(r.lastPlay)+' · 신청곡 '+r.songs+'곡'+(r.members?' · 지금 '+r.members+'명':'')+'<br>시작 '+md(r.created)+(r.pw?' · 🔒비번':'')+(r.approval?' · ✅승인':'')+(r.notice?' · 📢공지':'')+'</div></div>';
+      +'<div class="meta">마지막 재생 '+rel(r.lastPlay)+' · 신청곡 '+r.songs+'곡'+(r.members?' · 지금 '+r.members+'명':'')+'<br>시작 '+md(r.created)+(r.pw?' · 🔒비번':'')+(r.approval?' · ✅승인':'')+(r.notice?' · 📢공지':'')+'</div>'
+      +'<button class="mgr-btn" data-code="'+esc(r.code)+'">🛠 관리</button></div>';
   }).join(''));
 }
 /* 전체 방: 필터 → 정렬 → 페이지 */
@@ -643,12 +703,13 @@ function renderRows(rs){
   setText('roomCount','총 '+total+'개');
   setText('pageInfo',total?(from+1)+'–'+(from+slice.length)+' / 총 '+total+'개':'0개');
   if(!total){setHTML('rows','<div class="empty">해당하는 방이 없어</div>');setHTML('pg','');return;}
-  setHTML('rows','<div class="rw head"><div>상태</div><div>방 이름</div><div>마지막 활동</div><div>사용 기간</div><div>곡</div><div>쓴 기능</div></div>'+slice.map(function(r){
+  setHTML('rows','<div class="rw head"><div>상태</div><div>방 이름</div><div>마지막 활동</div><div>사용 기간</div><div>곡</div><div>쓴 기능</div><div></div></div>'+slice.map(function(r){
     var st=status(r), feat=(r.pw?'🔒':'')+(r.approval?'✅':'')+(r.notice?'📢':''), span=r.span>=1?Math.round(r.span)+'일':'하루';
     return '<div class="rw"><div class="c-st"><span class="pill '+st.c+'">'+st.t+'</span></div>'
       +'<div class="c-nm"><div class="nm">'+esc(r.name)+'<small>'+md(r.created)+' 개설'+(r.src?' · '+esc(SRC_LABEL[r.src]||r.src):'')+'</small></div></div>'
       +'<div class="c-last">'+rel(r.last)+'</div><div class="c-span">'+span+'</div><div class="c-songs">'+r.songs+'</div><div class="c-feat feat">'+(feat||'<span class="muted">–</span>')+'</div>'
-      +'<div class="c-meta">'+rel(r.last)+' · '+span+' · '+r.songs+'곡 '+feat+'</div></div>';
+      +'<div class="c-meta">'+rel(r.last)+' · '+span+' · '+r.songs+'곡 '+feat+'</div>'
+      +'<div class="c-mg"><button class="mgr-btn" data-code="'+esc(r.code)+'">관리</button></div></div>';
   }).join(''));
   renderPager(pages);
 }
@@ -871,6 +932,134 @@ function renderBriefing(){
   $('todoBox').classList.toggle('hide',!todos.length);
   setHTML('todo',todos.slice(0,3).map(function(t){return '<li>'+t+'</li>';}).join(''));
 }
+
+/* ═══ 운영자 방 관리 ═══
+   방에 참여자로 들어가지 않고 데이터만 읽고 고침 → 방 안 사람들 참여자 목록에 운영자가 안 보임.
+   쓰기 권한은 RTDB 규칙의 소유자 이메일 조건으로 허용 (비번 방 포함) */
+var TS=firebase.database.ServerValue.TIMESTAMP;
+var mgr={code:null,room:null,off:null,pw:undefined,pwShown:false};
+function ptoast(msg){var t=$('ptoast');t.textContent=msg;t.classList.remove('hide');clearTimeout(ptoast.t);ptoast.t=setTimeout(function(){t.classList.add('hide');},2600);}
+function act(p,ok){return p.then(function(){ptoast('✅ '+ok);loadPw();}).catch(function(e){ptoast('❌ 실패: '+(e.code||e.message));});}
+function qArr(q){return Array.isArray(q)?q.filter(Boolean):(q?Object.keys(q).map(function(k){return q[k];}):[]);}
+function openMgr(code){
+  closeMgr();
+  mgr.code=code;$('mgr').classList.remove('hide');document.body.style.overflow='hidden';
+  setHTML('mgrPanel','<div class="empty">불러오는 중…</div>');
+  var ref=db.ref('rooms/'+code), fn=function(s){mgr.room=s.val();renderMgr();};
+  ref.on('value',fn,function(e){setHTML('mgrPanel','<div class="empty">읽기 실패: '+esc(e.code)+'</div>');});
+  mgr.off=function(){ref.off('value',fn);};
+  loadPw();
+}
+function closeMgr(){if(mgr.off)mgr.off();mgr={code:null,room:null,off:null,pw:undefined,pwShown:false};$('mgr').classList.add('hide');document.body.style.overflow='';}
+function loadPw(){
+  if(!mgr.code)return;
+  var code=mgr.code;
+  db.ref('roomPw/'+code).once('value').then(function(s){if(mgr.code===code){mgr.pw=s.val();renderMgr();}})
+    .catch(function(){if(mgr.code===code){mgr.pw=null;renderMgr();}});
+}
+function ghostKeys(d){var m=d.members||{};return Object.keys(m).filter(function(k){return Date.now()-((m[k]||{}).joinedAt||0)>=DAY;});}
+/* 현황 체크: [상태, 제목, 설명, 버튼 라벨, 버튼 동작] */
+function healthOf(d){
+  var out=[], q=qArr(d.queue), cur=d.cur==null?-1:d.cur, ghosts=ghostKeys(d), pend=qArr(d.pending);
+  if(d.pw)out.push(['bad','비밀번호가 공개 영역에 남아 있음','누구나 읽을 수 있는 상태. 잠긴 보관소로 옮겨야 해','보안 이전','migrate']);
+  if(d.hasPw&&!d.pw&&mgr.pw===null)out.push(['bad','비번 방인데 비밀번호 기록이 없음','이대로면 아무도 입장 못 해. 비번을 새로 정하거나 해제','비번 해제','pwoff']);
+  if(q.length&&(cur<0||cur>=q.length))out.push(['bad','재생 위치가 목록을 벗어남','곡이 '+q.length+'개인데 재생 위치가 '+(cur+1)+'번째라 재생이 멈춰 있을 수 있어','바로잡기','fixcur']);
+  if(ghosts.length)out.push(['warn','유령 접속 '+ghosts.length+'명','연결이 끊겼는데 남아 있는 기록이라 인원수가 부풀려져 보여','정리','ghosts']);
+  if(d.paused&&d.pausedAt&&Date.now()-d.pausedAt>30*60e3)out.push(['info','일시정지 '+rel(d.pausedAt).replace(' 전','')+'째','호스트가 멈춰둔 상태','','']);
+  if(d.requireApproval&&pend.length)out.push(['info','승인 대기 '+pend.length+'곡','호스트가 아직 승인하지 않은 신청곡','','']);
+  if(d.allowGuests===false)out.push(['info','사용자 신청 막힘','호스트가 신청을 꺼둔 상태','','']);
+  if(!q.length)out.push(['info','아직 신청곡 없음','','','']);
+  if(!out.some(function(x){return x[0]==='bad'||x[0]==='warn';}))out.unshift(['ok','문제 없음','바로 조치할 게 없어','','']);
+  return out;
+}
+function renderMgr(){
+  if(!mgr.code)return;
+  var d=mgr.room, code=mgr.code;
+  if(!d){setHTML('mgrPanel','<div class="p-head"><div><h3>방이 삭제됐어</h3><div class="meta">'+esc(code)+'</div></div><button class="x" data-a="close" aria-label="닫기">×</button></div>');return;}
+  var r=toRoom(code,d), st=status(r), q=qArr(d.queue), cur=d.cur==null?-1:d.cur, now=q[cur], m=d.members||{}, ghosts=ghostKeys(d);
+  var html='<div class="p-head"><div><h3>'+esc(r.name)+'</h3><div class="meta"><span class="pill '+st.c+'">'+st.t+'</span> 코드 '+esc(code)+' · 호스트 '+esc(d.hostNick||'–')+'<br>개설 '+md(r.created)+' · 마지막 활동 '+rel(r.last)+(r.span>=1?' · '+Math.round(r.span)+'일째 사용':'')+'</div></div><button class="x" data-a="close" aria-label="닫기">×</button></div>';
+
+  html+='<div class="psec"><h4>🩺 현황 체크</h4>'+healthOf(d).map(function(h){
+    return '<div class="chk '+h[0]+'"><div class="tx">'+h[1]+(h[2]?'<small>'+h[2]+'</small>':'')+'</div>'+(h[3]?'<button class="abtn" data-a="'+h[4]+'">'+h[3]+'</button>':'')+'</div>';
+  }).join('')+'</div>';
+
+  html+='<div class="psec"><h4>▶ 지금 재생 <small>'+(d.paused?'일시정지':(now?'재생 중':''))+'</small></h4>';
+  if(now)html+='<div class="now-play"><img src="'+esc(now.th||('https://img.youtube.com/vi/'+encodeURIComponent(now.v)+'/mqdefault.jpg'))+'" alt=""><div class="tx"><b>'+esc(now.t||'')+'</b><span>'+esc(now.a||'')+(now.nick?' · 신청 '+esc(now.nick):'')+' · '+(cur+1)+'/'+q.length+'</span></div><button class="abtn" data-a="skip"'+(cur+1>=q.length?' disabled title="다음 곡이 없어"':'')+'>다음 곡 ⏭</button></div>';
+  else html+='<div class="chk info"><div class="tx">재생 중인 곡 없음</div></div>';
+  html+='</div>';
+
+  html+='<div class="psec"><h4>📜 신청곡 목록 <small>'+q.length+'곡</small></h4>';
+  html+=q.length?q.map(function(s,i){
+    return '<div class="qitem'+(i===cur?' cur':'')+'"><div class="i">'+(i===cur?'▶':i+1)+'</div><div class="t"><b>'+esc(s.t||'')+'</b><span>'+esc(s.a||'')+(s.nick?' · '+esc(s.nick):'')+'</span></div><button class="del" data-a="rm" data-i="'+i+'" aria-label="'+esc(s.t||'')+' 삭제">삭제</button></div>';
+  }).join(''):'<div class="chk info"><div class="tx">비어 있음</div></div>';
+  html+='</div>';
+
+  var mk=Object.keys(m);
+  html+='<div class="psec"><h4>👥 접속 기록 <small>'+(mk.length-ghosts.length)+'명 접속 중'+(ghosts.length?' · 유령 '+ghosts.length:'')+'</small></h4>';
+  html+=mk.length?'<div class="kv">'+mk.map(function(k){var x=m[k]||{},g=ghosts.indexOf(k)!==-1;return '<div>'+(x.host?'👑 호스트':'🎵 사용자')+(g?' · 👻 유령':'')+'<b>'+esc(x.nick||'익명')+'</b></div>';}).join('')+'</div>':'<div class="chk info"><div class="tx">지금 아무도 없어</div></div>';
+  html+='</div>';
+
+  var hasPw=!!(d.hasPw||d.pw), pwVal=d.pw||mgr.pw;
+  html+='<div class="psec"><h4>🔒 비밀번호</h4><div class="pwbox">';
+  if(!hasPw)html+='<span class="pw" style="letter-spacing:0;font-size:13.5px;font-weight:600;">비밀번호 없는 방</span><button class="abtn" data-a="pwset">비번 걸기</button>';
+  else html+='<span class="pw">'+(mgr.pwShown?esc(pwVal||'(기록 없음)'):'●●●●')+'</span><button class="abtn" data-a="pwshow">'+(mgr.pwShown?'숨기기':'보기')+'</button><button class="abtn" data-a="pwset">변경</button><button class="abtn danger" data-a="pwoff">해제</button>';
+  html+='</div></div>';
+
+  html+='<div class="psec"><h4>⚙ 방 설정</h4><div class="kv">'
+    +'<div>사용자 신청<b>'+(d.allowGuests===false?'막힘':'허용')+'</b></div>'
+    +'<div>신청곡 승인<b>'+(d.requireApproval?'필요':'바로 재생')+'</b></div>'
+    +'<div>재생 방식<b>'+({auto:'자동재생',manual:'수동',repeat:'반복',shuffle:'셔플'}[d.playMode]||'자동재생')+'</b></div>'
+    +'<div>최대 곡 수<b>'+(d.maxQueue?d.maxQueue+'곡':'제한 없음')+'</b></div>'
+    +'<div>사용자 1인 제한<b>'+(d.limit?d.limit+'곡':'제한 없음')+'</b></div>'
+    +'<div>최대 인원<b>'+(d.maxMembers?d.maxMembers+'명':'제한 없음')+'</b></div>'
+    +'</div></div>';
+
+  html+='<div class="p-foot"><a class="abtn primary" style="text-decoration:none;" href="/?r='+encodeURIComponent(code)+'&watch=1" target="_blank" rel="noopener">👁 방 화면 조용히 보기</a><button class="abtn danger" data-a="del">🗑 방 삭제</button></div>';
+  setHTML('mgrPanel',html);
+}
+var MGR_ACT={
+  close:function(){closeMgr();},
+  skip:function(d,code){var q=qArr(d.queue),n=(d.cur==null?-1:d.cur)+1;if(n>=q.length)return;act(db.ref('rooms/'+code).update({cur:n,playStartedAt:TS,paused:false,pausedAt:0}),'다음 곡으로 넘겼어');},
+  rm:function(d,code,btn){
+    var i=+btn.getAttribute('data-i'),q=qArr(d.queue),cur=d.cur==null?-1:d.cur,s=q[i];
+    if(!s||!confirm('"'+(s.t||'')+'" 을(를) 목록에서 지울까?'))return;
+    var nq=q.slice();nq.splice(i,1);var nc=cur;
+    if(i<cur)nc--;else if(i===cur)nc=nq.length?Math.min(cur,nq.length-1):-1;
+    if(!nq.length)nc=-1;
+    var upd={queue:nq,cur:nc};if(i===cur&&nc>=0){upd.playStartedAt=TS;upd.paused=false;upd.pausedAt=0;}
+    act(db.ref('rooms/'+code).update(upd),'곡을 지웠어');
+  },
+  ghosts:function(d,code){var upd={};ghostKeys(d).forEach(function(k){upd['members/'+k]=null;});act(db.ref('rooms/'+code).update(upd),'유령 접속을 정리했어');},
+  fixcur:function(d,code){var q=qArr(d.queue);act(db.ref('rooms/'+code).update({cur:q.length?0:-1,playStartedAt:TS,paused:false,pausedAt:0}),'재생 위치를 처음으로 맞췄어');},
+  migrate:function(d,code){var u={};u['roomPw/'+code]=d.pw;u['rooms/'+code+'/hasPw']=true;u['rooms/'+code+'/pw']=null;act(db.ref().update(u),'비밀번호를 잠긴 보관소로 옮겼어');},
+  pwshow:function(){mgr.pwShown=!mgr.pwShown;renderMgr();},
+  pwset:function(d,code){
+    var pw=prompt('새 비밀번호 (숫자 4자리)\n※ 바꾸면 지금 들어와 있는 사용자도 새 비번을 다시 입력해야 신청할 수 있어');
+    if(pw===null)return;pw=pw.trim();
+    if(!/^\d{4}$/.test(pw)){ptoast('숫자 4자리로 입력해줘');return;}
+    var u={};u['roomPw/'+code]=pw;u['rooms/'+code+'/hasPw']=true;u['rooms/'+code+'/pw']=null;
+    act(db.ref().update(u),'비밀번호를 '+(d.hasPw||d.pw?'변경':'설정')+'했어');
+  },
+  pwoff:function(d,code){
+    if(!confirm('이 방의 비밀번호를 해제할까? 누구나 코드만으로 입장할 수 있게 돼'))return;
+    var u={};u['roomPw/'+code]=null;u['roomPwCheck/'+code]=null;u['rooms/'+code+'/hasPw']=false;u['rooms/'+code+'/pw']=null;
+    act(db.ref().update(u),'비밀번호를 해제했어');
+  },
+  del:function(d,code){
+    if(!confirm('"'+(d.name||code)+'" 방을 삭제할까? 되돌릴 수 없어'))return;
+    var u={};u['roomPw/'+code]=null;u['roomPwCheck/'+code]=null;u['rooms/'+code]=null;
+    db.ref().update(u).then(function(){ptoast('✅ 방을 삭제했어');closeMgr();}).catch(function(e){ptoast('❌ 실패: '+(e.code||e.message));});
+  }
+};
+$('mgr').addEventListener('click',function(e){
+  if(e.target===$('mgr')){closeMgr();return;}
+  var btn=e.target.closest('[data-a]');if(!btn||btn.disabled)return;
+  var f=MGR_ACT[btn.getAttribute('data-a')];if(f)f(mgr.room||{},mgr.code,btn);
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mgr.code)closeMgr();});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.mgr-btn');if(b)openMgr(b.getAttribute('data-code'));
+});
 
 /* ── 조작 ── */
 document.querySelectorAll('#rangeChips .chip').forEach(function(b){

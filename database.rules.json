@@ -22,6 +22,7 @@
     "roomPwCheck": {
       ".read": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
       "$rid": {
+        ".write": "auth !== null && auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true",
         "$uid": {
           ".write": "auth !== null && (auth.uid === $uid || (auth.token.email === 'n.furfur@gmail.com' && auth.token.email_verified === true))",
           ".validate": "newData.isString() && newData.val() === root.child('roomPw').child($rid).val()"
