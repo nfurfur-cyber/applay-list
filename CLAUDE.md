@@ -12,11 +12,13 @@
 - **DB**: Firebase Realtime Database
 - **광고**: Kakao AdFit (DAN-BbG1ANjRmS9ooN0b) — AdSense는 최종 거절 후 제거 (v1.31.0)
 - **수익모델**: AdFit + Plus 유료 플랜 (9,900원/월) — pricing.html 참조
-- **Analytics**: Google Analytics (G-MCTVK42K72)
+- **Analytics**: Google Analytics (G-HZHPQSKFKV)
+- **운영 대시보드**: `/ops-6674bcd4.html` (noindex, 링크 미노출) — Firebase 실시간 읽기 전용. 방·단골·주별 추이·유입 경로·인기곡
 
-## 현재 버전: v1.36.1
+## 현재 버전: v1.37.0
 
 ## 버전 히스토리
+- v1.37.0: 운영 대시보드 + 유입 경로 기록 — `captureSource()`가 첫 방문 경로(google/naver/qr_link/direct 등, utm_source 우선)를 localStorage `apl_src`에 저장 → `confirmCreate()`에서 `rooms/{rid}/src`로 저장. `?r=`로 처음 온 사람이 방을 만들면 `qr_link` = 손님→호스트 확산 루프. `#guestPromo` 링크에 `utm_source=guest_promo`. 대시보드는 24시간 넘은 members 를 유령 접속으로 보고 제외
 - v1.36.1: 토스트 알림이 AdFit 배너 위에 영구 잔류하던 버그 수정 + FAQ 베타 안내 + 홈 후원 섹션 복원
   - **원인**: `.toast{bottom:80px; transform:translateY(80px)}` — 숨김 이동량(80px)이 `bottom`(80px)과 정확히 상쇄되어, 토스트가 화면 밖으로 안 나가고 **뷰포트 최하단(광고 배너 위)에 그대로 표시**됨. v1.31.3에서 `bottom`만 26→80px 올리고 `translateY`는 그대로 둬서 생긴 회귀
   - **수정**: 숨김 transform 을 `translateY(calc(100% + 200px))` 로 변경(자기 높이 기반이라 bottom 값과 무관하게 항상 화면 밖) + `pointer-events:none`

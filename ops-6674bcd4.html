@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>QueueTune 운영 현황</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" integrity="sha384-AQ3POAMqIhwS81FrUH95ekxqBZHeP5tG2JfEL3+7GuTtfRLWnrRh32UxwzM+//A9" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js" integrity="sha384-1/m+A1jVWbD3yiK3/vtFvm1+LjK1WLpSoDY+Kaxppwn/yP9BVSgdHTNQVOjrzUO5" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0F15;--sf:#151A24;--sf2:#1C2230;--bd:#283040;--ac:#F59E0B;--ac-soft:rgba(245,158,11,.12);--red:#EF4444;--green:#10B981;--blue:#60A5FA;--tx:#F1F5F9;--tx2:#94A3B8;--tx3:#5B6C82;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(245,158,11,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:20px 16px 60px;}
+
+/* 헤더 */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.brand{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);letter-spacing:-.3px;}
+.title{font-size:24px;font-weight:900;letter-spacing:-.8px;margin-top:4px;}
+.live{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--tx2);background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:6px 12px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--tx3);}
+.live.on .dot{background:var(--green);box-shadow:0 0 0 0 rgba(16,185,129,.6);animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.55)}70%{box-shadow:0 0 0 8px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+@media (prefers-reduced-motion:reduce){.live.on .dot{animation:none;}}
+
+/* 공통 카드 */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;min-width:0;}
+.sec{margin-top:14px;}
+.h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.h b{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.h small{font-size:11px;color:var(--tx3);}
+.muted{color:var(--tx3);}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.kpi{position:relative;overflow:hidden;}
+.kpi .lb{font-size:12px;color:var(--tx2);font-weight:500;}
+.kpi .num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.05;margin-top:8px;letter-spacing:-1px;}
+.kpi .sub{font-size:11px;color:var(--tx3);margin-top:6px;min-height:15px;}
+.kpi.hero{background:linear-gradient(160deg,rgba(245,158,11,.16),rgba(245,158,11,.03) 60%);border-color:rgba(245,158,11,.35);}
+.kpi.hero .num{color:var(--ac);}
+.kpi.live-now .num{color:var(--green);}
+.up{color:var(--green);font-weight:700;}.down{color:var(--red);font-weight:700;}
+
+/* 유료화 신호등 */
+.goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+.goal .row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:8px;}
+.goal .row b{font-family:'Syne',sans-serif;font-size:18px;}
+.bar{height:10px;border-radius:10px;background:var(--sf2);overflow:hidden;border:1px solid var(--bd);}
+.bar i{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,#B45309,var(--ac));transition:width .6s cubic-bezier(.16,1,.3,1);}
+.goal .hint{font-size:11px;color:var(--tx3);margin-top:7px;}
+.verdict{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6;background:var(--sf2);border-left:3px solid var(--tx3);}
+.verdict.go{border-left-color:var(--green);}
+
+/* 주별 차트 */
+.chart{display:flex;align-items:flex-end;gap:6px;height:170px;padding-top:22px;}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
+.col .v{font-size:11px;font-weight:700;color:var(--tx2);margin-bottom:5px;}
+.col .b{width:100%;max-width:42px;border-radius:6px 6px 2px 2px;background:var(--bd);min-height:3px;transition:height .6s cubic-bezier(.16,1,.3,1);}
+.col.beta .b{background:linear-gradient(180deg,var(--ac),#B45309);}
+.col.now .b{background:linear-gradient(180deg,#FDE68A,var(--ac));box-shadow:0 0 18px rgba(245,158,11,.35);}
+.col.now .v{color:var(--ac);}
+.col .w{font-size:10px;color:var(--tx3);margin-top:7px;white-space:nowrap;}
+.legend{display:flex;gap:14px;font-size:11px;color:var(--tx3);margin-top:12px;flex-wrap:wrap;}
+.legend span::before{content:'';display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px;background:var(--bd);}
+.legend .lb2::before{background:var(--ac);}
+
+/* 2열 */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.hbar{margin-bottom:11px;}
+.hbar .row{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;gap:8px;}
+.hbar .row span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hbar .row b{font-weight:700;flex-shrink:0;}
+.hbar .track{height:7px;border-radius:7px;background:var(--sf2);overflow:hidden;}
+.hbar .track i{display:block;height:100%;border-radius:7px;background:var(--blue);}
+.note{font-size:11px;color:var(--tx3);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1px dashed var(--bd);}
+.song{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(40,48,64,.6);}
+.song:last-child{border-bottom:none;}
+.song .rk{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:var(--ac);width:22px;flex-shrink:0;}
+.song img{width:40px;height:30px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--sf2);}
+.song .t{flex:1;min-width:0;}
+.song .t div{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.song .t small{font-size:11px;color:var(--tx3);}
+.song .c{font-size:12px;font-weight:700;color:var(--tx2);flex-shrink:0;}
+
+/* 단골 방 */
+.regs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+.reg{background:var(--sf2);border:1px solid var(--bd);border-radius:12px;padding:14px;}
+.reg .nm{font-weight:800;font-size:15px;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.reg .big{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--ac);margin-top:8px;}
+.reg .big small{font-family:'Noto Sans KR',sans-serif;font-size:12px;color:var(--tx2);font-weight:500;margin-left:3px;}
+.reg .meta{font-size:11.5px;color:var(--tx2);margin-top:6px;line-height:1.6;}
+
+/* 전체 방 */
+.tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.chip{font-family:inherit;font-size:12px;padding:6px 12px;border-radius:20px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;transition:all .15s;}
+.chip:hover{border-color:var(--tx3);color:var(--tx);}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#111;font-weight:700;}
+.chip:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+.tg{margin-left:auto;font-size:12px;color:var(--tx2);display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
+.tg input{accent-color:var(--ac);width:15px;height:15px;}
+.rows{display:flex;flex-direction:column;}
+.rw{display:grid;grid-template-columns:96px minmax(0,1fr) 110px 80px 56px 92px;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid rgba(40,48,64,.6);font-size:13px;}
+.rw.head{font-size:11px;color:var(--tx3);padding-top:0;}
+.rw .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rw .nm small{display:block;font-weight:400;font-size:11px;color:var(--tx3);margin-top:2px;}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+.p-live{background:rgba(16,185,129,.15);color:var(--green);}
+.p-today{background:rgba(96,165,250,.15);color:var(--blue);}
+.p-week{background:var(--ac-soft);color:var(--ac);}
+.p-idle{background:var(--sf2);color:var(--tx3);}
+.feat{font-size:13px;letter-spacing:2px;}
+.empty{padding:28px;text-align:center;color:var(--tx3);font-size:13px;}
+
+footer{margin-top:22px;font-size:12px;color:var(--tx3);line-height:1.8;}
+footer a{color:var(--ac);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4);color:#FCA5A5;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:14px;display:none;}
+
+@media (max-width:820px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .two,.goals{grid-template-columns:minmax(0,1fr);}
+  .regs{grid-template-columns:minmax(0,1fr);}
+  .chart{gap:4px;}
+  .col.alt .w{visibility:hidden;}
+  .kpi .num{font-size:32px;}
+  .rw.head{display:none;}
+  .rw{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"nm st" "meta meta";gap:6px 10px;padding:12px 2px;}
+  .rw .c-st{grid-area:st;}
+  .rw .c-nm{grid-area:nm;min-width:0;}
+  .rw .c-last,.rw .c-span,.rw .c-songs,.rw .c-feat{display:none;}
+  .rw .c-meta{display:block !important;grid-area:meta;font-size:11.5px;color:var(--tx2);}
+  .tg{margin-left:0;width:100%;}
+}
+.c-meta{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <div class="brand">QueueTune 큐튠</div>
+      <div class="title">운영 현황</div>
+    </div>
+    <div class="live" id="live"><span class="dot"></span><span id="liveTxt">연결 중…</span></div>
+  </div>
+
+  <div class="err" id="err"></div>
+
+  <!-- 핵심 숫자 -->
+  <div class="kpis">
+    <div class="card kpi hero"><div class="lb">이번 주 새로 만든 방</div><div class="num" id="kWeek">–</div><div class="sub" id="kWeekSub"></div></div>
+    <div class="card kpi live-now"><div class="lb">지금 접속 중인 사람</div><div class="num" id="kLive">–</div><div class="sub" id="kLiveSub"></div></div>
+    <div class="card kpi"><div class="lb">다시 찾아온 방 (단골)</div><div class="num" id="kReg">–</div><div class="sub" id="kRegSub">만든 다음 날 이후에도 사용</div></div>
+    <div class="card kpi"><div class="lb">누적 신청곡</div><div class="num" id="kSongs">–</div><div class="sub" id="kSongsSub"></div></div>
+  </div>
+
+  <!-- 유료화 신호등 -->
+  <div class="card sec">
+    <div class="h"><b>🚦 유료화 신호등</b><small>둘 중 하나라도 채우면 유료 전환 검토</small></div>
+    <div class="goals">
+      <div class="goal">
+        <div class="row"><span>최근 7일 새 방</span><span><b id="g1">–</b><span class="muted"> / 20</span></span></div>
+        <div class="bar"><i id="g1b" style="width:0"></i></div>
+        <div class="hint">주 20개가 꾸준히 나오면 "찾아서 쓰는 서비스"가 된 것</div>
+      </div>
+      <div class="goal">
+        <div class="row"><span>단골 방</span><span><b id="g2">–</b><span class="muted"> / 10</span></span></div>
+        <div class="bar"><i id="g2b" style="width:0"></i></div>
+        <div class="hint">반복해서 쓰는 곳 = 돈 낼 가능성이 있는 곳</div>
+      </div>
+    </div>
+    <div class="verdict" id="verdict">불러오는 중…</div>
+  </div>
+
+  <!-- 주별 추이 -->
+  <div class="card sec">
+    <div class="h"><b>📈 주별 새 방</b><small>최근 12주 · 월요일 기준</small></div>
+    <div class="chart" id="chart"></div>
+    <div class="legend"><span>베타 무료 전</span><span class="lb2">베타 무료 후 (8/25~)</span></div>
+  </div>
+
+  <div class="two sec">
+    <!-- 유입 경로 -->
+    <div class="card">
+      <div class="h"><b>🧭 어디서 알고 왔나</b><small>방 만든 사람 기준</small></div>
+      <div id="src"></div>
+      <div class="note" id="srcNote"></div>
+    </div>
+    <!-- 인기곡 -->
+    <div class="card">
+      <div class="h"><b>🎵 많이 신청된 곡</b><small>누적 TOP 10</small></div>
+      <div id="songs"></div>
+    </div>
+  </div>
+
+  <!-- 단골 방 -->
+  <div class="card sec">
+    <div class="h"><b>⭐ 단골 방</b><small>가장 중요한 손님들 — 최근 활동 순</small></div>
+    <div class="regs" id="regs"></div>
+  </div>
+
+  <!-- 전체 방 -->
+  <div class="card sec">
+    <div class="h"><b>🗂 전체 방</b><small id="roomCount"></small></div>
+    <div class="tools">
+      <button class="chip on" data-f="all">전체</button>
+      <button class="chip" data-f="live">🟢 접속 중</button>
+      <button class="chip" data-f="week">이번 주 활동</button>
+      <button class="chip" data-f="reg">단골</button>
+      <button class="chip" data-f="idle">휴면</button>
+      <label class="tg"><input type="checkbox" id="hideTest" checked> 테스트 방 숨기기</label>
+    </div>
+    <div class="rows" id="rows"></div>
+  </div>
+
+  <footer>
+    <b style="color:var(--tx2);">방문자 수 · 검색어 같은 건 여기서 봐</b><br>
+    · <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a> → 보고서 → 획득 → <b>트래픽 획득</b> (어디서 들어왔는지, 측정 ID G-HZHPQSKFKV)<br>
+    · <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> → 실적 → <b>검색어</b> (구글에서 뭘 검색하고 들어왔는지)<br>
+    · <a href="https://searchadvisor.naver.com/" target="_blank" rel="noopener">네이버 서치어드바이저</a> → 리포트 (네이버 검색 유입)<br>
+    <span class="muted">이 페이지는 Firebase 실시간 데이터를 읽기만 해. 호스트가 삭제한 방은 집계에서 빠져 있어서 실제 이용량은 이보다 많아.</span>
+  </footer>
+</div>
+
+<script>
+var firebaseConfig={apiKey:'AIzaSyC6AQw8olBFz_7bAu-FkJNGx09J0AnYm8I',authDomain:'appplay-list.firebaseapp.com',databaseURL:'https://appplay-list-default-rtdb.firebaseio.com',projectId:'appplay-list',storageBucket:'appplay-list.firebasestorage.app',messagingSenderId:'7281735403',appId:'1:7281735403:web:fe34ff66786678d75930ae'};
+firebase.initializeApp(firebaseConfig);
+var db=firebase.database();
+
+var DAY=864e5, KST=9*3600e3;
+var BETA_START=Date.parse('2026-08-25T00:00:00+09:00');
+var TEST_RE=/test|테스트|점검/i;
+var SRC_LABEL={
+  direct:'직접 접속 (주소·북마크·카톡 링크)',
+  qr_link:'다른 방 QR·링크로 왔다가 → 직접 개설',
+  guest_promo:'손님 화면 "내 가게에서도 열기" 버튼',
+  google:'구글 검색', naver:'네이버 검색', daum_kakao:'다음·카카오',
+  instagram:'인스타그램', youtube:'유튜브', facebook:'페이스북'
+};
+
+var state={rooms:[], stats:[], filter:'all', hideTest:true};
+
+/* ── 유틸 ── */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function md(ts){var d=new Date(ts+KST);return (d.getUTCMonth()+1)+'/'+d.getUTCDate();}
+function rel(ts){
+  if(!ts)return '–';
+  var s=(Date.now()-ts)/1000;
+  if(s<90)return '방금';
+  if(s<3600)return Math.round(s/60)+'분 전';
+  if(s<86400)return Math.round(s/3600)+'시간 전';
+  if(s<86400*30)return Math.round(s/86400)+'일 전';
+  return md(ts);
+}
+function weekStart(ts){var k=new Date(ts+KST);var dow=(k.getUTCDay()+6)%7;return Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate()-dow)-KST;}
+function setText(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+function setHTML(id,v){var el=document.getElementById(id);if(el)el.innerHTML=v;}
+
+/* ── 데이터 정리 ── */
+function toRoom(code,d){
+  var created=d.createdAt||0, lastPlay=d.playStartedAt||0;
+  var q=d.queue, songs=Array.isArray(q)?q.filter(Boolean).length:(q?Object.keys(q).length:0);
+  /* 24시간 넘은 접속 기록은 연결 종료가 반영 안 된 유령 기록 → 제외
+     (실제 접속자는 재연결·화면 복귀 때마다 joinedAt 이 갱신됨) */
+  var members=d.members?Object.keys(d.members).filter(function(k){var m=d.members[k]||{};return Date.now()-(m.joinedAt||0)<DAY;}).length:0;
+  return {
+    code:code, name:d.name||'(이름 없음)', created:created, lastPlay:lastPlay,
+    last:Math.max(created,lastPlay), members:members, songs:songs,
+    span:(lastPlay&&created)?(lastPlay-created)/DAY:0,
+    pw:!!d.pw, approval:!!d.requireApproval, notice:!!d.noticeOn,
+    src:d.src||null, test:TEST_RE.test(d.name||'')
+  };
+}
+function status(r){
+  if(r.members>0)return {k:'live',t:'● 접속 중',c:'p-live'};
+  if(Date.now()-r.last<DAY)return {k:'today',t:'오늘',c:'p-today'};
+  if(Date.now()-r.last<7*DAY)return {k:'week',t:'이번 주',c:'p-week'};
+  return {k:'idle',t:'휴면',c:'p-idle'};
+}
+function visible(){return state.rooms.filter(function(r){return !(state.hideTest&&r.test);});}
+
+/* ── 렌더 ── */
+function renderKpis(rs){
+  var now=Date.now(), ws=weekStart(now);
+  var thisW=rs.filter(function(r){return r.created>=ws;}).length;
+  var lastW=rs.filter(function(r){return r.created>=ws-7*DAY&&r.created<ws;}).length;
+  setText('kWeek',thisW);
+  var diff=thisW-lastW;
+  setHTML('kWeekSub','지난주 '+lastW+'개 '+(diff>0?'<span class="up">▲'+diff+'</span>':diff<0?'<span class="down">▼'+(-diff)+'</span>':'· 동일'));
+  var liveRooms=state.rooms.filter(function(r){return r.members>0;});
+  var people=liveRooms.reduce(function(a,r){return a+r.members;},0);
+  setText('kLive',people);
+  setText('kLiveSub',liveRooms.length?liveRooms.length+'개 방에서 사용 중':'지금은 조용해');
+  setText('kReg',rs.filter(function(r){return r.span>=1;}).length);
+}
+function renderGoals(rs){
+  var wk=rs.filter(function(r){return Date.now()-r.created<7*DAY;}).length;
+  var reg=rs.filter(function(r){return r.span>=1;}).length;
+  setText('g1',wk);setText('g2',reg);
+  document.getElementById('g1b').style.width=Math.min(100,wk/20*100)+'%';
+  document.getElementById('g2b').style.width=Math.min(100,reg/10*100)+'%';
+  var v=document.getElementById('verdict');
+  if(wk>=20||reg>=10){v.className='verdict go';v.innerHTML='🟢 <b>기준 도달!</b> 유료 전환을 검토할 시점이야. (단, 예비창업패키지 결과 전에는 사업자등록 보류)';}
+  else{v.className='verdict';v.innerHTML='🟡 <b>아직 무료 유지 구간</b> — 지금은 손님을 모으는 시기야. 단골 방 하나하나가 예비창업패키지 사업계획서의 근거가 돼.';}
+}
+function renderChart(rs){
+  var ws=weekStart(Date.now()), html='', cols=[];
+  for(var i=11;i>=0;i--){
+    var s=ws-i*7*DAY, e=s+7*DAY;
+    cols.push({s:s,n:rs.filter(function(r){return r.created>=s&&r.created<e;}).length,now:i===0});
+  }
+  var max=Math.max(4,Math.max.apply(null,cols.map(function(c){return c.n;})));
+  cols.forEach(function(c){
+    var cls='col'+(c.s+7*DAY>BETA_START?' beta':'')+(c.now?' now':'')+(cols.indexOf(c)%2===0&&!c.now?' alt':'');
+    html+='<div class="'+cls+'"><div class="v">'+c.n+'</div><div class="b" style="height:'+(c.n/max*100)+'%"></div><div class="w">'+(c.now?'이번 주':md(c.s))+'</div></div>';
+  });
+  setHTML('chart',html);
+}
+function renderSources(rs){
+  var withSrc=rs.filter(function(r){return r.src;}), counts={};
+  withSrc.forEach(function(r){counts[r.src]=(counts[r.src]||0)+1;});
+  var keys=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];});
+  if(!keys.length){
+    setHTML('src','<div class="empty">아직 기록된 방이 없어<br><span style="font-size:11px;">10/19 이후 새로 만들어지는 방부터 쌓여</span></div>');
+  }else{
+    var max=counts[keys[0]];
+    setHTML('src',keys.map(function(k){
+      return '<div class="hbar"><div class="row"><span>'+esc(SRC_LABEL[k]||k)+'</span><b>'+counts[k]+'</b></div><div class="track"><i style="width:'+(counts[k]/max*100)+'%"></i></div></div>';
+    }).join(''));
+  }
+  var before=rs.length-withSrc.length;
+  setHTML('srcNote','기록 시작(10/19) 이전 방 <b>'+before+'개</b>는 경로를 몰라. 그 기간 유입은 아래 Google Analytics에서 확인할 수 있어.');
+}
+function renderSongs(){
+  var top=state.stats.slice().sort(function(a,b){return (b.count||0)-(a.count||0);}).slice(0,10);
+  if(!top.length){setHTML('songs','<div class="empty">아직 신청곡이 없어</div>');return;}
+  setHTML('songs',top.map(function(s,i){
+    var th=s.th||('https://img.youtube.com/vi/'+encodeURIComponent(s.vid)+'/default.jpg');
+    return '<div class="song"><div class="rk">'+(i+1)+'</div><img src="'+esc(th)+'" alt="" loading="lazy" width="40" height="30"><div class="t"><div>'+esc(s.t||'')+'</div><small>'+esc(s.a||'')+'</small></div><div class="c">'+(s.count||0)+'회</div></div>';
+  }).join(''));
+}
+function renderRegulars(rs){
+  var regs=rs.filter(function(r){return r.span>=1;}).sort(function(a,b){return b.last-a.last;});
+  if(!regs.length){setHTML('regs','<div class="empty" style="grid-column:1/-1;">아직 단골 방이 없어</div>');return;}
+  setHTML('regs',regs.map(function(r){
+    var st=status(r);
+    return '<div class="reg"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><div class="nm">'+esc(r.name)+'</div><span class="pill '+st.c+'">'+st.t+'</span></div>'
+      +'<div class="big">'+Math.round(r.span)+'<small>일째 사용</small></div>'
+      +'<div class="meta">마지막 재생 '+rel(r.lastPlay)+' · 신청곡 '+r.songs+'곡'+(r.members?' · 지금 '+r.members+'명':'')+'<br>시작 '+md(r.created)+(r.pw?' · 🔒비번':'')+(r.approval?' · ✅승인':'')+(r.notice?' · 📢공지':'')+'</div></div>';
+  }).join(''));
+}
+function renderRows(rs){
+  var list=rs.filter(function(r){
+    var k=status(r).k;
+    if(state.filter==='live')return k==='live';
+    if(state.filter==='week')return k!=='idle';
+    if(state.filter==='reg')return r.span>=1;
+    if(state.filter==='idle')return k==='idle';
+    return true;
+  }).sort(function(a,b){return b.last-a.last;});
+  setText('roomCount',list.length+'개');
+  if(!list.length){setHTML('rows','<div class="empty">해당하는 방이 없어</div>');return;}
+  var head='<div class="rw head"><div>상태</div><div>방 이름</div><div>마지막 활동</div><div>사용 기간</div><div>곡</div><div>쓴 기능</div></div>';
+  setHTML('rows',head+list.map(function(r){
+    var st=status(r);
+    var feat=(r.pw?'🔒':'')+(r.approval?'✅':'')+(r.notice?'📢':'');
+    var span=r.span>=1?Math.round(r.span)+'일':'하루';
+    return '<div class="rw"><div class="c-st"><span class="pill '+st.c+'">'+st.t+'</span></div>'
+      +'<div class="c-nm"><div class="nm">'+esc(r.name)+'<small>'+md(r.created)+' 개설'+(r.src?' · '+esc(SRC_LABEL[r.src]||r.src):'')+'</small></div></div>'
+      +'<div class="c-last">'+rel(r.last)+'</div><div class="c-span">'+span+'</div><div class="c-songs">'+r.songs+'</div><div class="c-feat feat">'+(feat||'<span class="muted">–</span>')+'</div>'
+      +'<div class="c-meta">'+rel(r.last)+' · '+span+' · '+r.songs+'곡 '+feat+'</div></div>';
+  }).join(''));
+}
+function renderAll(){
+  var rs=visible();
+  renderKpis(rs);renderGoals(rs);renderChart(rs);renderSources(rs);renderRegulars(rs);renderRows(rs);
+}
+
+/* ── 실시간 구독 ── */
+function showErr(e){var el=document.getElementById('err');el.style.display='block';el.textContent='데이터를 불러오지 못했어: '+(e&&e.message||e);}
+db.ref('.info/connected').on('value',function(s){
+  var on=!!s.val();document.getElementById('live').classList.toggle('on',on);
+  setText('liveTxt',on?'실시간 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}):'연결 끊김 — 재연결 중');
+});
+db.ref('rooms').on('value',function(snap){
+  var arr=[];snap.forEach(function(c){arr.push(toRoom(c.key,c.val()||{}));});
+  state.rooms=arr;renderAll();
+  setText('liveTxt','실시간 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' 갱신');
+},showErr);
+db.ref('stats/songs').on('value',function(snap){
+  var arr=[],total=0;snap.forEach(function(c){var d=c.val()||{};d.vid=c.key;total+=(d.count||0);arr.push(d);});
+  state.stats=arr;setText('kSongs',total.toLocaleString());setText('kSongsSub','서로 다른 곡 '+arr.length.toLocaleString()+'개');renderSongs();
+},showErr);
+
+/* ── 필터 ── */
+document.querySelectorAll('.chip').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');state.filter=b.getAttribute('data-f');renderRows(visible());
+  });
+});
+document.getElementById('hideTest').addEventListener('change',function(e){state.hideTest=e.target.checked;renderAll();});
+setInterval(function(){if(state.rooms.length)renderAll();},60000); // "n분 전" 표기 갱신
+</script>
+</body>
+</html>
