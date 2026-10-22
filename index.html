@@ -302,9 +302,10 @@ footer a{color:var(--ac);text-decoration:none;}
 .notice-promo-text{font-size:12px;color:var(--tx3);}
 .notice-promo-text span{color:var(--ac);font-weight:600;}
 /* 게스트: 재생 모드 대신 검색 안내 */
-.guest-hint{flex:1;min-width:0;display:flex;align-items:center;gap:6px;background:rgba(245,158,11,.08);border:1px dashed rgba(245,158,11,.35);border-radius:8px;padding:6px 10px;color:var(--ac);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
-.guest-hint:hover{background:rgba(245,158,11,.14);}
-.guest-hint span{overflow:hidden;text-overflow:ellipsis;}
+/* 게스트: 이 영상은 호스트 화면을 따라 보여주는 것이고 소리는 호스트 기기에서 나온다는 안내 */
+.guest-mon{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;line-height:1.3;}
+.guest-mon b{font-size:12px;font-weight:800;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.guest-mon small{font-size:10.5px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* 게스트: 사용방법 (접기/펼치기) */
 .ghelp{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:0;}
 /* 게스트: 검색창을 눈에 띄는 색 박스로 */
@@ -562,9 +563,9 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
     <div class="npbar"><div class="eq p" id="eq"><s></s><s></s><s></s><s></s><s></s></div><div class="npi"><div class="npt" id="npt">재생 중인 곡 없음</div><div class="npm" id="npm">신청곡을 추가해주세요</div></div></div>
     <div class="pwrap">
       <div class="pvideo" id="pvideo"><div class="phold" id="phold" onclick="focusSearch()" style="cursor:pointer;"><div class="pi">🎵</div><div>신청곡을 추가하면 자동 재생됩니다</div><div style="font-size:11px;opacity:.5;">여기를 눌러 검색하기</div></div><div id="yt-frame-slot"></div></div>
-      <div class="modebar"><button class="guest-hint hidden" id="guestHint" onclick="focusSearch()">👇 <span>아래 검색창에서 노래 신청하기</span></button><span class="mlbl" id="modeLbl">🎬 재생 모드</span><div class="mbtns" id="modeBtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('compact')">🎵 음악만</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span id="volIcon" style="font-size:14px;color:var(--tx3);cursor:pointer;" onclick="toggleMute()">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
+      <div class="modebar"><div class="guest-mon hidden" id="guestHint"><b>📺 호스트 모니터</b><small>음악은 호스트 기기에서 나와요</small></div><span class="mlbl" id="modeLbl">🎬 재생 모드</span><div class="mbtns" id="modeBtns"><button class="mbtn on" id="mbv" onclick="setMode('video')">📺 영상+음악</button><button class="mbtn" id="mba" onclick="setMode('compact')">🎵 음악만</button></div><div style="display:flex;align-items:center;gap:6px;margin-left:auto;"><span id="volIcon" style="font-size:14px;color:var(--tx3);cursor:pointer;" onclick="toggleMute()">🔊</span><input type="range" id="vol-range" min="0" max="100" value="100" oninput="setVol(this.value)" style="width:60px;accent-color:var(--ac);cursor:pointer;vertical-align:middle;"><button class="bsm cfg hidden" id="settings-btn" onclick="openModal('settings-modal')">⚙ 설정</button></div></div>
     </div>
-    <div class="sbox" id="sbox"><div class="sbox-tit">🎵 신청곡 검색 <small>노래 제목이나 가수를 입력하고 신청하세요</small></div><div class="srow"><input class="sinput" id="sin" placeholder="🔍 노래 제목·아티스트 검색 또는 유튜브 URL 삽입" onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
+    <div class="sbox" id="sbox"><div class="sbox-tit">🎵 신청곡 검색 <small>노래 제목·가수 또는 유튜브 링크를 입력하고 신청하세요</small></div><div class="srow"><input class="sinput" id="sin" placeholder="🔍 노래 제목·아티스트 검색 또는 유튜브 URL 삽입" onkeydown="if(event.key==='Enter')doSearch()" oninput="doSearch()"><button class="bsch" onclick="doSearch()">검색</button></div><div class="rlist" id="rlist"></div></div>
     <div class="qcard" id="queueCard"><div class="qhdr"><div style="display:flex;align-items:center;gap:7px;"><div class="qtit">신청곡 목록</div><div class="qcnt" id="qcnt">0곡</div></div><button class="playmode-btn" id="playmodeBtn" onclick="cyclePlayMode()" title="재생 모드 변경">▶ 자동재생</button></div><div class="qlist" id="qlist"><div style="text-align:center;padding:22px 0;color:var(--tx3);font-size:12px;">아직 신청곡이 없어요 🎵<br>첫 신청자가 되어보세요!</div></div></div>
     <!-- 승인 대기 목록 (호스트 전용) -->
     <div class="qcard hidden" id="pendingCard">
@@ -602,10 +603,10 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
     <details class="ghelp hidden" id="guestHelp" open>
       <summary>📖 큐튠 사용방법</summary>
       <ol>
-        <li><span class="n">1</span><span><b>노래 검색</b> — 검색창에 노래 제목이나 가수 이름을 입력하고 신청하세요.</span></li>
+        <li><span class="n">1</span><span><b>노래 검색</b> — 검색창에 노래 제목·가수 이름 또는 유튜브 링크를 입력하고 신청하세요.</span></li>
         <li><span class="n">2</span><span><b>신청</b> — 원하는 곡 옆 <b>+ 신청</b>을 누르면 끝! 유튜브 링크를 붙여넣어도 돼요.</span></li>
         <li><span class="n">3</span><span><b>내 곡 확인</b> — 신청곡 목록에서 <b style="color:var(--ac3);">⭐ 내 신청</b> 표시로 찾을 수 있어요.</span></li>
-        <li><span class="n">4</span><span><b>소리</b> — 처음엔 꺼져 있어요. 🔇 아이콘을 누르면 내 폰에서도 들려요.</span></li>
+        <li><span class="n">4</span><span><b>소리</b> — 영상은 호스트 화면을 보여주는 거예요. 음악은 호스트 기기에서 나오고, 내 폰으로도 들으려면 🔇 아이콘을 누르세요.</span></li>
         <li><span class="n">5</span><span><b>신청 조건</b> — 8분 이하 음악 영상만 신청돼요. 승인 모드인 방은 호스트가 승인한 뒤 재생돼요.</span></li>
       </ol>
     </details>
@@ -624,7 +625,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.43.1</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.43.2</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -1454,7 +1455,8 @@ function renderQ(){
     var canDel=isHost&&!_reorderMode;
     var drag=isHost&&!_reorderMode?'draggable="true" ondragstart="onDragStart(event,'+i+')" ondragover="onDragOver(event,'+i+')" ondrop="onDrop(event,'+i+')" ondragleave="this.style.background=\'\'"':'';
     var tapAction=_reorderMode?'reorderTap('+i+')':'fbPlayAt('+i+')';
-    var mine=!!(s.nickId&&myNickId&&s.nickId===myNickId);
+    /* "내 신청" 표시는 게스트에게만 (호스트가 넣은 곡엔 안 붙임) */
+    var mine=!isHost&&!!(s.nickId&&myNickId&&s.nickId===myNickId);
     var badge=mine?'<span class="mine-badge">'+(isPlaying?'🎧 내 신청곡 재생 중':'⭐ 내 신청')+'</span>':'';
     return '<div class="qi'+(isPlaying?' cur':'')+(mine?' mine':'')+'" '+drag+'>'
       +(isHost&&!_reorderMode?'<div class="drag-handle">⠿</div>':'')
