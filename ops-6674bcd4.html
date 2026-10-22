@@ -109,6 +109,8 @@ b,strong{font-weight:700;}
 .hbar .track{height:8px;border-radius:4px;background:var(--sf2);overflow:hidden;}
 .hbar .track i{display:block;height:100%;border-radius:4px;background:var(--blue);}
 .hbar .tip{font-size:12px;color:var(--tx3);margin-top:4px;line-height:1.5;}
+.hbar.camp .row span:first-child{color:var(--ac,#f59e0b);font-weight:700;}
+.hbar.camp .track i{background:var(--ac,#f59e0b);}
 .note{font-size:12px;color:var(--tx3);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1px dashed var(--bd);}
 .note a{color:var(--ac);}
 
@@ -383,7 +385,7 @@ footer a:hover{text-decoration:underline;}
   <div class="two sec">
     <div class="card">
       <div class="h"><b>🧭 어디서 알고 왔나</b><small>방문 경로 · 그중 방 만든 수</small></div>
-      <div class="how">"방 만듦" 숫자가 큰 경로가 진짜 손님을 데려오는 곳이야.</div>
+      <div class="how">"방 만듦" 숫자가 큰 경로가 진짜 손님을 데려오는 곳이야. 📣 주황색 줄은 블로그·릴스 등 홍보 링크(utm)로 들어온 방문.</div>
       <div id="src"></div>
       <div class="note">카톡·인스타 앱 안에서 링크를 열면 이전 페이지 정보가 안 넘어와서 앱 종류로 구분했어.<br>10/19 이전 유입은 <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a> → 획득 → 트래픽 획득에서 확인.</div>
     </div>
@@ -483,6 +485,16 @@ var SRC_LABEL={
   google:'구글 검색', naver:'네이버 검색', daum_kakao:'다음·카카오', instagram:'인스타그램', youtube:'유튜브', facebook:'페이스북',
   kakaotalk:'카카오톡 (앱 안에서 열림)', naver_app:'네이버 앱', line:'라인'
 };
+/* 캠페인 링크(utm)는 "출처/매체/캠페인" 으로 저장됨 — 예: naver/blog/queuetune_intro */
+var UTM_SRC={naver:'네이버',instagram:'인스타그램',youtube:'유튜브',kakao:'카카오',tistory:'티스토리',google:'구글',threads:'스레드',facebook:'페이스북',daangn:'당근'};
+var UTM_MED={blog:'블로그',social:'SNS',reels:'릴스',shorts:'쇼츠',cafe:'카페',post:'게시글',cpc:'광고',ad:'광고',email:'메일',qr:'QR 전단',profile:'프로필 링크'};
+function isCampaign(k){return !!k&&k.indexOf('/')>0;}
+function srcName(k){
+  if(SRC_LABEL[k])return SRC_LABEL[k];
+  if(!isCampaign(k))return k||'직접 접속';
+  var p=k.split('/');
+  return '📣 '+(UTM_SRC[p[0]]||p[0])+(p[1]?' '+(UTM_MED[p[1]]||p[1]):'')+(p[2]?' · '+p[2]:'');
+}
 var FAIL_LABEL={
   too_long:['8분 넘는 곡이라 거절','라이브·리믹스 신청이 막혔을 가능성 — 많으면 제한 완화 검토'],
   not_music:['음악이 아닌 영상이라 거절','카테고리 판정이 틀린 MV일 수 있음 — 곡명 확인 필요'],
@@ -712,7 +724,7 @@ function renderRows(rs){
   setHTML('rows','<div class="rw head"><div>상태</div><div>방 이름</div><div>마지막 활동</div><div>사용 기간</div><div>곡</div><div>쓴 기능</div><div></div></div>'+slice.map(function(r){
     var st=status(r), feat=(r.pw?'🔒':'')+(r.approval?'✅':'')+(r.notice?'📢':''), span=r.span>=1?Math.round(r.span)+'일':'하루';
     return '<div class="rw"><div class="c-st"><span class="pill '+st.c+'">'+st.t+'</span></div>'
-      +'<div class="c-nm"><div class="nm">'+esc(r.name)+'<small>'+md(r.created)+' 개설'+(r.src?' · '+esc(SRC_LABEL[r.src]||r.src):'')+'</small></div></div>'
+      +'<div class="c-nm"><div class="nm">'+esc(r.name)+'<small>'+md(r.created)+' 개설'+(r.src?' · '+esc(srcName(r.src)):'')+'</small></div></div>'
       +'<div class="c-last">'+rel(r.last)+'</div><div class="c-span">'+span+'</div><div class="c-songs">'+r.songs+'</div><div class="c-feat feat">'+(feat||'<span class="muted">–</span>')+'</div>'
       +'<div class="c-meta">'+rel(r.last)+' · '+span+' · '+r.songs+'곡 '+feat+'</div>'
       +'<div class="c-mg"><button class="mgr-btn" data-code="'+esc(r.code)+'">관리</button></div></div>';
@@ -749,7 +761,10 @@ function rangeBounds(){
 function within(a,b){return state.sessions.filter(function(s){return (s.start||0)>=a&&(s.start||0)<b;});}
 function dur(s){return Math.max(0,(s.last||s.start)-s.start);}
 function has(s,k){return !!(s.steps&&s.steps[k]);}
-function isBounce(s){return !s.steps&&dur(s)<10000;}
+/* 스크롤·FAQ 열기는 "본 것"이지 "누른 것"이 아님 → 바로 나감 판정에선 무시 */
+var PASSIVE_STEPS={home_scroll:1,faq_open:1};
+function acted(s){return !!s.steps&&Object.keys(s.steps).some(function(k){return !PASSIVE_STEPS[k];});}
+function isBounce(s){return !acted(s)&&dur(s)<10000;}
 function summarize(S){
   var engaged=S.filter(function(s){return !isBounce(s);});
   var home=S.filter(function(s){return s.land==='home';});
@@ -821,7 +836,8 @@ function exitOf(s){
   if(has(s,'song_added')||has(s,'played'))return ['✅','호스트 — 방 만들고 노래 틀음','',true,''];
   if(has(s,'room_created'))return ['⚠️','호스트 — 방 만들고 곡 없이 나감','첫 곡까지 가는 안내가 필요',false,'방 만든 직후 "첫 곡 넣기" 안내 (추천곡 버튼 — 데이터 쌓이면 진행)'];
   if(has(s,'open_create'))return ['⚠️','만들기 창 열고 포기','입력 항목이 부담됐을 가능성',false,'방 만들기 창 입력 항목 줄이기 (이름만 받고 나머지는 기본값)'];
-  return ['❌','홈만 보고 나감','첫 화면에서 무엇을 하는 곳인지 전달이 약할 수 있음',false,'첫 화면 상단에 "QR 하나로 신청곡 받기" 데모 영상·예시 넣기'];
+  if(has(s,'home_scroll')||has(s,'faq_open'))return ['⚠️','홈을 둘러보고 나감','관심은 있었지만 시작 안 함'+(has(s,'faq_open')?' (FAQ도 열어봄)':''),false,'"만들기"를 망설이는 이유 줄이기 — 첫 화면에 사용 예시·후기, 만들기 버튼을 아래쪽에도 한 번 더'];
+  return ['❌','홈 첫 화면만 보고 나감','아래로 내려보지도 않음 — 무엇을 하는 곳인지 전달이 약할 수 있음',false,'첫 화면 상단에 "QR 하나로 신청곡 받기" 데모 영상·예시 넣기'];
 }
 function exitGroups(S){
   var g={};S.forEach(function(s){var e=exitOf(s);(g[e[1]]=g[e[1]]||{e:e,n:0}).n++;});
@@ -847,14 +863,20 @@ function renderFails(S){
   }).join(''));
 }
 function sourceGroups(S){
-  var g={};S.forEach(function(s){var k=s.src||'direct';var x=g[k]=g[k]||{k:k,n:0,made:0};x.n++;if(has(s,'room_created'))x.made++;});
-  return Object.keys(g).map(function(k){return g[k];}).sort(function(a,b){return b.n-a.n;});
+  var g={};S.forEach(function(s){
+    var k=s.src||'direct';var x=g[k]=g[k]||{k:k,n:0,made:0,open:0,bounce:0,durs:[],ppl:{}};
+    x.n++;if(s.uid)x.ppl[s.uid]=1;
+    if(has(s,'room_created'))x.made++;if(has(s,'open_create'))x.open++;
+    if(isBounce(s))x.bounce++;else x.durs.push(dur(s));
+  });
+  return Object.keys(g).map(function(k){var x=g[k];x.people=Object.keys(x.ppl).length;x.med=median(x.durs);return x;}).sort(function(a,b){return b.n-a.n;});
 }
 function renderSources(S){
   var G=sourceGroups(S), max=G[0].n;
   setHTML('src',G.map(function(x){
-    var L=SRC_LABEL[x.k]||x.k;
-    return '<div class="hbar" title="'+esc(L)+': 방문 '+x.n+'건, 방 만듦 '+x.made+'건"><div class="row"><span>'+esc(L)+'</span><b>'+x.n+'<em>방 만듦 '+x.made+'</em></b></div><div class="track"><i style="width:'+(x.n/max*100)+'%"></i></div></div>';
+    var L=srcName(x.k), camp=isCampaign(x.k);
+    var detail='바로 나감 '+pct(x.bounce,x.n)+'%'+(x.durs.length?' · 이용 '+durText(x.med):'')+' · 만들기 열기 '+x.open+' · 방 만듦 '+x.made+(x.n?' ('+pct(x.made,x.n)+'%)':'');
+    return '<div class="hbar'+(camp?' camp':'')+'" title="'+esc(L)+': 방문 '+x.n+'건 (사람 '+x.people+'명)"><div class="row"><span>'+esc(L)+'</span><b>'+x.n+'<em>방 만듦 '+x.made+'</em></b></div><div class="track"><i style="width:'+(x.n/max*100)+'%"></i></div><div class="tip">'+detail+'</div></div>';
   }).join(''));
 }
 function renderDevices(S,a){
@@ -915,9 +937,22 @@ function renderBriefing(){
       var G=sourceGroups(S7);
       if(G.length){
         var top=G[0], maker=G.slice().sort(function(x,y){return y.made-x.made;})[0];
-        items.push(['info','🧭','가장 많이 들어온 경로: '+(SRC_LABEL[top.k]||top.k)+' ('+top.n+'건)',
-          maker.made?'방을 가장 많이 만든 경로: '+(SRC_LABEL[maker.k]||maker.k)+' ('+maker.made+'개)':'이번 주에는 아직 방문에서 방이 만들어지지 않았어.']);
+        items.push(['info','🧭','가장 많이 들어온 경로: '+esc(srcName(top.k))+' ('+top.n+'건)',
+          maker.made?'방을 가장 많이 만든 경로: '+esc(srcName(maker.k))+' ('+maker.made+'개)':'이번 주에는 아직 방문에서 방이 만들어지지 않았어.']);
+        /* 홍보 링크(utm) 성과 — 블로그·릴스 글마다 따로 */
+        G.filter(function(x){return isCampaign(x.k);}).slice(0,3).forEach(function(x){
+          var bad=x.n>=10&&pct(x.bounce,x.n)>=60;
+          items.push([x.made?'good':(bad?'warn':'info'),'📣','홍보 링크 '+esc(srcName(x.k).replace(/^📣 /,''))+': 방문 '+x.n+'건 → 방 '+x.made+'개',
+            '바로 나감 '+pct(x.bounce,x.n)+'%'+(x.durs.length?' · 이용시간 중간값 '+durText(x.med):'')+' · 만들기 창 연 사람 '+x.open+'명'+(bad?' — 글에서 기대한 것과 첫 화면이 다를 수 있어':'')]);
+          if(bad)todos.push('홍보 글 → 첫 화면 연결 점검 (글 속 화면·문구와 실제 첫 화면 맞추기) <span>— 바로 나감 '+pct(x.bounce,x.n)+'%</span>');
+        });
       }
+      /* 다시 찾아온 사람 (같은 기기 기준) */
+      var seen={},back=0;state.sessions.forEach(function(s){if(s.uid)seen[s.uid]=(seen[s.uid]||0)+1;});
+      var ppl7={};S7.forEach(function(s){if(s.uid)ppl7[s.uid]=1;});
+      Object.keys(ppl7).forEach(function(u){if(seen[u]>1)back++;});
+      var nP=Object.keys(ppl7).length;
+      if(nP)items.push([back?'good':'info','🔁','최근 7일 방문자 '+nP+'명 중 다시 찾아온 사람 '+back+'명 ('+pct(back,nP)+'%)','같은 기기로 두 번 이상 들어온 사람. 이 비율이 오르면 "다시 쓰고 싶은 서비스"라는 신호야.']);
     }
   }
 
