@@ -625,7 +625,7 @@ main,.pcol,.sidebar,#room{max-width:100vw;overflow-x:hidden;}
   </div>
 </div>
 </main>
-<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.44.1</p></footer>
+<footer><p>© 2025 <strong>QueueTune</strong> · 실시간 신청곡 플랫폼</p><p style="margin-top:4px"><a href="terms.html">이용약관</a> · <a href="privacy.html">개인정보처리방침</a> · <a href="mailto:n.furfur@gmail.com">문의</a></p><!-- VERSION: 관리용 --><p style="margin-top:8px;opacity:.2;font-size:9px;letter-spacing:1px;display:none;">v1.44.2</p></footer>
 
 <!-- 방 만들기 모달 -->
 <div class="mbg" id="cr-modal"><div class="modal" style="max-width:340px;text-align:left;"><h3 style="text-align:center;">🎉 새 플레이룸 만들기</h3><p style="text-align:center;">플레이룸 이름과 닉네임을 입력해주세요</p><input id="rnin" placeholder="플레이룸 이름 (예: 🎶 우리 파티)" maxlength="30"><div class="opt-label">👤 호스트 닉네임</div><input id="rnickin" placeholder="닉네임 입력" maxlength="20" value="호스트"><div class="opt-label" id="cr-pw-label">🔒 비밀번호 (선택사항 · 4자리 숫자)</div><div id="cr-pw-wrap" style="position:relative;"><input id="rpwin" placeholder="비워두면 비밀번호 없음" maxlength="4" inputmode="numeric" pattern="[0-9]*"><div id="cr-pw-lock" style="display:none;position:absolute;inset:0;background:rgba(11,15,21,.6);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:12px;color:var(--tx2);" onclick="showToast('🔒 비밀번호 방은 Plus 플랜부터 사용할 수 있습니다')">🔒 Plus 전용</div></div>
@@ -1851,6 +1851,14 @@ function checkExistingRoom(cb){
     }else cb(null,null);
   });
 }
+/* 예전에 들어갔던 방이 기기에 남아 있으면(창만 닫고 나간 경우) 막지 않고 자동으로 나온 뒤 진행.
+   그 방의 곡·재생엔 영향 없음 — 내 참여 기록만 지움 (v1.44.2, 예전엔 "이미 다른 플레이룸" 으로 막았음) */
+function leavePrevRoom(code,next){
+  localStorage.removeItem('apl_activeRoom');
+  var done=function(){showToast('이전 플레이룸('+code+')에서 나왔어요');next();};
+  if(!myNickId){done();return;}
+  db.ref('rooms/'+code+'/members/'+myNickId).remove().then(done,done);
+}
 function openCreateRoom(){
   // 참여 중인 플레이룸 체크
   var activeRoom=localStorage.getItem('apl_activeRoom');
@@ -1863,7 +1871,7 @@ function openCreateRoom(){
           localStorage.removeItem('apl_activeRoom');
           openCreateRoom();
         }else{
-          showToast('⚠️ 이미 다른 플레이룸에 참여 중입니다. 먼저 나가주세요.');
+          leavePrevRoom(activeRoom,openCreateRoom);
         }
         return;
       }
@@ -2036,7 +2044,7 @@ function promptJoinNick(){
   var activeRoom=localStorage.getItem('apl_activeRoom');
   if(activeRoom&&activeRoom!==c){
     db.ref('rooms/'+activeRoom).once('value').then(function(s){
-      if(s.exists()){showToast('⚠️ 이미 다른 플레이룸('+activeRoom+')에 참여 중입니다. 먼저 나가주세요.');return;}
+      if(s.exists()){leavePrevRoom(activeRoom,function(){doPromptJoin(c);});return;}
       localStorage.removeItem('apl_activeRoom');doPromptJoin(c);
     });return;
   }
